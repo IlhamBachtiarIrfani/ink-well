@@ -18,7 +18,7 @@ def calc_result(value):
 
 class SentenceSimilarityClassifier:
     def __init__(self):
-        self.model = SentenceTransformer('./model/fine-tuned-model')
+        self.model = SentenceTransformer('./model/sentence-similarity-fine-tuned-model')
 
     def encode_sentence(self, sentence):
         return self.model.encode([sentence])[0]

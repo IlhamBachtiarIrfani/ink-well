@@ -5,7 +5,7 @@ from typing import List
 
 class ZeroShotClassifier:
     def __init__(self):
-        self.classifier = pipeline("zero-shot-classification", model="./model/zero-shot-classification-model")
+        self.classifier = pipeline("zero-shot-classification", model="./model/mDeBERTa-v3-base-xnli-multilingual-nli-2mil7")
 
     def process_sequence(self, sequence, candidate_labels):
         return self.classifier(sequence, candidate_labels, multi_label=True)
