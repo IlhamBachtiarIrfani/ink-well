@@ -1,0 +1,44 @@
+/data/mongo-data
+/data/mysql-data
+/data/redis-data
+
+
+/ml_service/__pycache__
+/ml_service/**/__pycache__
+/ml_service/logs
+
+# compiled output
+/api_service/dist
+/api_service/node_modules
+
+# Logs
+/api_service/logs
+/api_service/*.log
+/api_service/npm-debug.log*
+/api_service/pnpm-debug.log*
+/api_service/yarn-debug.log*
+/api_service/yarn-error.log*
+/api_service/lerna-debug.log*
+
+# OS
+/api_service/.DS_Store
+
+# Tests
+/api_service/coverage
+/api_service/.nyc_output
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
