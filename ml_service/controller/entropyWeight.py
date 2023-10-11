@@ -25,21 +25,15 @@ class EntropyWeight:
         # Calculate the initial weights
         weights = 1 - relative_entropy
 
-        # Ensure that the weight of the first criterion is at least 0.6
-        weights[0] = max(weights[0], 0.7)
+        # Ensure that the weight of the first criterion is at least 0.4
+        weights[0] = max(weights[0], 0.4)
 
         # Normalize the weights to ensure the sum is 1
         normalized_weights = weights / weights.sum()
 
-        # print("Weights Before Normalization:")
-        # print(normalized_weights)
-
         # Apply Laplace smoothing to ensure a more balanced distribution
         smoothed_weights = self.apply_laplace_smoothing(normalized_weights)
         # smoothed_weights = normalized_weights
-
-        # print("\nWeights After Normalization:")
-        # print(smoothed_weights)
 
         # Convert the smoothed weights to an array
         criteria_weights = smoothed_weights.values
@@ -51,7 +45,7 @@ class EntropyWeight:
 
         return scores, weights
 
-    def apply_laplace_smoothing(self, weights, alpha=0.01):
+    def apply_laplace_smoothing(self, weights, alpha=0.03):
         num_criteria = len(weights)
         smoothed_weights = [(weight + alpha) / (1 + alpha * num_criteria) for weight in weights]
 

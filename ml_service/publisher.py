@@ -19,6 +19,18 @@ r.lpush('scoring_queue', """
             ],
             "responses": [
                 {
+                    "user_id": "Test",
+                    "content": "Big Data merujuk pada kumpulan data yang sangat besar, kompleks, dan beragam yang sulit diolah menggunakan metode tradisional. Pengaruhnya terhadap pengembangan sistem informasi adalah perluasan kemampuan untuk mengelola, menganalisis, dan memanfaatkan data dalam skala besar, memungkinkan pengambilan keputusan yang lebih baik. " 
+                },
+                {
+                    "user_id": "Super Mirip Test",
+                    "content": "Big Data merupakan kumpulan data yang sangat besar, kompleks, dan beragam yang sulit diolah menggunakan metode tradisional. Dampak dalam pengembangan sistem informasi ialah perluasan kemampuan untuk mengelola, menganalisis, dan memanfaatkan data dalam skala besar, yang memungkinkan pengambilan keputusan yang lebih optimal" 
+                },
+                {
+                    "user_id": "Parafrase Test",
+                    "content": "Big Data adalah sekumpulan data yang ukurannya sangat besar, kompleks, dan beraneka ragam, yang tidak dapat diproses dengan metode konvensional. Implikasinya pada pengembangan sistem informasi adalah peningkatan kapasitas dalam mengelola, menganalisis, dan memanfaatkan data dalam jumlah besar, yang memfasilitasi pengambilan keputusan yang lebih efektif." 
+                },
+                {
                     "user_id": "U1",
                     "content": "Big Data adalah harta karun informasi. Dengan alat yang tepat, kita dapat mengekstrak wawasan berharga dari volume data yang besar ini."
                 },
