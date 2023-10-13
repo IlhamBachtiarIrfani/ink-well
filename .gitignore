@@ -1,6 +1,4 @@
-/data/mongo-data
-/data/mysql-data
-/data/redis-data
+/data/
 
 
 /ml_service/__pycache__

@@ -13,25 +13,22 @@ services:
         networks:
             - skripsi-network
     skripsi-mariadb:
-        image: mariadb:latest
+        image: mariadb:11
         environment:
-            MYSQL_ROOT_PASSWORD: rahasia
-            MYSQL_DATABASE: test
-            MYSQL_USER: user
-            MYSQL_PASSWORD: rahasia-user
+            MARIADB_ROOT_PASSWORD: rahasia
+            MARIADB_DATABASE: test
         ports:
             - '14002:3306'
         volumes:
-            - ./data/mysql-data:/var/lib/mysql
+            - ./data/mariadb-data:/var/lib/mysql
         networks:
             - skripsi-network
     skripsi-rabbitmq:
-        image: rabbitmq:3-management
+        image: rabbitmq:3
         environment:
             RABBITMQ_DEFAULT_USER: user
             RABBITMQ_DEFAULT_PASS: password
         ports:
-            - 15672:15672
             - 5672:5672
 
 networks:
