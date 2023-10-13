@@ -1,9 +1,12 @@
 import numpy as np
 import pandas as pd
 
+MIN_ANSWER_KEY_WEIGHT = 0.4
+SCORE_SMOOTHING_ALPHA = 0.03
+
 class EntropyWeight:
     def calculate(self, criteria_data):
-        print("Find Adaptif Weight")
+        print("Calculate Adaptive Weight")
         # Create a DataFrame from the criteria data
         df = pd.DataFrame(criteria_data)
 
@@ -26,7 +29,7 @@ class EntropyWeight:
         weights = 1 - relative_entropy
 
         # Ensure that the weight of the first criterion is at least 0.4
-        weights[0] = max(weights[0], 0.4)
+        weights[0] = max(weights[0], MIN_ANSWER_KEY_WEIGHT)
 
         # Normalize the weights to ensure the sum is 1
         normalized_weights = weights / weights.sum()
@@ -45,7 +48,7 @@ class EntropyWeight:
 
         return scores, weights
 
-    def apply_laplace_smoothing(self, weights, alpha=0.03):
+    def apply_laplace_smoothing(self, weights, alpha=SCORE_SMOOTHING_ALPHA):
         num_criteria = len(weights)
         smoothed_weights = [(weight + alpha) / (1 + alpha * num_criteria) for weight in weights]
 

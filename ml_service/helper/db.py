@@ -1,11 +1,12 @@
 import pymongo
 
+
 class MongoDBHandler:
     def __init__(self, host, port, username, password, database_name):
         self.client = None
         self.database = None
         self.host = host
-        self.port = port
+        self.port = int(port)
         self.username = username
         self.password = password
         self.database_name = database_name
@@ -19,7 +20,7 @@ class MongoDBHandler:
             self.client = pymongo.MongoClient(mongo_uri)
             self.database = self.client[self.database_name]
         except Exception as e:
-            print(f"Connection error: {str(e)}")
+            print(f" [!] Connection error: {str(e)}")
 
     def insert_document(self, collection_name, document):
         self._connect()
@@ -28,7 +29,7 @@ class MongoDBHandler:
             result = collection.insert_one(document)
             return result.inserted_id
         except Exception as e:
-            print(f"Insert error: {str(e)}")
+            print(f" [!] Insert error: {str(e)}")
             return None
         finally:
             self._close()
@@ -43,7 +44,7 @@ class MongoDBHandler:
                 result = collection.find(query)
             return list(result)
         except Exception as e:
-            print(f"Find error: {str(e)}")
+            print(f" [!] Find error: {str(e)}")
             return []
         finally:
             self._close()
@@ -55,7 +56,7 @@ class MongoDBHandler:
             result = collection.update_one(query, {"$set": update_data})
             return result.modified_count
         except Exception as e:
-            print(f"Update error: {str(e)}")
+            print(f" [!] Update error: {str(e)}")
             return 0
         finally:
             self._close()
@@ -67,7 +68,7 @@ class MongoDBHandler:
             result = collection.delete_one(query)
             return result.deleted_count
         except Exception as e:
-            print(f"Delete error: {str(e)}")
+            print(f" [!] Delete error: {str(e)}")
             return 0
         finally:
             self._close()

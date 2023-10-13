@@ -6,6 +6,7 @@
 /ml_service/__pycache__
 /ml_service/**/__pycache__
 /ml_service/logs
+/ml_service/model
 
 # compiled output
 /api_service/dist
@@ -42,3 +43,34 @@
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+ml_service/model/fine-tuned-model/config_sentence_transformers.json
+ml_service/model/fine-tuned-model/config.json
+ml_service/model/fine-tuned-model/modules.json
+ml_service/model/fine-tuned-model/pytorch_model.bin
+ml_service/model/fine-tuned-model/README.md
+ml_service/model/fine-tuned-model/sentence_bert_config.json
+ml_service/model/fine-tuned-model/special_tokens_map.json
+ml_service/model/fine-tuned-model/tokenizer_config.json
+ml_service/model/fine-tuned-model/tokenizer.json
+ml_service/model/fine-tuned-model/vocab.txt
+ml_service/model/fine-tuned-model/1_Pooling/config.json
+ml_service/model/sentence-similarity-model-base/config_sentence_transformers.json
+ml_service/model/sentence-similarity-model-base/config.json
+ml_service/model/sentence-similarity-model-base/modules.json
+ml_service/model/sentence-similarity-model-base/pytorch_model.bin
+ml_service/model/sentence-similarity-model-base/README.md
+ml_service/model/sentence-similarity-model-base/sentence_bert_config.json
+ml_service/model/sentence-similarity-model-base/special_tokens_map.json
+ml_service/model/sentence-similarity-model-base/tokenizer_config.json
+ml_service/model/sentence-similarity-model-base/tokenizer.json
+ml_service/model/sentence-similarity-model-base/vocab.txt
+ml_service/model/sentence-similarity-model-base/1_Pooling/config.json
+ml_service/model/zero-shot-classification-model-base/added_tokens.json
+ml_service/model/zero-shot-classification-model-base/config.json
+ml_service/model/zero-shot-classification-model-base/model.safetensors
+ml_service/model/zero-shot-classification-model-base/pytorch_model.bin
+ml_service/model/zero-shot-classification-model-base/README.md
+ml_service/model/zero-shot-classification-model-base/special_tokens_map.json
+ml_service/model/zero-shot-classification-model-base/spm.model
+ml_service/model/zero-shot-classification-model-base/tokenizer_config.json
+ml_service/model/zero-shot-classification-model-base/tokenizer.json

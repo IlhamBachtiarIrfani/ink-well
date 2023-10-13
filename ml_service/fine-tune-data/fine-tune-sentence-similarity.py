@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 import pandas as pd
 
 # Load the dataset
-df = pd.read_csv('./fine-tune-data/essay-training-data.csv')
+df = pd.read_csv('./training-data/essay-training-data.csv')
 
 # Split the dataset into train and test sets
 train_df, test_df = train_test_split(df, test_size=0.2, random_state=42)
@@ -35,7 +35,7 @@ batch_size = 16
 num_epochs = 4
 
 # Load a pre-trained SentenceTransformer model
-model = SentenceTransformer('./model/sentence-similarity-model-base')
+model = SentenceTransformer('../model/sentence-similarity-model-base')
 
 # Define the dataloaders for train and test sets
 train_dataloader = DataLoader(train_examples, shuffle=True, batch_size=batch_size)
@@ -49,4 +49,4 @@ evaluator = EmbeddingSimilarityEvaluator(sentences1, sentences2, scores)
 # Fine-tune the model
 model.fit(train_objectives=[(train_dataloader, train_loss)], epochs=num_epochs, warmup_steps=100, evaluator=evaluator, evaluation_steps=1000)
 
-model.save('./model/full-fine-tuned-model')
+model.save('../model/full-fine-tuned-model')

@@ -4,6 +4,14 @@
     },
     "python.formatting.provider": "none",
     "cSpell.words": [
+        "bisnis",
+        "indonews",
+        "iterrows",
+        "jakartaresearch",
+        "otomotif",
+        "pymongo",
+        "RABBITMQ",
+        "tekno",
         "tqdm"
     ]
 }

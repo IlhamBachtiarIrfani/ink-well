@@ -1,0 +1,44 @@
+{
+    "id": "E00005",
+    "title": "Ujian Sistem Keamanan Terbaru",
+    "questions": [
+        {
+            "content": "Apa yang dimaksud dengan Enkripsi dan bagaimana pengaruhnya terhadap pengembangan sistem keamanan?",
+            "answer_key": "Enkripsi adalah proses konversi informasi atau data menjadi kode rahasia untuk mencegah akses unauthorised. Pengaruhnya terhadap pengembangan sistem keamanan adalah peningkatan integritas dan kerahasiaan data.",
+            "keyword": [
+                "Enkripsi",
+                "Pengembangan Sistem Keamanan",
+                "Integritas Data"
+            ],
+            "responses": [
+                {
+                    "user_id": "U11",
+                    "content": "Enkripsi adalah salah satu metode paling efektif untuk mencapai keamanan data. Dengan enkripsi, data yang dikirim melalui internet dienkripsi dan hanya bisa dibaca oleh penerima yang memiliki kunci dekripsi."
+                },
+                {
+                    "user_id": "U12",
+                    "content": "Pengembangan sistem keamanan harus mempertimbangkan enkripsi. Ini membantu dalam melindungi data dari akses unauthorised."
+                }
+            ]
+        },
+        {
+            "content": "Apa yang dimaksud dengan Firewall dan bagaimana digunakan dalam pengembangan sistem keamanan?",
+            "answer_key": "Firewall adalah sistem keamanan jaringan yang memantau dan mengendalikan lalu lintas jaringan berdasarkan aturan keamanan yang ditentukan. Ini digunakan dalam pengembangan sistem keamanan untuk mencegah akses unauthorised ke atau dari jaringan pribadi.",
+            "keyword": [
+                "Firewall",
+                "Pengembangan Sistem Keamanan",
+                "Akses Unauthorised"
+            ],
+            "responses": [
+                {
+                    "user_id": "U13",
+                    "content": "Firewall berfungsi sebagai barier antara jaringan internal yang tepercaya dan jaringan eksternal yang tidak tepercaya seperti internet."
+                },
+                {
+                    "user_id": "U14",
+                    "content": "Pengembangan sistem keamanan harus memasukkan firewall dalam desainnya. Ini membantu dalam melindungi jaringan internal dari ancaman eksternal."
+                }
+            ]
+        }
+    ]
+}

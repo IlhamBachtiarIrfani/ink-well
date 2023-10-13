@@ -1,3 +1,0 @@
-ml_service/model/sentence-similarity-fine-tuned-model/*.bin filter=lfs diff=lfs merge=lfs -text
-ml_service/model/sentence-similarity-model-base/*.bin filter=lfs diff=lfs merge=lfs -text
-ml_service/model/zero-shot-classification-model-base/*.bin filter=lfs diff=lfs merge=lfs -text

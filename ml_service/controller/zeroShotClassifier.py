@@ -1,32 +1,55 @@
-from transformers import pipeline
+from transformers import pipeline, AutoTokenizer
 from concurrent.futures import ThreadPoolExecutor
 from tqdm import tqdm
 from typing import List
-import numpy as np
+from dotenv import load_dotenv
+import os
+from helper.threshold import calc_threshold
 
-def calc_result(value):
-    center = 0.4
-    top_value = 0.9
+load_dotenv()
 
-    if value < center:
-        mapped_value = (value - center) / center
-    else:
-        mapped_value = (value - center) / (top_value - center)
-    clipped_value = np.clip(mapped_value, 0, 1)
-    return clipped_value
+ZERO_SHOT_CLASSIFICATION_THREAD = int(os.getenv('ZERO_SHOT_CLASSIFICATION_THREAD'))
+
 
 class ZeroShotClassifier:
     def __init__(self):
-        pass
+        # INIT ZERO SHOT CLASSIFICATION MODEL
+        model_name = "./model/fine-tuned-model"
+        tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.classifier = pipeline(
+            "zero-shot-classification",
+            model=model_name,
+            tokenizer=tokenizer
+        )
 
     def process_sequence(self, sequence, candidate_labels):
-        classifier = pipeline("zero-shot-classification", model="./model/fine-tuned-zero-shot")
-        result = classifier(sequence, candidate_labels, multi_label=True)
-        result['scores'] = (calc_result(score) for score in result['scores'])
+        # PROCESS CLASSIFIER
+        result = self.classifier(sequence, candidate_labels, multi_label=True)
+
+        # SET THE SCORES TO CURRENT THRESHOLD
+        result['scores'] = (
+            calc_threshold(
+                score, bottom_value=0.4, top_value=0.9
+            ) for score in result['scores']
+        )
         return result
 
-    def process(self, sequences: List[str], candidate_labels: List[str], num_threads=8):
+    def process(
+            self,
+            sequences: List[str],
+            candidate_labels: List[str], num_threads=ZERO_SHOT_CLASSIFICATION_THREAD
+    ):
+        # DO MULTI THREAD AND ADD PROGRESS BAR
         with ThreadPoolExecutor(max_workers=num_threads) as executor:
-            results = list(tqdm(executor.map(self.process_sequence, sequences, [candidate_labels]*len(sequences)), total=len(sequences), desc="Classification"))
+            results = list(
+                tqdm(
+                    executor.map(
+                        self.process_sequence,
+                        sequences,
+                        [candidate_labels]*len(sequences)
+                    ),
+                    total=len(sequences),
+                    desc="Classification")
+            )
 
         return results

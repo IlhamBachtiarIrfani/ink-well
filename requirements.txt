@@ -1,2 +1,0 @@
-redis=5.0.1
-pymongo=4.5.0

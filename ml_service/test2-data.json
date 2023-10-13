@@ -1,0 +1,37 @@
+{
+    "id": "E00005",
+    "title": "Ujian Sistem Keamanan Terbaru",
+    "questions": [
+        {
+            "content": "Apa yang dimaksud dengan Enkripsi dan bagaimana pengaruhnya terhadap pengembangan sistem keamanan?",
+            "answer_key": "Enkripsi adalah proses konversi informasi atau data menjadi kode rahasia untuk mencegah akses unauthorised. Pengaruhnya terhadap pengembangan sistem keamanan adalah peningkatan integritas dan kerahasiaan data.",
+            "keyword": [
+                "Enkripsi",
+                "Pengembangan Sistem Keamanan",
+                "Integritas Data"
+            ],
+            "responses": [
+                {
+                    "user_id": "U11",
+                    "content": "Enkripsi adalah salah satu metode paling efektif untuk mencapai keamanan data. Dengan enkripsi, data yang dikirim melalui internet dienkripsi dan hanya bisa dibaca oleh penerima yang memiliki kunci dekripsi."
+                },
+                {
+                    "user_id": "U12",
+                    "content": "Pengembangan sistem keamanan harus mempertimbangkan enkripsi. Ini membantu dalam melindungi data dari akses unauthorised."
+                },
+                {
+                    "user_id": "U13",
+                    "content": "Enkripsi adalah proses mengubah informasi menjadi kode rahasia yang sulit dibaca tanpa kunci khusus. Ini sangat penting dalam sistem keamanan untuk melindungi data dari akses yang tidak sah."
+                },
+                {
+                    "user_id": "U14",
+                    "content": "Enkripsi adalah cara untuk melindungi data Anda dari mata-mata. Dengan enkripsi, Anda dapat merasa aman bahwa informasi Anda aman."
+                },
+                {
+                    "user_id": "U15",
+                    "content": "Enkripsi adalah teknik coding. Tidak ada hubungannya dengan sistem keamanan."
+                }
+            ]
+        }
+    ]
+}
