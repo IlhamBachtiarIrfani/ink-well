@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { MyConfigService } from '../my-config/my-config.service';
 import { MyConfigModule } from '../my-config/my-config.module';
+import { UserToken } from 'src/user/entities/user-token.entity';
 
 @Module({
     imports: [
@@ -21,7 +22,7 @@ import { MyConfigModule } from '../my-config/my-config.module';
                 password: configService.dbPassword,
 
                 // * define entity object db
-                entities: [User],
+                entities: [User, UserToken],
                 synchronize: true,
             }),
             inject: [MyConfigService],

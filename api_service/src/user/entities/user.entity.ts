@@ -3,10 +3,12 @@ import {
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
+    OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import { UserToken } from './user-token.entity';
 
 // ! USER ROLE ENUM
 export enum UserRole {
@@ -52,4 +54,7 @@ export class User {
     @Exclude()
     @DeleteDateColumn()
     deleted_at: Date;
+
+    @OneToMany(() => UserToken, (userToken: UserToken) => userToken.user)
+    user_token: UserToken[];
 }

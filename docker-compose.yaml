@@ -12,17 +12,20 @@ services:
             - "${MONGODB_PORT}"
         networks:
             - skripsi-network
+        restart: unless-stopped
     skripsi-mariadb:
         image: mariadb:11
         environment:
             MARIADB_ROOT_PASSWORD: rahasia
             MARIADB_DATABASE: essay-scoring
+            TZ: Asia/Jakarta
         ports:
             - "${MARIADB_PORT}"
         volumes:
             - ./data/mariadb-data:/var/lib/mysql
         networks:
             - skripsi-network
+        restart: unless-stopped
     skripsi-rabbitmq:
         image: rabbitmq:3-alpine
         environment:
@@ -34,6 +37,7 @@ services:
             - ./data/rabbitmq-data:/var/lib/rabbitmq
         networks:
             - skripsi-network
+        restart: unless-stopped
 
 networks:
     skripsi-network:
