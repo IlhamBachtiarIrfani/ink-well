@@ -20,36 +20,41 @@ export class UserService {
         private encryptService: EncryptService,
     ) {}
 
+    // ! ===== REGISTER NEW USER =====
     async create(createUserDto: CreateUserDto) {
         try {
+            // * create new user object
             const newUser = new User();
             newUser.name = createUserDto.name;
             newUser.email = createUserDto.email;
-            newUser.password = await this.encryptService.encryptPassword(
+
+            // create new hashes password
+            newUser.password = await this.encryptService.hashPassword(
                 createUserDto.password,
             );
 
+            // save user object to db
             return await this.userRepository.save(newUser);
         } catch (error) {
             if (error.code === 'ER_DUP_ENTRY') {
-                const message = error.message;
-                const match = message.match(/Duplicate entry '(.*?)'/i);
-                console.log('Duplicate column name:', match);
-
+                // ! on error email duplicate entry
                 throw new BadRequestException(
-                    `User with email '${match[1]}' is already Exist`,
+                    `User with email '${createUserDto.email}' is already exist!`,
                 );
             } else {
+                // ! on external error
                 console.error(error);
                 throw new InternalServerErrorException();
             }
         }
     }
 
+    // ! ===== GET USER PROFILE DATA BY USER ID =====
     getProfile(userId: string) {
         return this.userRepository.findOne({ where: { id: userId } });
     }
 
+    // ! ===== GET ALL USER DATA =====
     findAll() {
         return this.userRepository.find();
     }

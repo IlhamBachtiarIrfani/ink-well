@@ -6,10 +6,14 @@ import { MyConfigService } from '../my-config/my-config.service';
 
 @Module({
     imports: [
+        // ! ===== LOAD MY CONFIG MODULE =====
         MyConfigModule,
+
+        // ! ===== LOAD NEST JS JWT MODULE =====
         JwtModule.registerAsync({
             imports: [MyConfigModule],
             useFactory: async (configService: MyConfigService) => ({
+                // * define default jwt config
                 secret: configService.jwtSecret,
             }),
             inject: [MyConfigService],

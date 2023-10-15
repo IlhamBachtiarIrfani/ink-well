@@ -9,9 +9,16 @@ import { MyJwtModule } from 'src/config/my-jwt/my-jwt.module';
 
 @Module({
     imports: [
+        // ! ===== LOAD DATABASE MODULE ======
         DatabaseModule,
+
+        // ! ===== LOAD USED ENTITY DB =====
         TypeOrmModule.forFeature([User]),
+
+        // ! ===== LOAD ENCRYPTION MODULE =====
         EncryptModule,
+
+        // ! ===== LOAD JWT MODULE =====
         MyJwtModule,
     ],
     controllers: [UserController],

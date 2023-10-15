@@ -6,10 +6,18 @@ import { MyConfigService } from 'src/config/my-config/my-config.service';
 export class EncryptService {
     constructor(private myConfigService: MyConfigService) {}
 
-    async encryptPassword(password: string): Promise<string> {
+    // ! ===== HASH PASSWORD =====
+    async hashPassword(password: string): Promise<string> {
+        // get password secret
         const secret = this.myConfigService.passwordSecret;
-        const passwordWithSecret = password + secret;
+
+        // add secret as prefix and postfix
+        const passwordWithSecret = secret + password + secret;
+
+        // generate random salt
         const salt = await genSalt(this.myConfigService.saltRounds);
+
+        // return hashes password
         return hash(passwordWithSecret, salt);
     }
 
@@ -17,8 +25,13 @@ export class EncryptService {
         plainPassword: string,
         hashedPassword: string,
     ): Promise<boolean> {
+        // get password secret
         const secret = this.myConfigService.passwordSecret;
-        const plainPasswordWithSecret = plainPassword + secret;
+
+        // add secret as prefix and postfix
+        const plainPasswordWithSecret = secret + plainPassword + secret;
+
+        // return comparison hashed password
         return compare(plainPasswordWithSecret, hashedPassword);
     }
 }

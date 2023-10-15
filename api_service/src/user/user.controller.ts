@@ -27,17 +27,23 @@ export class UserController {
         private readonly myJwtService: MyJwtService,
     ) {}
 
+    // ! ===== [POST] /user/register =====
+    // * register new user
     @Post('register')
     register(@Body() createUserDto: CreateUserDto) {
         return this.userService.create(createUserDto);
     }
 
+    // ! ===== [POST] /user/login =====
+    // * login user use basic auth header
     @Post('login')
     @UseGuards(BasicAuthGuard)
     login(@Request() req) {
         return this.myJwtService.generateJwt(req.user);
     }
 
+    // ! ===== [GET] /user/profile =====
+    // * get user profile by token
     @Get('profile')
     @Roles(AccessRole.ADMIN, AccessRole.PARTICIPANT)
     @UseGuards(TokenAuthGuard)
@@ -46,6 +52,8 @@ export class UserController {
         return this.userService.getProfile(userTokenData.user_id);
     }
 
+    // ! ===== [GET] /user/ =====
+    // * return all user data for debugging
     @Get()
     findAll() {
         return this.userService.findAll();

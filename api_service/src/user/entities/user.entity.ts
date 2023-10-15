@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 
+// ! USER ROLE ENUM
 export enum UserRole {
     ADMIN = 'ADMIN',
     PARTICIPANT = 'PARTICIPANT',
@@ -21,6 +22,7 @@ export type UserTokenData = {
     user_role: string;
 };
 
+// ! USER ENTITY
 @Entity({ name: 'users' })
 export class User {
     @PrimaryGeneratedColumn('uuid')

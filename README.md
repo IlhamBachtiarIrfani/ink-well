@@ -1,3 +1,48 @@
+# Documentation
+## REST API Service
+REST API Service is require mariadb, redis, and mongodb
+
+set ```.env``` file in ```api_service/.env``` with this format
+```
+IS_DEBUG=0
+
+DB_HOST=
+DB_PORT=
+DB_USER=
+DB_PASSWORD=
+DB_NAME=
+
+JWT_SECRET=
+JWT_EXPIRED_TIME=
+
+SALT_ROUNDS=
+PASSWORD_SECRET_KEY=
+```
+
+## Machine Learning Service
+ML Service is require redis and mongodb
+
+set ```.env``` file in ```ml_service/.env``` with this format
+```
+IS_DEBUG=0
+
+RABBITMQ_HOST=
+RABBITMQ_PORT=
+RABBITMQ_USER=
+RABBITMQ_PASSWORD=
+RABBITMQ_QUEUE=
+
+MONGO_HOST=
+MONGO_PORT=
+MONGO_USER=
+MONGO_PASSWORD=
+MONGO_DB_NAME=
+
+SENTENCE_SIMILARITY_THREAD=
+ZERO_SHOT_CLASSIFICATION_THREAD=
+```
+
+
 # Installation
 Run Docker Compose Up
 ```
@@ -18,10 +63,7 @@ npm run build
 npm run start:prod
 ```
 
-# Documentation
-
-## Machine Learning Service
-ML Service is require redis and mongodb
+# Development Docs
 
 ### Fine tune model
 #### Sentence Similarity
@@ -33,7 +75,3 @@ python fine-tune-sentence-similarity.py
 ```
 python fine-tune-zero-shot-classification.py
 ```
-
-## Rest API Service
-ML Service is require mysql, redis, and mongodb
-

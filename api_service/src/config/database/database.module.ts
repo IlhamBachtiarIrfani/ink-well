@@ -6,15 +6,21 @@ import { MyConfigModule } from '../my-config/my-config.module';
 
 @Module({
     imports: [
+        // ! ===== LOAD TYPEORM MARIA DB MODULE =====
         TypeOrmModule.forRootAsync({
             imports: [MyConfigModule],
             useFactory: async (configService: MyConfigService) => ({
                 type: 'mariadb',
+                // * define connection based on config
                 host: configService.dbHost,
                 port: configService.dbPort,
+                database: configService.dbName,
+
+                // * define auth based on config
                 username: configService.dbUser,
                 password: configService.dbPassword,
-                database: configService.dbName,
+
+                // * define entity object db
                 entities: [User],
                 synchronize: true,
             }),

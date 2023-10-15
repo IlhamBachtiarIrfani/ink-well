@@ -3,6 +3,7 @@ import { MyConfigService } from './my-config.service';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
+    // ! ===== LOAD NEST JS CONFIG MODULE =====
     imports: [ConfigModule.forRoot()],
     providers: [MyConfigService],
     exports: [MyConfigService],
