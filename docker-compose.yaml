@@ -16,7 +16,7 @@ services:
         image: mariadb:11
         environment:
             MARIADB_ROOT_PASSWORD: rahasia
-            MARIADB_DATABASE: test
+            MARIADB_DATABASE: essay-scoring
         ports:
             - '14002:3306'
         volumes:
