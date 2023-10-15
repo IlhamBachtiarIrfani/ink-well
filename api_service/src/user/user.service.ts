@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
+import { User, UserRole } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { EncryptService } from 'src/helper/encrypt/encrypt.service';
 
@@ -22,12 +22,16 @@ export class UserService {
     ) {}
 
     // ! ===== REGISTER NEW USER =====
-    async create(createUserDto: CreateUserDto) {
+    async create(
+        createUserDto: CreateUserDto,
+        userRole = UserRole.PARTICIPANT,
+    ) {
         try {
             // * create new user object
             const newUser = new User();
             newUser.name = createUserDto.name;
             newUser.email = createUserDto.email;
+            newUser.role = userRole;
 
             // create new hashes password
             newUser.password = await this.encryptService.hashPassword(
@@ -65,6 +69,6 @@ export class UserService {
 
     // ! ===== GET ALL USER DATA =====
     findAll() {
-        return this.userRepository.find();
+        return this.userRepository.find({ order: { created_at: 'DESC' } });
     }
 }

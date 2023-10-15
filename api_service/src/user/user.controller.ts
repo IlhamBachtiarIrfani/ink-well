@@ -16,7 +16,7 @@ import { MyJwtService } from 'src/config/my-jwt/my-jwt.service';
 import { TokenAuthGuard } from './token-auth/token-auth.guard';
 import { AccessRole } from './roles.enum';
 import { Roles } from './roles.decorator';
-import { UserTokenData } from './entities/user.entity';
+import { UserRole, UserTokenData } from './entities/user.entity';
 
 @ApiTags('user')
 @Controller('user')
@@ -32,6 +32,13 @@ export class UserController {
     @Post('register')
     register(@Body() createUserDto: CreateUserDto) {
         return this.userService.create(createUserDto);
+    }
+
+    // ! ===== [POST] /user/admin =====
+    // * register new user
+    @Post('register/admin')
+    registerAmin(@Body() createUserDto: CreateUserDto) {
+        return this.userService.create(createUserDto, UserRole.ADMIN);
     }
 
     // ! ===== [POST] /user/login =====
