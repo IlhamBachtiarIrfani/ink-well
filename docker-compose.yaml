@@ -2,14 +2,14 @@ version: '3.8'
 
 services:
     skripsi-mongodb:
-        image: mongo:latest
+        image: mongo:7
         environment:
             MONGO_INITDB_ROOT_USERNAME: root
             MONGO_INITDB_ROOT_PASSWORD: rahasia-root
         volumes:
             - ./data/mongo-data:/data/db
         ports:
-            - 14001:27017
+            - "${MONGODB_PORT}"
         networks:
             - skripsi-network
     skripsi-mariadb:
@@ -18,18 +18,22 @@ services:
             MARIADB_ROOT_PASSWORD: rahasia
             MARIADB_DATABASE: essay-scoring
         ports:
-            - '14002:3306'
+            - "${MARIADB_PORT}"
         volumes:
             - ./data/mariadb-data:/var/lib/mysql
         networks:
             - skripsi-network
     skripsi-rabbitmq:
-        image: rabbitmq:3
+        image: rabbitmq:3-alpine
         environment:
             RABBITMQ_DEFAULT_USER: user
             RABBITMQ_DEFAULT_PASS: password
         ports:
-            - 5672:5672
+            - "${RABIITMQ_PORT}"
+        volumes:
+            - ./data/rabbitmq-data:/var/lib/rabbitmq
+        networks:
+            - skripsi-network
 
 networks:
     skripsi-network:
