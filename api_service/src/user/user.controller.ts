@@ -47,7 +47,7 @@ export class UserController {
     @Get('profile')
     @Roles(AccessRole.ADMIN, AccessRole.PARTICIPANT)
     @UseGuards(TokenAuthGuard)
-    profile(@Request() req) {
+    async profile(@Request() req) {
         const userTokenData: UserTokenData = req.user;
         return this.userService.getProfile(userTokenData.user_id);
     }

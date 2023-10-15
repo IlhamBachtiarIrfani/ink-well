@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../entities/user.entity';
+import { User, UserTokenData } from '../entities/user.entity';
 import { EncryptService } from 'src/helper/encrypt/encrypt.service';
 import { Request } from 'express';
 
@@ -54,7 +54,16 @@ export class BasicAuthGuard implements CanActivate {
         if (!isPasswordMatch) {
             throw new UnauthorizedException('INVALID AUTH');
         }
-        request.user = user;
+
+        const payload: UserTokenData = {
+            user_id: user.id,
+            user_email: user.email,
+            user_name: user.name,
+            user_role: user.role,
+        };
+
+        request.user = payload;
+
         return true;
     }
 

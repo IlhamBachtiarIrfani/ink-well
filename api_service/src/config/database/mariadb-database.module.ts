@@ -28,4 +28,4 @@ import { MyConfigModule } from '../my-config/my-config.module';
         }),
     ],
 })
-export class DatabaseModule {}
+export class MariaDbDatabaseModule {}

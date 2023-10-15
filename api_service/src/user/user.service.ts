@@ -3,6 +3,7 @@ import {
     ClassSerializerInterceptor,
     Injectable,
     InternalServerErrorException,
+    NotFoundException,
     UseInterceptors,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -50,8 +51,16 @@ export class UserService {
     }
 
     // ! ===== GET USER PROFILE DATA BY USER ID =====
-    getProfile(userId: string) {
-        return this.userRepository.findOne({ where: { id: userId } });
+    async getProfile(userId: string) {
+        const user = await this.userRepository.findOne({
+            where: { id: userId },
+        });
+
+        if (!user) {
+            throw new NotFoundException('USER_NOT_FOUND');
+        }
+
+        return user;
     }
 
     // ! ===== GET ALL USER DATA =====

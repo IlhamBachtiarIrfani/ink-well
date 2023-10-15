@@ -12,6 +12,7 @@
         "pymongo",
         "RABBITMQ",
         "tekno",
-        "tqdm"
+        "tqdm",
+        "wtimeout"
     ]
 }

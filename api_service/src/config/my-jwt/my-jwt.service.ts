@@ -12,19 +12,11 @@ export class MyJwtService {
     ) {}
 
     // ! ===== GENERATE JWT ACCESS TOKEN BASED ON USER DATA =====
-    async generateJwt(user: User) {
+    async generateJwt(payload: UserTokenData) {
         // check if user no empty
-        if (!user) {
+        if (!payload) {
             throw new NotFoundException('USER_NOT_FOUND');
         }
-
-        // set payload data
-        const payload: UserTokenData = {
-            user_id: user.id,
-            user_email: user.email,
-            user_name: user.name,
-            user_role: user.role,
-        };
 
         // * generate access token
         const access_token = await this.jwtService.signAsync(payload);
@@ -41,9 +33,9 @@ export class MyJwtService {
             access_token: access_token,
             expiresIn: expiresDate,
             user: {
-                role: user.role,
-                name: user.name,
-                email: user.email,
+                role: payload.user_role,
+                name: payload.user_name,
+                email: payload.user_email,
             },
         };
     }

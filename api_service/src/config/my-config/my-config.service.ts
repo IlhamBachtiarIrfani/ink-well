@@ -5,6 +5,11 @@ import { ConfigService as NestConfigService } from '@nestjs/config';
 export class MyConfigService {
     constructor(private nestConfigService: NestConfigService) {}
 
+    // ! ===== GET DEBUG VALUE =====
+    get isDebug() {
+        return this.nestConfigService.get<number>('IS_DEBUG') == 1;
+    }
+
     // ! ===== GET MARIA DB HOST =====
     get dbHost(): string {
         return this.nestConfigService.get<string>('DB_HOST');
@@ -28,6 +33,39 @@ export class MyConfigService {
     // ! ===== GET MARIA DB NAME =====
     get dbName(): string {
         return this.nestConfigService.get<string>('DB_NAME');
+    }
+
+    // ! ===== GET MONGO DB URI =====
+    get mongoUri(): string {
+        const host = this.mongoHost;
+        const port = this.mongoPort;
+
+        return `mongodb://${host}:${port}`;
+    }
+
+    // ! ===== GET MONGO DB HOST =====
+    get mongoHost(): string {
+        return this.nestConfigService.get<string>('MONGO_HOST');
+    }
+
+    // ! ===== GET MONGO DB PORT =====
+    get mongoPort(): number {
+        return this.nestConfigService.get<number>('MONGO_PORT');
+    }
+
+    // ! ===== GET MONGO DB USER =====
+    get mongoUser(): string {
+        return this.nestConfigService.get<string>('MONGO_USER');
+    }
+
+    // ! ===== GET MONGO DB PASSWORD =====
+    get mongoPassword(): string {
+        return this.nestConfigService.get<string>('MONGO_PASSWORD');
+    }
+
+    // ! ===== GET MONGO DB NAME =====
+    get mongoDbName(): string {
+        return this.nestConfigService.get<string>('MONGO_DB_NAME');
     }
 
     // ! ===== GET PASSWORD HASH SALT ROUNDS =====

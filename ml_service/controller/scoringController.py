@@ -101,7 +101,7 @@ def _process_question(question):
         "end_time": datetime.fromtimestamp(end_time),
         "elapsed_time": elapsed_time
     }
-    mongo_handler.insert_document("process_log", data)
+    mongo_handler.insert_document("ml-process-log", data)
     print(f"Time taken: {elapsed_time} seconds")
     print()
     return data
@@ -113,7 +113,7 @@ def process_exam(data):
         exam_data = Exam(**data)
 
         start_time = time.time()
-        mongo_handler.insert_document("request_log", {
+        mongo_handler.insert_document("ml-request-log", {
             "request_time": start_time,
             "data": exam_data.to_dict()
         })
@@ -140,7 +140,7 @@ def process_exam(data):
         print(f"Batch time taken: {total_elapsed_time} seconds")
         print("===== Finish Processing Exam Batch =====")
 
-        mongo_handler.insert_document("batch_log", {
+        mongo_handler.insert_document("ml-batch-log", {
             "start_time": datetime.fromtimestamp(start_time),
             "end_time": datetime.fromtimestamp(end_time),
             "total_elapsed_time": total_elapsed_time,
@@ -161,7 +161,7 @@ def process_exam(data):
         print(f"Exception occurred in file {filename} at line {line_num}")
 
         error_time = time.time()
-        mongo_handler.insert_document("error_log", {
+        mongo_handler.insert_document("ml-error-log", {
             "error_time": datetime.fromtimestamp(error_time),
             "data": repr(e)
         })
