@@ -10,7 +10,7 @@ import { Exclude } from 'class-transformer';
 import { User } from './user.entity';
 
 // ! USER ENTITY
-@Entity({ name: 'user-token' })
+@Entity({ name: 'user_token' })
 export class UserToken {
     @PrimaryGeneratedColumn('uuid')
     id: string;

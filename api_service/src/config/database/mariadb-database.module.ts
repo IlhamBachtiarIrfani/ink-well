@@ -4,6 +4,8 @@ import { User } from 'src/user/entities/user.entity';
 import { MyConfigService } from '../my-config/my-config.service';
 import { MyConfigModule } from '../my-config/my-config.module';
 import { UserToken } from 'src/user/entities/user-token.entity';
+import { Exam } from 'src/exam/entities/exam.entity';
+import { ExamAccess } from 'src/exam/entities/exam-access.entity';
 
 @Module({
     imports: [
@@ -22,7 +24,7 @@ import { UserToken } from 'src/user/entities/user-token.entity';
                 password: configService.dbPassword,
 
                 // * define entity object db
-                entities: [User, UserToken],
+                entities: [User, UserToken, Exam, ExamAccess],
                 synchronize: true,
             }),
             inject: [MyConfigService],

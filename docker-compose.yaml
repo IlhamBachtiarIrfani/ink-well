@@ -17,7 +17,7 @@ services:
         image: mariadb:11
         environment:
             MARIADB_ROOT_PASSWORD: rahasia
-            MARIADB_DATABASE: essay-scoring
+            MARIADB_DATABASE: essay_scoring
             TZ: Asia/Jakarta
         ports:
             - "${MARIADB_PORT}"

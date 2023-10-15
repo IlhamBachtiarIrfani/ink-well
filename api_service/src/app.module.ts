@@ -8,9 +8,10 @@ import { RequestLogInterceptor } from './helper/request-log/request-log.intercep
 import { ErrorLogModule } from './helper/error-log/error-log.module';
 import { ErrorLogFilter } from './helper/error-log/error-log.filter';
 import { DataFormatInterceptor } from './data-format/data-format.interceptor';
+import { ExamModule } from './exam/exam.module';
 
 @Module({
-    imports: [ErrorLogModule, RequestLogModule, UserModule],
+    imports: [ErrorLogModule, RequestLogModule, UserModule, ExamModule],
     controllers: [AppController],
     providers: [
         // DATA FORMAT

@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { UserToken } from './user-token.entity';
+import { ExamAccess } from 'src/exam/entities/exam-access.entity';
 
 // ! USER ROLE ENUM
 export enum UserRole {
@@ -25,7 +26,7 @@ export type UserTokenData = {
 };
 
 // ! USER ENTITY
-@Entity({ name: 'users' })
+@Entity({ name: 'user' })
 export class User {
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -57,4 +58,7 @@ export class User {
 
     @OneToMany(() => UserToken, (userToken: UserToken) => userToken.user)
     user_token: UserToken[];
+
+    @OneToMany(() => ExamAccess, (examAccess: ExamAccess) => examAccess.user)
+    exam_access: ExamAccess[];
 }
