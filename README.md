@@ -1,6 +1,9 @@
 # Documentation
 ## REST API Service
-REST API Service is require mariadb, redis, and mongodb
+REST API Service is require this stack :
+- mariadb
+- mongodb
+- rabbitmq
 
 set ```.env``` file in ```api_service/.env``` with this format
 ```
@@ -20,7 +23,9 @@ PASSWORD_SECRET_KEY=
 ```
 
 ## Machine Learning Service
-ML Service is require redis and mongodb
+REST API Service is require this stack :
+- mongodb
+- rabbitmq
 
 set ```.env``` file in ```ml_service/.env``` with this format
 ```
