@@ -28,24 +28,32 @@ import { UserTokenData } from 'src/user/entities/user.entity';
 export class ExamController {
     constructor(private readonly examService: ExamService) {}
 
+    // ! ===== [POST] /exam =====
+    // * create new exam
     @Post()
     create(@Body() createExamDto: CreateExamDto, @Request() req) {
         const userTokenData: UserTokenData = req.user;
         return this.examService.create(userTokenData, createExamDto);
     }
 
+    // ! ===== [GET] /exam =====
+    // * get all exam that have access with user
     @Get()
     findAll(@Request() req) {
         const userTokenData: UserTokenData = req.user;
         return this.examService.findAll(userTokenData);
     }
 
+    // ! ===== [GET] /exam/:id =====
+    // * get detail exam by id
     @Get(':id')
     findOne(@Param('id') id: string, @Request() req) {
         const userTokenData: UserTokenData = req.user;
         return this.examService.findOne(userTokenData, id);
     }
 
+    // ! ===== [PATCH] /exam/:id =====
+    // * update exam by id
     @Patch(':id')
     update(
         @Param('id') id: string,
@@ -56,6 +64,8 @@ export class ExamController {
         return this.examService.update(userTokenData, id, updateExamDto);
     }
 
+    // ! ===== [DELETE] /exam/:id =====
+    // * delete exam by id
     @Delete(':id')
     remove(@Param('id') id: string, @Request() req) {
         const userTokenData: UserTokenData = req.user;

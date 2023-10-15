@@ -10,7 +10,7 @@ import {
 import { Exclude } from 'class-transformer';
 import { ExamAccess } from './exam-access.entity';
 
-// ! USER ROLE ENUM
+// ! EXAM STATE ENUM
 export enum ExamState {
     DRAFT = 'DRAFT',
     ACTIVE = 'ACTIVE',

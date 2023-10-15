@@ -12,7 +12,7 @@ import { Exclude } from 'class-transformer';
 import { Exam } from './exam.entity';
 import { User } from 'src/user/entities/user.entity';
 
-// ! USER ROLE ENUM
+// ! EXAM ACCESS ENUM
 export enum ExamAccessType {
     ADMIN = 'ADMIN',
     PARTICIPANT = 'PARTICIPANT',

@@ -16,25 +16,33 @@ export class ExamService {
         private examAccessRepository: Repository<ExamAccess>,
     ) {}
 
+    // ! ===== CREATE NEW EXAM =====
     async create(userTokenData: UserTokenData, createExamDto: CreateExamDto) {
+        // create new exam data
         const newExamData = new Exam();
         newExamData.title = createExamDto.title;
         newExamData.desc = createExamDto.desc;
         newExamData.duration_in_second = createExamDto.duration_in_second;
 
+        // save exam data to db
         await this.examRepository.save(newExamData);
 
+        // create new exam access
         const newExamAccess = new ExamAccess();
         newExamAccess.exam_id = newExamData.id;
         newExamAccess.user_id = userTokenData.user_id;
         newExamAccess.type = ExamAccessType.ADMIN;
 
+        // save exam access to db
         await this.examAccessRepository.save(newExamAccess);
 
+        // return exam data
         return newExamData;
     }
 
+    // ! ===== FIND ALL EXAM THAT HAVE ACCESS WITH USER =====
     findAll(userTokenData: UserTokenData) {
+        // make query and return
         return this.examRepository.find({
             where: {
                 exam_access: {
@@ -45,48 +53,61 @@ export class ExamService {
         });
     }
 
+    // ! ===== GET DETAIL OF EXAM =====
     findOne(userTokenData: UserTokenData, examId: string) {
+        // check user access
         return this.checkUserAccess(userTokenData, examId);
     }
 
+    // ! ===== UPDATE EXAM =====
     async update(
         userTokenData: UserTokenData,
         examId: string,
         updateExamDto: UpdateExamDto,
     ) {
+        // check user access
         const examData = await this.checkUserAccess(userTokenData, examId);
 
+        // check if exam in draft state
         if (examData.state != ExamState.DRAFT) {
             throw new BadRequestException('EXAM_IS_NOT_DRAFT');
         }
 
+        // update exam data
         examData.title = updateExamDto.title;
         examData.desc = updateExamDto.desc;
         examData.duration_in_second = updateExamDto.duration_in_second;
 
+        // save data to db
         await this.examRepository.save(examData);
 
+        // return data
         return examData;
     }
 
+    // ! ===== DELETE EXAM =====
     async remove(userTokenData: UserTokenData, examId: string) {
+        // check user access
         const examData = await this.checkUserAccess(userTokenData, examId);
 
+        // check if exam not started (draft, active, or finished)
         if (examData.state == ExamState.STARTED) {
             throw new BadRequestException('EXAM_IS_STARTED');
         }
 
-        console.log(examData);
-
+        // delete data
         await this.examRepository.softRemove(examData);
 
+        // return message
         return 'EXAM_DELETED';
     }
 
+    // ! ===== CHECK USER ADMIN ACCESS
     private async checkUserAccess(
         userTokenData: UserTokenData,
         examId: string,
     ) {
+        // make a query
         const examData = await this.examRepository.findOne({
             where: {
                 id: examId,
@@ -97,10 +118,12 @@ export class ExamService {
             },
         });
 
+        // check if exam exist
         if (!examData) {
             throw new BadRequestException('EXAM_NOT_FOUND');
         }
 
+        // return exam data
         return examData;
     }
 }
