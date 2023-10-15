@@ -59,7 +59,7 @@ def _scoring_process(question: Question):
         question.keyword, response_list)
 
     label_score_dict = {}
-    label_score_dict["kunci_jawaban"] = similarity_result[0][1:]
+    label_score_dict["Answer Key"] = similarity_result[0][1:]
     for i, sequence in enumerate(response_list):
         labels = classification_result[i]['labels']
         scores = classification_result[i]['scores']
