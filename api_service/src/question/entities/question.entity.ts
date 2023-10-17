@@ -9,11 +9,8 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
-import { Exclude } from 'class-transformer';
+import { Exclude, Transform } from 'class-transformer';
 import { Exam } from 'src/exam/entities/exam.entity';
-import { Response } from 'src/response/entities/response.entity';
-import { ResponseHistory } from 'src/response/entities/response-history.entity';
-import { ResponseScore } from 'src/response/entities/response-score.entity';
 import { QuestionKeyword } from './question-keyword';
 
 // ! EXAM ENTITY
@@ -47,24 +44,10 @@ export class Question {
     @JoinColumn({ name: 'exam_id', referencedColumnName: 'id' })
     exam: Exam;
 
-    @OneToMany(() => Response, (response: Response) => response.question)
-    response: Response[];
-
-    @OneToMany(
-        () => ResponseHistory,
-        (responseHistory: ResponseHistory) => responseHistory.question,
-    )
-    response_history: ResponseHistory[];
-
-    @OneToMany(
-        () => ResponseScore,
-        (responseScore: ResponseScore) => responseScore.question,
-    )
-    response_score: ResponseScore[];
-
     @OneToMany(
         () => QuestionKeyword,
         (questionKeyword: QuestionKeyword) => questionKeyword.question,
     )
+    @Transform(({ value }) => value.map((keyword) => keyword.keyword))
     keyword: QuestionKeyword[];
 }

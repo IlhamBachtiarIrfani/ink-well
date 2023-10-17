@@ -56,7 +56,15 @@ export class ExamService {
     // ! ===== GET DETAIL OF EXAM =====
     findOne(userTokenData: UserTokenData, examId: string) {
         // check user access
-        return this.checkUserAccess(userTokenData, examId);
+        this.checkUserAccess(userTokenData, examId);
+
+        return this.examRepository
+            .createQueryBuilder('exam')
+            .leftJoinAndSelect('exam.question', 'question')
+            .leftJoinAndSelect('exam.exam_access', 'exam_access')
+            .leftJoinAndSelect('exam_access.user', 'user')
+            .where('exam.id = :examId', { examId: examId })
+            .getOne();
     }
 
     // ! ===== UPDATE EXAM =====
@@ -103,10 +111,7 @@ export class ExamService {
     }
 
     // ! ===== CHECK USER ADMIN ACCESS
-    private async checkUserAccess(
-        userTokenData: UserTokenData,
-        examId: string,
-    ) {
+    async checkUserAccess(userTokenData: UserTokenData, examId: string) {
         // make a query
         const examData = await this.examRepository.findOne({
             where: {

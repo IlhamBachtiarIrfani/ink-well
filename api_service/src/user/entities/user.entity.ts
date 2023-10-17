@@ -10,10 +10,6 @@ import {
 import { Exclude } from 'class-transformer';
 import { UserToken } from './user-token.entity';
 import { ExamAccess } from 'src/exam/entities/exam-access.entity';
-import { Response } from 'src/response/entities/response.entity';
-import { ResponseHistory } from 'src/response/entities/response-history.entity';
-import { ResponseScore } from 'src/response/entities/response-score.entity';
-import { ExamScore } from 'src/exam/entities/exam-score.entity';
 
 // ! USER ROLE ENUM
 export enum UserRole {
@@ -65,22 +61,4 @@ export class User {
 
     @OneToMany(() => ExamAccess, (examAccess: ExamAccess) => examAccess.user)
     exam_access: ExamAccess[];
-
-    @OneToMany(() => Response, (response: Response) => response.user)
-    response: Response[];
-
-    @OneToMany(
-        () => ResponseHistory,
-        (responseHistory: ResponseHistory) => responseHistory.user,
-    )
-    response_history: ResponseHistory[];
-
-    @OneToMany(
-        () => ResponseScore,
-        (responseScore: ResponseScore) => responseScore.user,
-    )
-    response_score: ResponseScore[];
-
-    @OneToMany(() => ExamScore, (examScore: ExamScore) => examScore.user)
-    exam_score: ExamScore[];
 }

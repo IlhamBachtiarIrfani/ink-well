@@ -10,10 +10,15 @@ import { ErrorLogFilter } from './helper/error-log/error-log.filter';
 import { DataFormatInterceptor } from './data-format/data-format.interceptor';
 import { ExamModule } from './exam/exam.module';
 import { QuestionModule } from './question/question.module';
-import { ResponseModule } from './response/response.module';
 
 @Module({
-    imports: [ErrorLogModule, RequestLogModule, UserModule, ExamModule, QuestionModule, ResponseModule],
+    imports: [
+        ErrorLogModule,
+        RequestLogModule,
+        UserModule,
+        ExamModule,
+        QuestionModule,
+    ],
     controllers: [AppController],
     providers: [
         // DATA FORMAT
