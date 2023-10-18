@@ -8,9 +8,10 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User, UserRole } from './entities/user.entity';
+import { User, UserRole, UserTokenData } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { EncryptService } from 'src/helper/encrypt/encrypt.service';
+import { MyJwtService } from 'src/config/my-jwt/my-jwt.service';
 
 @Injectable()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -19,6 +20,7 @@ export class UserService {
         @InjectRepository(User)
         private userRepository: Repository<User>,
         private encryptService: EncryptService,
+        private readonly myJwtService: MyJwtService,
     ) {}
 
     // ! ===== REGISTER NEW USER =====
@@ -39,7 +41,14 @@ export class UserService {
             );
 
             // save user object to db
-            return await this.userRepository.save(newUser);
+            await this.userRepository.save(newUser);
+
+            return this.login({
+                user_id: newUser.id,
+                user_name: newUser.name,
+                user_email: newUser.email,
+                user_role: newUser.role,
+            });
         } catch (error) {
             if (error.code === 'ER_DUP_ENTRY') {
                 // ! on error email duplicate entry
@@ -52,6 +61,10 @@ export class UserService {
                 throw new InternalServerErrorException();
             }
         }
+    }
+
+    async login(userTokenData: UserTokenData) {
+        return this.myJwtService.generateJwt(userTokenData);
     }
 
     // ! ===== GET USER PROFILE DATA BY USER ID =====

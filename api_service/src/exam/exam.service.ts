@@ -98,7 +98,7 @@ export class ExamService {
         // check user access
         const examData = await this.checkUserAccess(userTokenData, examId);
 
-        // check if exam not started (draft, active, or finished)
+        // check if exam not draft (draft, active, or finished)
         if (examData.state == ExamState.STARTED) {
             throw new BadRequestException('EXAM_IS_STARTED');
         }

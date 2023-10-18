@@ -22,7 +22,7 @@ export class DataFormatInterceptor implements NestInterceptor {
                 const fulfilled = 1;
 
                 // * FORMAT PAGINATION RESPONSE DATA
-                if (response.data && response.pagination) {
+                if (response?.data && response?.pagination) {
                     return {
                         statusCode,
                         message,
@@ -33,7 +33,12 @@ export class DataFormatInterceptor implements NestInterceptor {
                 }
 
                 // * FORMAT DEFAULT DATA
-                return { statusCode, message, fulfilled, data: response };
+                return {
+                    statusCode,
+                    message,
+                    fulfilled,
+                    data: response,
+                };
             }),
         );
     }

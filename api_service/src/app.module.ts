@@ -10,6 +10,7 @@ import { ErrorLogFilter } from './helper/error-log/error-log.filter';
 import { DataFormatInterceptor } from './data-format/data-format.interceptor';
 import { ExamModule } from './exam/exam.module';
 import { QuestionModule } from './question/question.module';
+import { UserResponseModule } from './user-response/user-response.module';
 
 @Module({
     imports: [
@@ -18,6 +19,7 @@ import { QuestionModule } from './question/question.module';
         UserModule,
         ExamModule,
         QuestionModule,
+        UserResponseModule,
     ],
     controllers: [AppController],
     providers: [

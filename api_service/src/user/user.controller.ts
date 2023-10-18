@@ -22,10 +22,7 @@ import { UserRole, UserTokenData } from './entities/user.entity';
 @Controller('user')
 @UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
-    constructor(
-        private readonly userService: UserService,
-        private readonly myJwtService: MyJwtService,
-    ) {}
+    constructor(private readonly userService: UserService) {}
 
     // ! ===== [POST] /user/register =====
     // * register new user
@@ -46,7 +43,7 @@ export class UserController {
     @Post('login')
     @UseGuards(BasicAuthGuard)
     login(@Request() req) {
-        return this.myJwtService.generateJwt(req.user);
+        return this.userService.login(req.user);
     }
 
     // ! ===== [GET] /user/profile =====

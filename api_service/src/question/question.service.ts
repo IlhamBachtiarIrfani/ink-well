@@ -1,12 +1,17 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+    Injectable,
+    BadRequestException,
+    InternalServerErrorException,
+} from '@nestjs/common';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
 import { Question } from './entities/question.entity';
-import { Repository } from 'typeorm';
+import { DataSource, In, Not, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExamService } from 'src/exam/exam.service';
 import { UserTokenData } from 'src/user/entities/user.entity';
 import { QuestionKeyword } from './entities/question-keyword';
+import { ExamState } from 'src/exam/entities/exam.entity';
 
 @Injectable()
 export class QuestionService {
@@ -16,6 +21,7 @@ export class QuestionService {
         @InjectRepository(QuestionKeyword)
         private questionKeywordRepository: Repository<QuestionKeyword>,
         private examService: ExamService,
+        private dataSource: DataSource,
     ) {}
 
     async create(
@@ -30,19 +36,37 @@ export class QuestionService {
         newQuestionData.answer_key = createQuestionDto.answer_key;
         newQuestionData.exam_id = examId;
 
-        await this.questionRepository.save(newQuestionData);
+        // Use QueryRunner for manage transaction
+        const queryRunner = this.dataSource.createQueryRunner();
 
-        Promise.all(
-            createQuestionDto.keyword.map((keyword) => {
-                const newKeywordData = new QuestionKeyword();
-                newKeywordData.keyword = keyword;
-                newKeywordData.question_id = newQuestionData.id;
+        // Connect QueryRunner and start transaction
+        await queryRunner.connect();
+        await queryRunner.startTransaction();
+        try {
+            await queryRunner.manager.save(newQuestionData);
 
-                this.questionKeywordRepository.save(newKeywordData);
-            }),
-        );
+            await Promise.all(
+                createQuestionDto.keyword.map((keyword) => {
+                    const newKeywordData = new QuestionKeyword();
+                    newKeywordData.keyword = keyword;
+                    newKeywordData.question_id = newQuestionData.id;
 
-        return newQuestionData;
+                    queryRunner.manager.save(newKeywordData);
+                }),
+            );
+
+            // Commit transaction
+            await queryRunner.commitTransaction();
+
+            return newQuestionData;
+        } catch (err) {
+            // If there any error, rollback transaction and throw InternalServerErrorException
+            await queryRunner.rollbackTransaction();
+            throw new InternalServerErrorException();
+        } finally {
+            // Close QueryRunner
+            await queryRunner.release();
+        }
     }
 
     async findAll(userTokenData: UserTokenData, examId: string) {
@@ -50,6 +74,7 @@ export class QuestionService {
 
         return this.questionRepository.find({
             where: { exam_id: examId },
+            relations: ['keyword'],
         });
     }
 
@@ -63,17 +88,11 @@ export class QuestionService {
         const questionData = await this.questionRepository
             .createQueryBuilder('question')
             .leftJoinAndSelect('question.keyword', 'keyword')
-            .leftJoinAndSelect('question.response', 'response')
             .where('question.exam_id = :examId AND question.id = :id', {
                 examId: examId,
                 id: questionId,
             })
-            .getMany();
-
-        // .findOne({
-        //     where: { exam_id: examId, id: questionId },
-        //     relations: ['keyword', 'response'],
-        // });
+            .getOne();
 
         if (!questionData) {
             throw new BadRequestException('QUESTION_NOT_FOUND');
@@ -88,8 +107,85 @@ export class QuestionService {
         questionId: string,
         updateQuestionDto: UpdateQuestionDto,
     ) {
-        await this.examService.checkUserAccess(userTokenData, examId);
-        return `This action updates a # question`;
+        const examData = await this.examService.checkUserAccess(
+            userTokenData,
+            examId,
+        );
+
+        if (examData.state != ExamState.DRAFT) {
+            throw new BadRequestException('EXAM_IS_NOT_DRAFT');
+        }
+
+        const questionData = await this.questionRepository.findOne({
+            where: { id: questionId },
+        });
+
+        if (!questionData) {
+            throw new BadRequestException('QUESTION_NOT_FOUND');
+        }
+
+        questionData.content = updateQuestionDto.content;
+        questionData.answer_key = updateQuestionDto.answer_key;
+
+        // get existing keyword in database
+        const existingKeywords = await this.questionKeywordRepository.find({
+            where: {
+                question_id: questionId,
+                keyword: In(updateQuestionDto.keyword),
+            },
+        });
+
+        // get list keyword data string only
+        const existingKeywordStrings = existingKeywords.map(
+            (keyword) => keyword.keyword,
+        );
+
+        // get the new keyword between existing keyword and requested keyword
+        const newKeywords = updateQuestionDto.keyword.filter(
+            (keyword) => !existingKeywordStrings.includes(keyword),
+        );
+
+        // create new question keyword objects
+        const keywordEntities = newKeywords.map((keyword) => {
+            const questionKeyword = new QuestionKeyword();
+            questionKeyword.question_id = questionId;
+            questionKeyword.keyword = keyword;
+
+            return questionKeyword;
+        });
+
+        // Use QueryRunner for manage transaction
+        const queryRunner = this.dataSource.createQueryRunner();
+
+        // Connect QueryRunner and start transaction
+        await queryRunner.connect();
+        await queryRunner.startTransaction();
+
+        try {
+            // Save updated question data
+            await queryRunner.manager.save(questionData);
+
+            // Delete unwanted keyword
+            await queryRunner.manager.delete(QuestionKeyword, {
+                question_id: questionId,
+                keyword: Not(In(updateQuestionDto.keyword)),
+            });
+
+            // Save new question keyword
+            await queryRunner.manager.save(keywordEntities);
+
+            // Commit transaction
+            await queryRunner.commitTransaction();
+
+            return questionData;
+        } catch (err) {
+            // If there any error, rollback transaction and throw InternalServerErrorException
+            await queryRunner.rollbackTransaction();
+            throw new InternalServerErrorException();
+        } finally {
+            // Close QueryRunner
+            await queryRunner.release();
+        }
     }
 
     async remove(
@@ -97,7 +193,25 @@ export class QuestionService {
         examId: string,
         questionId: string,
     ) {
-        await this.examService.checkUserAccess(userTokenData, examId);
-        return `This action removes a # question`;
+        const examData = await this.examService.checkUserAccess(
+            userTokenData,
+            examId,
+        );
+
+        if (examData.state != ExamState.DRAFT) {
+            throw new BadRequestException('EXAM_IS_NOT_DRAFT');
+        }
+
+        const questionData = await this.questionRepository.findOne({
+            where: { id: questionId },
+        });
+
+        if (!questionData) {
+            throw new BadRequestException('QUESTION_NOT_FOUND');
+        }
+
+        await this.questionRepository.softRemove(questionData);
+
+        return `QUESTION_DELETED`;
     }
 }
