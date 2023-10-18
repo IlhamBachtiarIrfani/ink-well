@@ -88,6 +88,7 @@ export class QuestionService {
         const questionData = await this.questionRepository
             .createQueryBuilder('question')
             .leftJoinAndSelect('question.keyword', 'keyword')
+            .leftJoinAndSelect('question.response', 'response')
             .where('question.exam_id = :examId AND question.id = :id', {
                 examId: examId,
                 id: questionId,

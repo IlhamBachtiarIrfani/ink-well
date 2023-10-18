@@ -12,6 +12,7 @@ import {
 import { Exclude, Transform } from 'class-transformer';
 import { Exam } from 'src/exam/entities/exam.entity';
 import { QuestionKeyword } from './question-keyword';
+import { UserResponse } from 'src/user-response/entities/user-response.entity';
 
 // ! EXAM ENTITY
 @Entity({ name: 'question' })
@@ -50,4 +51,10 @@ export class Question {
     )
     @Transform(({ value }) => value.map((keyword) => keyword.keyword))
     keyword: QuestionKeyword[];
+
+    @OneToMany(
+        () => UserResponse,
+        (userResponse: UserResponse) => userResponse.question,
+    )
+    response: UserResponse[];
 }

@@ -7,6 +7,6 @@ class Response:
 
     def to_dict(self):
         return {
-            'content': self.content,
             'user_id': self.user_id,
+            'content': self.content,
         }

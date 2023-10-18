@@ -10,6 +10,7 @@ import {
 import { Exclude } from 'class-transformer';
 import { UserToken } from './user-token.entity';
 import { ExamAccess } from 'src/exam/entities/exam-access.entity';
+import { UserResponse } from 'src/user-response/entities/user-response.entity';
 
 // ! USER ROLE ENUM
 export enum UserRole {
@@ -61,4 +62,10 @@ export class User {
 
     @OneToMany(() => ExamAccess, (examAccess: ExamAccess) => examAccess.user)
     exam_access: ExamAccess[];
+
+    @OneToMany(
+        () => UserResponse,
+        (userResponse: UserResponse) => userResponse.user,
+    )
+    response: UserResponse[];
 }

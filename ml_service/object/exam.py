@@ -12,5 +12,5 @@ class Exam:
         return {
             'id': self.id,
             'title': self.title,
-            'questions': [item.to_dict() for item in self.questions],
+            'question': [item.to_dict() for item in self.questions],
         }

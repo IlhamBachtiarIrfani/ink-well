@@ -71,4 +71,11 @@ export class ExamController {
         const userTokenData: UserTokenData = req.user;
         return this.examService.remove(userTokenData, id);
     }
+
+    // ! ===== [GET] /exam/:id =====
+    // * get detail exam by id
+    @Get(':id/output')
+    output(@Param('id') id: string) {
+        return this.examService.correctionOutput(id);
+    }
 }

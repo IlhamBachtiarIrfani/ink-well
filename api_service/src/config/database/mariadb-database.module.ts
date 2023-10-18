@@ -8,6 +8,8 @@ import { Exam } from 'src/exam/entities/exam.entity';
 import { ExamAccess } from 'src/exam/entities/exam-access.entity';
 import { Question } from 'src/question/entities/question.entity';
 import { QuestionKeyword } from 'src/question/entities/question-keyword';
+import { UserResponse } from 'src/user-response/entities/user-response.entity';
+import { UserResponseHistory } from 'src/user-response/entities/user-response-history.entity';
 
 @Module({
     imports: [
@@ -33,6 +35,8 @@ import { QuestionKeyword } from 'src/question/entities/question-keyword';
                     ExamAccess,
                     Question,
                     QuestionKeyword,
+                    UserResponse,
+                    UserResponseHistory,
                 ],
                 synchronize: true,
             }),

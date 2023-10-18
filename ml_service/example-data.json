@@ -1,7 +1,7 @@
 {
     "id": "E00004",
     "title": "Ujian Sistem Informasi Terbaru",
-    "questions": [
+    "question": [
         {
             "content": "Apa yang dimaksud dengan Big Data dan bagaimana pengaruhnya terhadap pengembangan sistem informasi?",
             "answer_key": "Big Data merujuk pada kumpulan data yang sangat besar, kompleks, dan beragam yang sulit diolah menggunakan metode tradisional. Pengaruhnya terhadap pengembangan sistem informasi adalah perluasan kemampuan untuk mengelola, menganalisis, dan memanfaatkan data dalam skala besar, memungkinkan pengambilan keputusan yang lebih baik.",
@@ -10,7 +10,7 @@
                 "Pengembangan Sistem Informasi",
                 "Analisis Data"
             ],
-            "responses": [
+            "response": [
                 {
                     "user_id": "U1",
                     "content": "Big Data adalah harta karun informasi. Dengan alat yang tepat, kita dapat mengekstrak wawasan berharga dari volume data yang besar ini."
@@ -61,7 +61,7 @@
                 "Pengembangan Sistem Informasi",
                 "Pemrograman Ekspisit"
             ],
-            "responses": [
+            "response": [
                 {
                     "user_id": "V1",
                     "content": "Machine Learning adalah cabang penting dari kecerdasan buatan. Ini memungkinkan sistem untuk mengenali pola dan membuat prediksi berdasarkan data historis."
@@ -112,7 +112,7 @@
                 "Pengembangan Sistem Informasi",
                 "Skalabilitas"
             ],
-            "responses": [
+            "response": [
                 {
                     "user_id": "W1",
                     "content": "Arsitektur Mikroservis adalah cara yang cerdas untuk membangun aplikasi yang mudah dikelola dan ditingkatkan."
@@ -163,7 +163,7 @@
                 "Pengembangan Sistem Informasi",
                 "Pengiriman Perangkat Lunak"
             ],
-            "responses": [
+            "response": [
                 {
                     "user_id": "X1",
                     "content": "DevOps adalah tentang menghilangkan hambatan antara pengembangan dan operasi. Ini memungkinkan perubahan cepat dan responsif terhadap kebutuhan bisnis."

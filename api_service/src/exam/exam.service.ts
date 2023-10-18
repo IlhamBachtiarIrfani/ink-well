@@ -131,4 +131,14 @@ export class ExamService {
         // return exam data
         return examData;
     }
+
+    async correctionOutput(examId: string) {
+        return this.examRepository
+            .createQueryBuilder('exam')
+            .leftJoinAndSelect('exam.question', 'question')
+            .leftJoinAndSelect('question.keyword', 'keyword')
+            .leftJoinAndSelect('question.response', 'response')
+            .where('exam.id = :id', { id: examId })
+            .getOne();
+    }
 }
