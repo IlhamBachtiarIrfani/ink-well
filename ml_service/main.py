@@ -4,6 +4,9 @@ import pika
 import json
 from object.exam import Exam
 from controller.scoringController import process_exam
+import jsonschema
+from jsonschema import validate
+
 load_dotenv()
 
 # ! ===== GET ENV DATA =====
@@ -23,13 +26,74 @@ connection = pika.BlockingConnection(parameters)
 channel = connection.channel()
 channel.queue_declare(queue=RABBITMQ_QUEUE)
 
+schema = {
+    "type": "object",
+    "properties": {
+        "pattern": {
+            "type": "string"
+        },
+        "data": {
+            "type": "object",
+            "properties": {
+                "id": {"type": "string"},
+                "title": {"type": "string"},
+                "question": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "id": {"type": "string"},
+                            "content": {"type": "string"},
+                            "answer_key": {"type": "string"},
+                            "keyword": {
+                                "type": "array",
+                                "items": {"type": "string"}
+                            },
+                            "response": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "user_id": {"type": "string"},
+                                        "content": {"type": "string"}
+                                    },
+                                    "required": ["user_id", "content"]
+                                }
+                            }
+                        },
+                        "required": ["id","content", "answer_key", "keyword", "response"]
+                    }
+                }
+            },
+            "required": ["id", "title", "question"]
+        },
+    },
+    "required": ["pattern", "data"]
+}
+
+
+def check_data_format(json_data):
+    try:
+        validate(instance=json_data, schema=schema)
+        print(" [*] VALID JSON FORMAT")
+        return True
+    except jsonschema.exceptions.ValidationError as e:
+        print(" [e] INVALID JSON FORMAT")
+        return False
+
 # ! ===== QUEUE CALLBACK FUNCTION =====
+
+
 def callback(ch, method, properties, body):
     print(" [x] Scoring data received ")
     # PROCESS THE AUTO SCORING
     json_obj = json.loads(body)
-    pattern, data = json_obj['pattern'], json_obj['data']
-    process_exam(data)
+
+    is_valid = check_data_format(json_obj)
+
+    if (is_valid):
+        data = json_obj['data']
+        process_exam(data)
 
 
 # ! ===== MAIN FUNCTION =====
