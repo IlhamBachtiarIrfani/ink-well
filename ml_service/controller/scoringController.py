@@ -52,7 +52,7 @@ def _score_weight(score_dict):
 
 
 def _scoring_process(question: Question):
-    response_list = [item.content for item in question.responses]
+    response_list = [item.content for item in question.response]
 
     similarity_result = _similarity_check(question.answer_key, response_list)
     classification_result = _classification_check(
@@ -76,10 +76,10 @@ def _scoring_process(question: Question):
         "answer_key": question.answer_key,
         "keyword": question.keyword,
         "criteria_weights": weights,
-        "responses": []
+        "response": []
     }
-    for index, value in enumerate(question.responses):
-        question_scoring_data['responses'].append({
+    for index, value in enumerate(question.response):
+        question_scoring_data['response'].append({
             "user_id": value.user_id,
             "content": value.content,
             "final_score": scores[index],
@@ -109,7 +109,6 @@ def _process_question(question):
 
 def process_exam(data):
     try:
-        data = json.loads(data)
         exam_data = Exam(**data)
 
         start_time = time.time()
@@ -121,7 +120,7 @@ def process_exam(data):
         print(f"===== Start Processing Exam Batch - {exam_data.id} =====")
 
         start_time = time.time()
-        question_list = exam_data.questions
+        question_list = exam_data.question
 
         question_len = len(question_list)
 
@@ -150,7 +149,6 @@ def process_exam(data):
                 "question": result_data
             }
         })
-
     except Exception as e:
         print(f"Error processing message: {e}")
 

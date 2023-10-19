@@ -87,4 +87,42 @@ export class MyConfigService {
     get jwtExpired(): number {
         return this.nestConfigService.get<number>('JWT_EXPIRED_TIME');
     }
+
+    // ! ===== GET RABBITMQ HOURLST =====
+    get rabbitMqUrl(): string {
+        const user = this.rabbitMqUser;
+        const password = this.rabbitMqPassword;
+        const host = this.rabbitMqHost;
+        const port = this.rabbitMqPort;
+        const url = `amqp://${user}:${password}@${host}:${port}/`;
+
+        console.log('Rabbit MQ URL : ', url);
+
+        return url;
+    }
+
+    // ! ===== GET RABBITMQ HOST =====
+    get rabbitMqHost(): string {
+        return this.nestConfigService.get<string>('RABBITMQ_HOST');
+    }
+
+    // ! ===== GET RABBITMQ_PORT =====
+    get rabbitMqPort(): number {
+        return this.nestConfigService.get<number>('RABBITMQ_PORT');
+    }
+
+    // ! ===== GET RABBITMQ USER =====
+    get rabbitMqUser(): string {
+        return this.nestConfigService.get<string>('RABBITMQ_USER');
+    }
+
+    // ! ===== GET RABBITMQ PASSWORD =====
+    get rabbitMqPassword(): string {
+        return this.nestConfigService.get<string>('RABBITMQ_PASSWORD');
+    }
+
+    // ! ===== GET RABBITMQ QUEUE =====
+    get rabbitMqQueue(): string {
+        return this.nestConfigService.get<string>('RABBITMQ_QUEUE');
+    }
 }

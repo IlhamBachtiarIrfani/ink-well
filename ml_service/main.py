@@ -1,6 +1,8 @@
 from dotenv import load_dotenv
 import os
 import pika
+import json
+from object.exam import Exam
 from controller.scoringController import process_exam
 load_dotenv()
 
@@ -25,7 +27,9 @@ channel.queue_declare(queue=RABBITMQ_QUEUE)
 def callback(ch, method, properties, body):
     print(" [x] Scoring data received ")
     # PROCESS THE AUTO SCORING
-    process_exam(body)
+    json_obj = json.loads(body)
+    pattern, data = json_obj['pattern'], json_obj['data']
+    process_exam(data)
 
 
 # ! ===== MAIN FUNCTION =====

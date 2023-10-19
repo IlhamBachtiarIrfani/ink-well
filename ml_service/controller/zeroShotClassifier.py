@@ -27,11 +27,11 @@ class ZeroShotClassifier:
         result = self.classifier(sequence, candidate_labels, multi_label=True)
 
         # SET THE SCORES TO CURRENT THRESHOLD
-        result['scores'] = (
+        result['scores'] = [
             calc_threshold(
                 score, bottom_value=0.4, top_value=0.9
             ) for score in result['scores']
-        )
+        ]
         return result
 
     def process(

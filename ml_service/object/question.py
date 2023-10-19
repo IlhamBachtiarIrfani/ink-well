@@ -2,12 +2,12 @@ from typing import List
 from object.response import Response
 
 class Question:
-    def __init__(self, id: str, content: str, answer_key: str, keyword: List[str], responses: List[Response]) -> None:
+    def __init__(self, id: str, content: str, answer_key: str, keyword: List[str], response: List[Response]) -> None:
         self.id = id
         self.content = content
         self.answer_key = answer_key
         self.keyword = keyword
-        self.responses = [Response(**item) for item in responses]
+        self.response = [Response(**item) for item in response]
 
     def to_dict(self):
         return {
@@ -15,5 +15,5 @@ class Question:
             'content': self.content,
             'answer_key': self.answer_key,
             'keyword': self.keyword,
-            'response': [item.to_dict() for item in self.responses],
+            'response': [item.to_dict() for item in self.response],
         }

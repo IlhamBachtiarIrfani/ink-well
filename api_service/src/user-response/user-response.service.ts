@@ -27,23 +27,22 @@ export class UserResponseService {
     ) {
         await this.checkUserAccess(userTokenData, examId, questionId);
 
-        const oldResponseData = await this.userResponseRepository.findOne({
+        let responseData = await this.userResponseRepository.findOne({
             where: {
                 user_id: userTokenData.user_id,
                 question_id: questionId,
             },
         });
 
-        if (!oldResponseData) {
-            const newResponseData = new UserResponse();
-            newResponseData.question_id = questionId;
-            newResponseData.user_id = userTokenData.user_id;
-            newResponseData.content = createUserResponseDto.content;
+        if (!responseData) {
+            responseData = new UserResponse();
+            responseData.question_id = questionId;
+            responseData.user_id = userTokenData.user_id;
         }
 
-        oldResponseData.content = createUserResponseDto.content;
+        responseData.content = createUserResponseDto.content;
 
-        return this.userResponseRepository.save(oldResponseData);
+        return this.userResponseRepository.save(responseData);
     }
 
     async checkUserAccess(

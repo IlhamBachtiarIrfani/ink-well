@@ -9,6 +9,7 @@ import { ExamService } from 'src/exam/exam.service';
 import { Exam } from 'src/exam/entities/exam.entity';
 import { ExamAccess } from 'src/exam/entities/exam-access.entity';
 import { QuestionKeyword } from './entities/question-keyword';
+import { MessageBrokerModule } from 'src/message_broker/message_broker.module';
 
 @Module({
     imports: [
@@ -20,6 +21,8 @@ import { QuestionKeyword } from './entities/question-keyword';
 
         // ! ===== LOAD USED ENTITY DB =====
         TypeOrmModule.forFeature([Exam, ExamAccess, Question, QuestionKeyword]),
+
+        MessageBrokerModule,
     ],
     controllers: [QuestionController],
     providers: [QuestionService, ExamService],

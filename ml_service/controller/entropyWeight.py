@@ -7,8 +7,15 @@ SCORE_SMOOTHING_ALPHA = 0.03
 class EntropyWeight:
     def calculate(self, criteria_data):
         print("Calculate Adaptive Weight")
+        print(criteria_data)
         # Create a DataFrame from the criteria data
         df = pd.DataFrame(criteria_data)
+
+        if all(len(v) == 1 for v in criteria_data.values()):
+            # If yes, return the original scores and assign equal weights to each criterion
+            scores = df.values.flatten()
+            weights = {k: 1/len(criteria_data) for k in criteria_data.keys()}
+            return scores, weights
 
         # Calculate the total scores for each criterion
         total_scores = df.sum()
@@ -29,7 +36,7 @@ class EntropyWeight:
         weights = 1 - relative_entropy
 
         # Ensure that the weight of the first criterion is at least 0.4
-        weights[0] = max(weights[0], MIN_ANSWER_KEY_WEIGHT)
+        weights.iloc[0] = max(weights.iloc[0], MIN_ANSWER_KEY_WEIGHT)
 
         # Normalize the weights to ensure the sum is 1
         normalized_weights = weights / weights.sum()
