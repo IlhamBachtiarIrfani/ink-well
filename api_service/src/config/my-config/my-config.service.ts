@@ -88,7 +88,7 @@ export class MyConfigService {
         return this.nestConfigService.get<number>('JWT_EXPIRED_TIME');
     }
 
-    // ! ===== GET RABBITMQ HOURLST =====
+    // ! ===== GET RABBITMQ URL =====
     get rabbitMqUrl(): string {
         const user = this.rabbitMqUser;
         const password = this.rabbitMqPassword;
