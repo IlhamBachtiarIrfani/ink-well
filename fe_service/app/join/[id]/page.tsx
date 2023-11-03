@@ -1,18 +1,23 @@
+import { getLoginCookies } from '@/app/action'
 import FooterComponent from '@/components/common/footer'
 import HeaderComponent from '@/components/common/header'
+import ProtectedPage from '@/components/common/protected-page'
 import RichTextInputComponent from '@/components/input/rich-text-input'
 import React from 'react'
 
-export default function QuizDetailPage() {
+export default async function QuizDetailPage() {
+    const userData = await getLoginCookies()
     return (
-        <div className='min-h-screen flex flex-col gap-8'>
-            <HeaderComponent />
-            <main className='grow container max-w-7xl px-5 mx-auto flex gap-8 items-start'>
-                <QuestionList />
-                <QuestionItem />
-            </main>
-            <FooterComponent />
-        </div>
+        <ProtectedPage>
+            <div className='min-h-screen flex flex-col gap-8'>
+                <HeaderComponent userData={userData} />
+                <main className='grow container max-w-7xl px-5 mx-auto flex gap-8 items-start'>
+                    <QuestionList />
+                    <QuestionItem />
+                </main>
+                <FooterComponent />
+            </div>
+        </ProtectedPage>
     )
 }
 
@@ -30,7 +35,7 @@ function QuestionList() {
             </div>
 
             {
-                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 ,19, 20].map((item) => {
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map((item) => {
                     const activeStyle = "absolute -left-2 top-0 bottom-0 flex items-center font-black text-4xl text-black before:bg-cyan-300 before:absolute before:-inset-2 before:-z-10 before:-rotate-12 select-none"
                     const defaultStyle = "absolute -left-2 top-0 bottom-0 flex items-center font-black text-4xl text-gray-200 select-none"
 

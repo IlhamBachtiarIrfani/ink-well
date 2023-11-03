@@ -25,7 +25,7 @@ export class ExamService {
         const newExamData = new Exam();
         newExamData.title = createExamDto.title;
         newExamData.desc = createExamDto.desc;
-        newExamData.duration_in_second = createExamDto.duration_in_second;
+        newExamData.duration_in_minutes = createExamDto.duration_in_minutes;
 
         // save exam data to db
         await this.examRepository.save(newExamData);
@@ -46,14 +46,28 @@ export class ExamService {
     // ! ===== FIND ALL EXAM THAT HAVE ACCESS WITH USER =====
     findAll(userTokenData: UserTokenData) {
         // make query and return
-        return this.examRepository.find({
-            where: {
-                exam_access: {
-                    user_id: userTokenData.user_id,
-                    user: { role: UserRole.ADMIN },
-                },
-            },
-        });
+        return this.examRepository
+            .createQueryBuilder('exam')
+            .loadRelationCountAndMap(
+                'exam.question_count',
+                'exam.question',
+                'question',
+            )
+            .orderBy('exam.state', 'DESC')
+            .addOrderBy('exam.created_at', 'DESC')
+            .getMany();
+        // return this.examRepository.find({
+        //     order: {
+        //         state: 'DESC',
+        //         created_at: 'DESC',
+        //     },
+        //     where: {
+        //         exam_access: {
+        //             user_id: userTokenData.user_id,
+        //             user: { role: UserRole.ADMIN },
+        //         },
+        //     },
+        // });
     }
 
     // ! ===== GET DETAIL OF EXAM =====
@@ -64,9 +78,11 @@ export class ExamService {
         return this.examRepository
             .createQueryBuilder('exam')
             .leftJoinAndSelect('exam.question', 'question')
+            .leftJoinAndSelect('question.keyword', 'keyword')
             .leftJoinAndSelect('exam.exam_access', 'exam_access')
             .leftJoinAndSelect('exam_access.user', 'user')
             .where('exam.id = :examId', { examId: examId })
+            .orderBy('question.created_at', 'ASC')
             .getOne();
     }
 
@@ -87,7 +103,7 @@ export class ExamService {
         // update exam data
         examData.title = updateExamDto.title;
         examData.desc = updateExamDto.desc;
-        examData.duration_in_second = updateExamDto.duration_in_second;
+        examData.duration_in_minutes = updateExamDto.duration_in_minutes;
 
         // save data to db
         await this.examRepository.save(examData);

@@ -1,9 +1,12 @@
 import HeaderComponent from '@/components/common/header'
+import { getLoginCookies } from './action'
 
-export default function Home() {
+export default async function Home() {
+  const userData = await getLoginCookies()
+  
   return (
     <div>
-      <HeaderComponent />
+      <HeaderComponent userData={userData} />
     </div>
   )
 }

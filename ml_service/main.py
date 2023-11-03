@@ -7,6 +7,9 @@ from controller.scoringController import process_exam
 import jsonschema
 from jsonschema import validate
 
+
+print(" [*] Preparing... ")
+
 load_dotenv()
 
 # ! ===== GET ENV DATA =====
@@ -109,5 +112,4 @@ def main():
 
 
 if __name__ == "__main__":
-    print(" [*] Preparing... ")
     main()

@@ -22,7 +22,7 @@ channel = connection.channel()
 
 channel.queue_declare(queue=RABBITMQ_QUEUE)
 
-with open('test3-data.json', 'r') as f:
+with open('example-data.json', 'r') as f:
     data = json.load(f)
 
 channel.basic_publish(exchange='',

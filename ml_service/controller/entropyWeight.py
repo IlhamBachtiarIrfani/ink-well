@@ -7,7 +7,7 @@ SCORE_SMOOTHING_ALPHA = 0.03
 class EntropyWeight:
     def calculate(self, criteria_data):
         print("Calculate Adaptive Weight")
-        print(criteria_data)
+        # print(criteria_data)
         # Create a DataFrame from the criteria data
         df = pd.DataFrame(criteria_data)
 

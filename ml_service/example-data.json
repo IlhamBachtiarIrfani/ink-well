@@ -5,6 +5,7 @@
         "title": "Ujian Sistem Informasi Terbaru",
         "question": [
             {
+                "id": 1,
                 "content": "Apa yang dimaksud dengan Big Data dan bagaimana pengaruhnya terhadap pengembangan sistem informasi?",
                 "answer_key": "Big Data merujuk pada kumpulan data yang sangat besar, kompleks, dan beragam yang sulit diolah menggunakan metode tradisional. Pengaruhnya terhadap pengembangan sistem informasi adalah perluasan kemampuan untuk mengelola, menganalisis, dan memanfaatkan data dalam skala besar, memungkinkan pengambilan keputusan yang lebih baik.",
                 "keyword": [
@@ -56,6 +57,7 @@
                 ]
             },
             {
+                "id": 2,
                 "content": "Apa yang dimaksud dengan algoritma Machine Learning dan bagaimana digunakan dalam pengembangan sistem informasi?",
                 "answer_key": "Algoritma Machine Learning adalah metode komputasi yang memungkinkan sistem untuk belajar dari data dan meningkatkan kinerjanya seiring waktu tanpa pemrograman ekspisit. Ini digunakan dalam pengembangan sistem informasi untuk membuat sistem yang lebih cerdas dan dapat mengambil keputusan berdasarkan data.",
                 "keyword": [
@@ -107,6 +109,7 @@
                 ]
             },
             {
+                "id": 3,
                 "content": "Apa yang dimaksud dengan Arsitektur Mikroservis dan bagaimana digunakan dalam pengembangan sistem informasi?",
                 "answer_key": "Arsitektur Mikroservis adalah pendekatan dalam pengembangan perangkat lunak di mana aplikasi dibangun sebagai serangkaian layanan kecil yang independen. Ini digunakan dalam pengembangan sistem informasi untuk meningkatkan skalabilitas, fleksibilitas, dan pemeliharaan sistem.",
                 "keyword": [
@@ -158,6 +161,7 @@
                 ]
             },
             {
+                "id": 4,
                 "content": "Apa peran Penting DevOps dalam pengembangan sistem informasi?",
                 "answer_key": "DevOps adalah praktik pengembangan perangkat lunak yang mengintegrasikan pengembangan (Dev) dan operasi (Ops) untuk meningkatkan siklus pengembangan dan pengiriman perangkat lunak. Perannya dalam pengembangan sistem informasi adalah mempercepat pengembangan, meningkatkan kualitas, dan mengurangi risiko.",
                 "keyword": [

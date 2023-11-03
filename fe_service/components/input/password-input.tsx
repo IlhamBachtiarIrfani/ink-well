@@ -3,7 +3,9 @@ import React, { useRef, useState } from 'react'
 
 interface PasswordInputComponentProps {
     placeholder: string,
-    icon: JSX.Element
+    icon: JSX.Element,
+    value: string,
+    onChange: (value: string) => void,
 }
 
 export default function PasswordInputComponent(props: PasswordInputComponentProps) {
@@ -23,6 +25,12 @@ export default function PasswordInputComponent(props: PasswordInputComponentProp
         setShowPassword((val) => !val)
     }
 
+    function onInputChange(event: React.ChangeEvent<HTMLInputElement>){
+        event.preventDefault();
+
+        props.onChange(event.target.value);
+    }
+
     return (
         <div className='group text-white border border-white rounded-full flex items-center px-5 gap-4 cursor-text' onClick={onComponentClick}>
             {props.icon}
@@ -31,6 +39,8 @@ export default function PasswordInputComponent(props: PasswordInputComponentProp
                 className='bg-transparent h-10 w-full focus:outline-none border-none'
                 type={showPassword ? 'text' : 'password'}
                 placeholder={props.placeholder}
+                value={props.value}
+                onChange={onInputChange}
             />
             <span
                 className="material-symbols-rounded cursor-pointer"

@@ -1,62 +1,50 @@
 import HeaderComponent from '@/components/common/header'
+import ProtectedPage from '@/components/common/protected-page'
 import ButtonComponent, { ButtonType } from '@/components/input/button'
 import React from 'react'
+import { getLoginCookies } from '../action'
+import AdminCustomHeader from './admin-custom-header'
+import { UserData } from '../const'
+import { ExamEntity } from '@/entities/exam'
+import ExamItem from '@/components/item/exam-item'
 
-export default function AdminPage() {
-  return (
-    <div>
-      <HeaderComponent />
-      <main className='container max-w-5xl px-5 mx-auto flex flex-col py-8 gap-8'>
-        {
-          [0, 1, 2, 3, 4, 5].map((item) => {
-            return <div key={item} className='bg-white p-10 rounded-2xl border-b-4 border-b-black flex overflow-hidden'>
-              <div className='grow flex flex-col gap-5'>
-                <h1 className='text-3xl font-black'>Galactic Knowledge Challenge</h1>
-                <div className='flex gap-10 font-bold text-red-400'>
-                  <div className='flex items-center gap-3'>
-                    <span className='material-symbols-rounded'>cast</span>
-                    <p>ON GOING</p>
-                  </div>
+async function getData(userData: UserData) {
+    const requestOptions: RequestInit = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': 'Bearer ' + userData?.token
+        },
+    };
 
-                  <div className='flex items-center gap-3'>
-                    <span className='material-symbols-rounded'>avg_pace</span>
-                    <p>90 MINUTES</p>
-                  </div>
+    const response = await fetch('http://localhost:3000/exam', requestOptions);
+    const data = await response.json();
 
-                  <div className='flex items-center gap-3'>
-                    <span className='material-symbols-rounded'>live_help</span>
-                    <p>5 QUESTIONS</p>
-                  </div>
-                </div>
-              </div>
+    if (!response.ok) {
+        return [];
+    }
 
-              {/* <div className='relative flex items-center before:absolute before:-inset-20 before:-left-10 before:bg-black before:rotate-12 before:-z-10 z-10'>
-                <ButtonComponent
-                  type={ButtonType.LIGHT}
-                  title='Supervise'
-                  icon={<span className='material-symbols-rounded'>domino_mask</span>}
-                />
-              </div> */}
+    const examData: ExamEntity[] = data.data;
+    return examData;
+}
 
-              {/* <div className='relative flex items-center before:absolute before:-inset-20 before:-left-10 before:bg-cyan-300 before:rotate-12 before:-z-10 z-10'>
-                <ButtonComponent
-                  type={ButtonType.DARK}
-                  title='Open Exam'
-                  icon={<span className='material-symbols-rounded'>east</span>}
-                />
-              </div> */}
+export default async function AdminPage() {
+    const userData = await getLoginCookies()
+    
+    const data = await getData(userData!)
 
-              <div className='relative flex items-center'>
-                <ButtonComponent
-                  type={ButtonType.DARK_OUTLINED}
-                  title='See Result'
-                  icon={<span className='material-symbols-rounded'>query_stats</span>}
-                />
-              </div>
-            </div>
-          })
-        }
-      </main>
-    </div>
-  )
+    return (
+        <ProtectedPage>
+            <HeaderComponent userData={userData} >
+                <AdminCustomHeader />
+            </HeaderComponent>
+            <main className='container max-w-5xl px-5 mx-auto flex flex-col py-8 gap-8'>
+                {
+                    data.map((item) => {
+                        return <ExamItem key={item.id} item={item} />
+                    })
+                }
+            </main>
+        </ProtectedPage>
+    )
 }

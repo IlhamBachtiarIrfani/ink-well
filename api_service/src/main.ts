@@ -8,6 +8,7 @@ async function bootstrap() {
 
     // ! ===== DEFINE CLASS VALIDATION PIPELINE =====
     app.useGlobalPipes(new ValidationPipe());
+    app.enableCors();
 
     // ! ===== DEFINE SWAGGER AUTO DOCS BUILDER =====
     const config = new DocumentBuilder()

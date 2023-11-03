@@ -13,10 +13,10 @@ import { Question } from 'src/question/entities/question.entity';
 
 // ! EXAM STATE ENUM
 export enum ExamState {
+    FINISHED = 'FINISHED',
     DRAFT = 'DRAFT',
     ACTIVE = 'ACTIVE',
     STARTED = 'STARTED',
-    FINISHED = 'FINISHED',
 }
 
 // ! EXAM ENTITY
@@ -32,7 +32,7 @@ export class Exam {
     desc: string;
 
     @Column({ default: 60 })
-    duration_in_second: number;
+    duration_in_minutes: number;
 
     @Column({ type: 'varchar', length: 50, unique: true, nullable: true })
     joinCode?: string;

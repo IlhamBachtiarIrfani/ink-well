@@ -1,10 +1,10 @@
 import Image from 'next/image'
 import React from 'react'
-import RegisterForm from './form'
+import LoginForm from './form'
 import Link from 'next/link'
 import OnlyGuestPage from '../../components/common/only-guest-page'
 
-export default function RegisterPage() {
+export default function LoginPage() {
     return (
         <OnlyGuestPage>
             <main className='bg-white h-screen w-screen overflow-hidden flex'>
@@ -37,14 +37,14 @@ export default function RegisterPage() {
 
                     <div className='absolute rotate-45 top-4 -right-16 w-52 h-16 bg-red-400' />
 
-                    <h1 className='text-4xl font-black'>Register</h1>
+                    <h1 className='text-4xl font-black'>Login</h1>
                     <p className='mt-3'>Start your experience with our EdTech</p>
 
-                    <RegisterForm />
+                    <LoginForm />
 
-                    <p className='absolute left-0 right-0 bottom-5 font-bold text-center'>Already have account?
-                        <Link href="/login" className='text-cyan-300 pl-1'>
-                            Login
+                    <p className='absolute left-0 right-0 bottom-5 font-bold text-center'>Don&apos;t have account?
+                        <Link href="/register" className='text-cyan-300 pl-1'>
+                            Register
                         </Link>
                     </p>
                 </section>

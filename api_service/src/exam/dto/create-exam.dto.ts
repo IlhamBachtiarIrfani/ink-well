@@ -26,5 +26,5 @@ export class CreateExamDto {
     @Min(5)
     @IsNotEmpty()
     @Type(() => Number)
-    duration_in_second: number;
+    duration_in_minutes: number;
 }

@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import ButtonComponent, { ButtonType } from '../input/button'
 
 export default function FooterComponent() {
     return (

@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Nunito } from 'next/font/google'
 import './globals.css'
-import Head from 'next/head'
 
 const nunito = Nunito({ subsets: ['latin'] })
 

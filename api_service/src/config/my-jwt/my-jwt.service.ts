@@ -43,7 +43,7 @@ export class MyJwtService {
         // return access token data
         return {
             access_token: access_token,
-            expiresIn: expiresDate,
+            expires_in: expiresDate,
             user: {
                 role: payload.user_role,
                 name: payload.user_name,

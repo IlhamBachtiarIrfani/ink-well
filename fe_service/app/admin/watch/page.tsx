@@ -2,11 +2,14 @@ import Image from 'next/image'
 import HeaderComponent from '@/components/common/header'
 import React from 'react'
 import FooterComponent from '@/components/common/footer'
+import { getLoginCookies } from '@/app/action'
 
-export default function WatchQuizPage() {
+export default async function WatchQuizPage() {
+    const userData = await getLoginCookies()
+
     return (
         <div>
-            <HeaderComponent />
+            <HeaderComponent userData={userData} />
             <main className='container max-w-5xl px-5 mx-auto flex flex-col py-8 gap-8'>
                 <div className='relative py-24 px-20 bg-white border-b-4 border-black rounded-2xl flex flex-col items-center gap-10 z-10 overflow-hidden'>
 
@@ -61,15 +64,15 @@ export default function WatchQuizPage() {
                     {
                         [0, 1, 2, 3, 4, 5, 6].map((item) => {
                             return <div key={item} className='bg-white p-2 rounded-full border border-b-4 border-black flex items-center gap-3'>
-                                <div className='relative flex-none w-10 h-10 rounded-full border-2 border-red-400'>
-                                    <Image
-                                        className="relative w-full h-full"
-                                        src="/profile.png"
-                                        alt="User Profile"
-                                        width={40}
-                                        height={40}
-                                        priority
-                                    />
+                                <div className='relative flex-none w-10 h-10'>
+                                    <div className='w-16 h-16 -m-3'>
+                                        <Image
+                                            src="/avatar/avatar-deer.svg"
+                                            alt={`Avatar`}
+                                            width={172}
+                                            height={172}
+                                        />
+                                    </div>
                                     <span className='absolute -right-1 -bottom-1 material-symbols-rounded icon-fill text-lg text-red-400 bg-white rounded-full leading-none '>error</span>
                                 </div>
                                 <div>
