@@ -34,6 +34,7 @@ export class QuestionService {
         const newQuestionData = new Question();
         newQuestionData.content = createQuestionDto.content;
         newQuestionData.answer_key = createQuestionDto.answer_key;
+        newQuestionData.point = createQuestionDto.point;
         newQuestionData.exam_id = examId;
 
         // Use QueryRunner for manage transaction
@@ -127,6 +128,7 @@ export class QuestionService {
 
         questionData.content = updateQuestionDto.content;
         questionData.answer_key = updateQuestionDto.answer_key;
+        questionData.point = updateQuestionDto.point;
 
         // get existing keyword in database
         const existingKeywords = await this.questionKeywordRepository.find({
@@ -137,17 +139,17 @@ export class QuestionService {
         });
 
         // get list keyword data string only
-        const existingKeywordStrings = existingKeywords.map(
+        const existingKeywordStrings = await existingKeywords.map(
             (keyword) => keyword.keyword,
         );
 
         // get the new keyword between existing keyword and requested keyword
-        const newKeywords = updateQuestionDto.keyword.filter(
+        const newKeywords = await updateQuestionDto.keyword.filter(
             (keyword) => !existingKeywordStrings.includes(keyword),
         );
 
         // create new question keyword objects
-        const keywordEntities = newKeywords.map((keyword) => {
+        const keywordEntities = await newKeywords.map((keyword) => {
             const questionKeyword = new QuestionKeyword();
             questionKeyword.question_id = questionId;
             questionKeyword.keyword = keyword;

@@ -4,30 +4,57 @@
 @tailwind components;
 @tailwind utilities;
 
+.scroll-hide::-webkit-scrollbar {
+	display: none;
+}
+
+.scroll-hide {
+	scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+	/* Customize the scrollbar width */
+	@apply w-3 h-3;
+}
+
+::-webkit-scrollbar-track {
+	/* Customize the scrollbar track */
+	@apply bg-gray-200;
+}
+
+::-webkit-scrollbar-thumb {
+	/* Customize the scrollbar thumb */
+	@apply bg-gray-400 rounded-sm;
+}
+
 img {
-    @apply pointer-events-none select-none;
+	@apply pointer-events-none select-none;
 }
 
 .grid-profile {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr) );
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
 }
 
-.editor-container {
-    @apply prose max-w-none text-justify prose-p:leading-relaxed marker:text-black prose-headings:mb-2 prose-headings:mt-5 prose-headings:font-black prose-li:m-0;
+.rich-text-container {
+	@apply prose leading-normal max-w-none text-justify prose-p:leading-relaxed marker:text-black prose-headings:mb-2 prose-headings:mt-5 prose-headings:font-black prose-li:m-0 prose-p:m-0 prose-ul:my-2 prose-ol:my-2;
+}
+
+.rich-text-container-large {
+	@apply prose prose-lg leading-normal max-w-none text-justify prose-p:leading-relaxed marker:text-black prose-headings:mb-2 prose-headings:mt-5 prose-headings:font-black prose-li:m-0 prose-p:m-0 prose-ul:my-2 prose-ol:my-2;
 }
 
 .material-symbols-rounded {
 	font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
-    @apply select-none;
+	@apply select-none;
 }
 
 .material-symbols-rounded.icon-bold {
 	font-variation-settings: 'FILL' 0, 'wght' 900, 'GRAD' 0, 'opsz' 24 !important;
-    @apply select-none;
+	@apply select-none;
 }
 
-.material-symbols-rounded.icon-fill{
+.material-symbols-rounded.icon-fill {
 	font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
-    @apply select-none;
+	@apply select-none;
 }

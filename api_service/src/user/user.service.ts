@@ -8,7 +8,12 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User, UserRole, UserTokenData } from './entities/user.entity';
+import {
+    User,
+    UserRole,
+    UserTokenData,
+    getRandomAvatar,
+} from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { EncryptService } from 'src/helper/encrypt/encrypt.service';
 import { MyJwtService } from 'src/config/my-jwt/my-jwt.service';
@@ -34,6 +39,7 @@ export class UserService {
             newUser.name = createUserDto.name;
             newUser.email = createUserDto.email;
             newUser.role = userRole;
+            newUser.photo_url = getRandomAvatar();
 
             // create new hashes password
             newUser.password = await this.encryptService.hashPassword(
@@ -48,6 +54,7 @@ export class UserService {
                 user_name: newUser.name,
                 user_email: newUser.email,
                 user_role: newUser.role,
+                user_photo_url: newUser.photo_url,
             });
         } catch (error) {
             if (error.code === 'ER_DUP_ENTRY') {

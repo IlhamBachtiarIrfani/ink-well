@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Nunito } from 'next/font/google'
 import './globals.css'
+import ModalComponentProvider from '@/components/common/modal'
 
 const nunito = Nunito({ subsets: ['latin'] })
 
@@ -16,7 +17,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className='bg-surface'>
-      <body className={nunito.className}>{children}</body>
+      <body className={`${nunito.className}`}>
+        <ModalComponentProvider>
+          {children}
+        </ModalComponentProvider>
+      </body>
     </html>
   )
 }

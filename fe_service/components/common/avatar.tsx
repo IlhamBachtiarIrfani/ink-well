@@ -18,9 +18,9 @@ export default function AvatarComponent(props: AvatarComponentProps) {
     }
 
     return (
-        <div onClick={onAvatarClick} className='flex gap-4 items-center cursor-pointer select-none'>
+        <div onClick={onAvatarClick} className='group flex gap-5 items-center cursor-pointer select-none bg-gray-100 rounded-full p-1 pr-7 hover:scale-105 transition-transform'>
             <div className='w-10 h-10 rounded-full'>
-                <div className='w-16 h-16 -m-3'>
+                <div className='w-16 h-16 -m-3 select-none pointer-events-none group-hover:-rotate-12 group-hover:scale-110 transition-transform'>
                     <Image
                         src={props.photo_url}
                         alt={`Avatar ${props.name}`}
@@ -29,7 +29,7 @@ export default function AvatarComponent(props: AvatarComponentProps) {
                     />
                 </div>
             </div>
-            <p className='font-black text-base capitalize'>{props.name}</p>
+            <p className='font-black text-lg capitalize'>{props.name}</p>
         </div>
     )
 }

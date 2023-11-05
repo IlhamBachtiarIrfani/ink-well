@@ -34,6 +34,13 @@ export class ExamAccess {
     })
     type: ExamAccessType;
 
+    @Column({
+        type: 'varchar',
+        length: 100,
+        nullable: true,
+    })
+    socket_id: string;
+
     @Exclude()
     @CreateDateColumn()
     created_at: Date;

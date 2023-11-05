@@ -1,13 +1,14 @@
 'use server'
 
+import { UserData, UserRole } from '@/entities/user.entity';
 import { cookies } from 'next/headers'
-import { UserData, UserRole } from './const';
 
-export async function setLoginCookies(token: string, expires_in: Date, name: string, email: string, role: string) {
+export async function setLoginCookies(token: string, expires_in: Date, name: string, email: string, role: string, photo_url: string) {
     cookies().set('token', token, { expires: expires_in });
     cookies().set('name', name, { expires: expires_in });
     cookies().set('email', email, { expires: expires_in });
     cookies().set('role', role, { expires: expires_in });
+    cookies().set('photo_url', photo_url, { expires: expires_in });
 }
 
 export async function getLoginCookies() {
@@ -15,14 +16,16 @@ export async function getLoginCookies() {
     const name = cookies().get('name')?.value
     const email = cookies().get('email')?.value
     const role = cookies().get('role')?.value
+    const photo_url = cookies().get('photo_url')?.value
 
-    if (!token || !name || !email || !role) return null;
+    if (!token || !name || !email || !role || !photo_url) return null;
 
     const userData: UserData = {
         token: token,
         name: name,
         email: email,
         role: UserRole[role as keyof typeof UserRole],
+        photo_url: photo_url
     }
 
     return userData;

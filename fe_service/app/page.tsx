@@ -1,12 +1,14 @@
-import HeaderComponent from '@/components/common/header'
-import { getLoginCookies } from './action'
+"use server"
+
+import { getLoginCookies } from "./action"
+import BaseLayout from "@/components/common/layout/base.layout"
+import HomeComponent from "./home"
 
 export default async function Home() {
   const userData = await getLoginCookies()
-  
   return (
-    <div>
-      <HeaderComponent userData={userData} />
-    </div>
+    <BaseLayout userData={userData}>
+      <HomeComponent userData={userData} />
+    </BaseLayout>
   )
 }

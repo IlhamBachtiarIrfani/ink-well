@@ -78,4 +78,29 @@ export class ExamController {
     output(@Param('id') id: string) {
         return this.examService.correctionOutput(id);
     }
+
+    // ! ===== [GET] /exam/:id =====
+    // * get detail exam by id
+    @Post(':id/activate')
+    activate(@Param('id') id: string, @Request() req) {
+        const userTokenData: UserTokenData = req.user;
+        return this.examService.activate(userTokenData, id);
+    }
+
+    // ! ===== [GET] /exam/:id =====
+    // * get detail exam by id
+    @Post(':id/deactivate')
+    deactivate(@Param('id') id: string, @Request() req) {
+        const userTokenData: UserTokenData = req.user;
+        return this.examService.deactivate(userTokenData, id);
+    }
+
+    // ! ===== [GET] /exam/:id =====
+    // * get detail exam by id
+    @Post(':join_code/join')
+    @Roles(AccessRole.PARTICIPANT)
+    join(@Param('join_code') join_code: string, @Request() req) {
+        const userTokenData: UserTokenData = req.user;
+        return this.examService.join(userTokenData, join_code);
+    }
 }

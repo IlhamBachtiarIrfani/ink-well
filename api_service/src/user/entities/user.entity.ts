@@ -24,7 +24,27 @@ export type UserTokenData = {
     user_email: string;
     user_name: string;
     user_role: string;
+    user_photo_url: string;
 };
+
+const userAvatar = [
+    'avatar-cheetah.svg',
+    'avatar-crocodile.svg',
+    'avatar-deer.svg',
+    'avatar-horse.svg',
+    'avatar-koala.svg',
+    'avatar-lion.svg',
+    'avatar-pig.svg',
+    'avatar-penguin.svg',
+    'avatar-rabbit.svg',
+];
+
+export function getRandomAvatar() {
+    const randomIndex = Math.floor(Math.random() * userAvatar.length);
+    const randomValue = userAvatar[randomIndex];
+
+    return randomValue;
+}
 
 // ! USER ENTITY
 @Entity({ name: 'user' })
@@ -37,6 +57,9 @@ export class User {
 
     @Column({ type: 'varchar', length: 100 })
     name: string;
+
+    @Column({ type: 'enum', enum: userAvatar, default: getRandomAvatar() })
+    photo_url: string;
 
     @Column({ type: 'enum', enum: UserRole, default: UserRole.PARTICIPANT })
     role: UserRole;

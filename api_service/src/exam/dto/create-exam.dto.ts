@@ -6,6 +6,7 @@ import {
     MaxLength,
     IsNumber,
     Min,
+    Max,
 } from 'class-validator';
 
 export class CreateExamDto {
@@ -27,4 +28,12 @@ export class CreateExamDto {
     @IsNotEmpty()
     @Type(() => Number)
     duration_in_minutes: number;
+
+    @ApiProperty()
+    @IsNumber()
+    @Min(0)
+    @Max(1)
+    @IsNotEmpty()
+    @Type(() => Number)
+    pass_score: number;
 }

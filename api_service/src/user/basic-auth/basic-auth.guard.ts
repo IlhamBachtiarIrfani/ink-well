@@ -60,6 +60,7 @@ export class BasicAuthGuard implements CanActivate {
             user_email: user.email,
             user_name: user.name,
             user_role: user.role,
+            user_photo_url: user.photo_url,
         };
 
         request.user = payload;

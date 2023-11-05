@@ -34,8 +34,11 @@ export class Exam {
     @Column({ default: 60 })
     duration_in_minutes: number;
 
+    @Column({ default: '0.75', type: 'double' })
+    pass_score: number;
+
     @Column({ type: 'varchar', length: 50, unique: true, nullable: true })
-    joinCode?: string;
+    join_code?: string;
 
     @Column({ type: 'enum', enum: ExamState, default: ExamState.DRAFT })
     state: ExamState;

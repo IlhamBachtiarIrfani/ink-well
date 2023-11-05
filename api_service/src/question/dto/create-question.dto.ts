@@ -1,9 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
     IsNotEmpty,
     MinLength,
     ArrayMinSize,
     ArrayMaxSize,
+    Min,
+    Max,
 } from 'class-validator';
 
 export class CreateQuestionDto {
@@ -23,4 +26,10 @@ export class CreateQuestionDto {
     @ArrayMinSize(1)
     @ArrayMaxSize(8)
     keyword: string[];
+
+    @ApiProperty()
+    @Min(1)
+    @Max(1000)
+    @Type(() => Number)
+    point: number;
 }

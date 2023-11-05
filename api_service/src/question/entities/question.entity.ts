@@ -29,6 +29,9 @@ export class Question {
     @Column({ type: 'text' })
     answer_key: string;
 
+    @Column({ default: 1 })
+    point: number;
+
     @Exclude()
     @CreateDateColumn()
     created_at: Date;

@@ -48,6 +48,7 @@ export class MyJwtService {
                 role: payload.user_role,
                 name: payload.user_name,
                 email: payload.user_email,
+                photo_url: payload.user_photo_url,
             },
         };
     }
