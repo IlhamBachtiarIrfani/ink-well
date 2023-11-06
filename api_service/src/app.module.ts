@@ -11,6 +11,7 @@ import { DataFormatInterceptor } from './data-format/data-format.interceptor';
 import { ExamModule } from './exam/exam.module';
 import { QuestionModule } from './question/question.module';
 import { UserResponseModule } from './user-response/user-response.module';
+import { EssayWebsocketModule } from './essay-websocket/essay-websocket.module';
 
 @Module({
     imports: [
@@ -20,6 +21,7 @@ import { UserResponseModule } from './user-response/user-response.module';
         ExamModule,
         QuestionModule,
         UserResponseModule,
+        EssayWebsocketModule,
     ],
     controllers: [AppController],
     providers: [

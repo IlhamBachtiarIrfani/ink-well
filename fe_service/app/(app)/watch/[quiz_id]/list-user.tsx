@@ -43,6 +43,7 @@ function UserItemView(props: UserItemViewProps) {
         <div className='relative flex-none w-10 h-10'>
             <div className='w-16 h-16 -m-3 group-hover:-rotate-12 group-hover:scale-125 transition-transform'>
                 <Image
+                    className={'transition-all duration-500 ' + (props.item.socket_id ? 'saturate-100 brightness-100' : 'saturate-0 brightness-75')}
                     src={"/avatar/" + props.item.user.photo_url}
                     alt={`Avatar`}
                     width={172}

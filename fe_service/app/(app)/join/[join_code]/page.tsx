@@ -4,6 +4,7 @@ import { QuizEntity } from '@/entities/quiz.entity';
 import { UserData } from '@/entities/user.entity';
 import { notFound } from 'next/navigation';
 import React from 'react'
+import JoinQuizClient from './client';
 
 async function getData(userData: UserData, joinCode: string) {
     const requestOptions: RequestInit = {
@@ -39,7 +40,7 @@ interface JoinDetailPageProps {
 export default async function JoinDetailPage(props: JoinDetailPageProps) {
     const userData = await getLoginCookies()
     const data = await getData(userData!, props.params.join_code)
-  return (
-    <div>JoinDetailPage</div>
-  )
+    return (
+        <JoinQuizClient token={userData!.token} quiz_id={data.id} />
+    )
 }

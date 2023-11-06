@@ -7,6 +7,7 @@ import { notFound } from 'next/navigation';
 import React from 'react'
 import WaitingQuiz from './waiting';
 import ListUserQuiz from './list-user';
+import WatchQuizClient from './client';
 
 async function getData(userData: UserData, id: string) {
     const requestOptions: RequestInit = {
@@ -46,13 +47,7 @@ export default async function WatchQuizPage(props: WatchQuizPageProps) {
 
     return (
         <main className='container max-w-5xl px-5 mx-auto flex flex-col py-8 gap-8'>
-            <WaitingQuiz
-                data={data}
-                userCount={data.exam_access.length ?? 0}
-                userData={userData!}
-            />
-
-            <ListUserQuiz data={data.exam_access} />
+            <WatchQuizClient token={userData!.token} quizData={data} userData={userData!} />
         </main>
     )
 }
