@@ -3,6 +3,7 @@
     "title": "Ujian Sistem Keamanan Terbaru",
     "questions": [
         {
+            "id": "Q1",
             "content": "Apa yang dimaksud dengan Enkripsi dan bagaimana pengaruhnya terhadap pengembangan sistem keamanan?",
             "answer_key": "Enkripsi adalah proses konversi informasi atau data menjadi kode rahasia untuk mencegah akses unauthorised. Pengaruhnya terhadap pengembangan sistem keamanan adalah peningkatan integritas dan kerahasiaan data.",
             "keyword": [
@@ -22,6 +23,7 @@
             ]
         },
         {
+            "id": "Q2",
             "content": "Apa yang dimaksud dengan Firewall dan bagaimana digunakan dalam pengembangan sistem keamanan?",
             "answer_key": "Firewall adalah sistem keamanan jaringan yang memantau dan mengendalikan lalu lintas jaringan berdasarkan aturan keamanan yang ditentukan. Ini digunakan dalam pengembangan sistem keamanan untuk mencegah akses unauthorised ke atau dari jaringan pribadi.",
             "keyword": [

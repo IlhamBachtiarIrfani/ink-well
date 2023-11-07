@@ -72,6 +72,7 @@ def _scoring_process(question: Question):
     scores, weights = _score_weight(label_score_dict)
 
     question_scoring_data = {
+        "id": question.id,
         "content": question.content,
         "answer_key": question.answer_key,
         "keyword": question.keyword,

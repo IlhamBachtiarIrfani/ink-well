@@ -82,6 +82,7 @@ def check_data_format(json_data):
         return True
     except jsonschema.exceptions.ValidationError as e:
         print(" [e] INVALID JSON FORMAT")
+        print(e)
         return False
 
 # ! ===== QUEUE CALLBACK FUNCTION =====
