@@ -17,7 +17,7 @@ export default function QuizItem(props: QuizItemProps) {
       case QuizState.ACTIVE:
         return <ActiveState id={props.item.id} />
       case QuizState.STARTED:
-        return <OnGoingState />
+        return <OnGoingState id={props.item.id} />
       case QuizState.FINISHED:
         return <FinishState />
       case QuizState.DRAFT:
@@ -88,7 +88,6 @@ interface ActiveStateProps {
   id: string
 }
 
-
 function ActiveState(props: ActiveStateProps) {
   const router = useRouter()
   return (
@@ -105,13 +104,22 @@ function ActiveState(props: ActiveStateProps) {
   )
 }
 
-function OnGoingState() {
+interface OnGoingStateProps {
+  id: string
+}
+
+function OnGoingState(props: OnGoingStateProps) {
+  const router = useRouter()
+
   return (
     <div className='relative flex items-center before:absolute before:-inset-20 before:-left-10 before:bg-black before:rotate-12 before:-z-10 z-10'>
       <ButtonComponent
         type={'LIGHT'}
         title='Supervise'
         icon={<span className='material-symbols-rounded'>domino_mask</span>}
+        onClick={() => {
+          router.push('watch/' + props.id)
+        }}
       />
     </div>
   )

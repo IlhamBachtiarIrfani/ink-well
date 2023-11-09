@@ -41,6 +41,6 @@ export default async function JoinDetailPage(props: JoinDetailPageProps) {
     const userData = await getLoginCookies()
     const data = await getData(userData!, props.params.join_code)
     return (
-        <JoinQuizClient token={userData!.token} quiz_id={data.id} />
+        <JoinQuizClient token={userData!.token} quidData={data} />
     )
 }

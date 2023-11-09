@@ -35,8 +35,6 @@ export class EssayWebsocketGuard implements CanActivate {
         const token = extractTokenFromHeader(socket);
         const quiz_id = extractQuizIdFromHeader(socket);
 
-        console.log(token);
-
         // check if there is no token
         if (!token) {
             throw new WsException('TOKEN_REQUIRED');

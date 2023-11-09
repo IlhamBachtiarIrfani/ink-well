@@ -9,6 +9,9 @@ import { MariaDbDatabaseModule } from 'src/config/database/mariadb-database.modu
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Exam } from 'src/exam/entities/exam.entity';
 import { ExamAccess } from 'src/exam/entities/exam-access.entity';
+import { Question } from 'src/question/entities/question.entity';
+import { UserResponse } from 'src/user-response/entities/user-response.entity';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
     imports: [
@@ -19,7 +22,9 @@ import { ExamAccess } from 'src/exam/entities/exam-access.entity';
         MariaDbDatabaseModule,
 
         // ! ===== LOAD USED ENTITY DB =====
-        TypeOrmModule.forFeature([Exam, ExamAccess]),
+        TypeOrmModule.forFeature([Exam, ExamAccess, Question, UserResponse]),
+
+        ScheduleModule.forRoot(),
     ],
     providers: [
         AdminGateway,

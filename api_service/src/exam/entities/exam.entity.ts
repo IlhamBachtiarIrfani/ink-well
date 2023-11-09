@@ -43,6 +43,9 @@ export class Exam {
     @Column({ type: 'enum', enum: ExamState, default: ExamState.DRAFT })
     state: ExamState;
 
+    @Column({ nullable: true })
+    started_at?: Date;
+
     @Exclude()
     @CreateDateColumn()
     created_at: Date;

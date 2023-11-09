@@ -5,4 +5,7 @@ export interface QuestionEntity {
     answer_key: string,
     point: number,
     keyword: string[],
+    user_response?: {
+        content: string
+    }
 }

@@ -229,7 +229,7 @@ function FormatButton(props: FormatButtonProps) {
     return (
         <button
             onClick={onButtonClick}
-            className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${style}`}
+            className={`w-10 h-10 rounded-xl flex items-center justify-center hover:bg-gray-200 transition-all ${style}`}
         >
             {props.icon}
         </button>

@@ -9,46 +9,21 @@ import Link from 'next/link'
 import { UserData } from '@/entities/user.entity'
 import { useRouter } from 'next/navigation'
 import ErrorDisplay from '@/components/common/error-display'
+import CountdownComponent from '@/components/common/countdown'
 
-interface WaitingQuizProps {
+interface ProcessQuizProps {
     data: QuizEntity
     userCount: number,
     userData: UserData,
     startQuiz: () => void,
+    remainingTime: number
 }
 
-export default function WaitingQuiz(props: WaitingQuizProps) {
+export default function ProcessQuiz(props: ProcessQuizProps) {
     const router = useRouter()
 
     const [isLoading, setLoading] = useState(false)
     const [errorData, setErrorData] = useState<any>(null)
-
-    const layout = useLayout()
-    useEffect(() => {
-        layout.setHeaderActions(
-            <>
-                <ButtonComponent
-                    title='Edit Quiz'
-                    type='DARK_OUTLINED'
-                    onClick={deactivate}
-                />
-                <ButtonComponent
-                    title='Start Quiz'
-                    type='RED'
-                    icon={
-                        <span className="material-symbols-rounded">
-                            east
-                        </span>
-                    }
-                    onClick={props.startQuiz}
-                />
-            </>
-        )
-
-        return () => {
-            layout.setHeaderActions(null)
-        }
-    }, [props.startQuiz])
 
     async function deactivate() {
         if (isLoading) return;
@@ -117,10 +92,7 @@ export default function WaitingQuiz(props: WaitingQuizProps) {
                 <h1 className='font-black text-3xl text-center'>{props.data.title}</h1>
 
                 <div className='flex flex-col items-center'>
-                    <div className='bg-cyan-300 rounded-2xl px-8 py-5 font-black text-7xl tracking-wider flex gap-5 items-center'>
-                        <span className='material-symbols-rounded text-7xl icon-bold'>encrypted</span>
-                        <p>{props.data.join_code}</p>
-                    </div>
+                    <CountdownComponent remainingTime={props.remainingTime} isBig />
 
                     <Link href={quizLink} target='_blank' className='text-center mt-3 text-red-400 underline'>
                         {quizLink}
@@ -129,8 +101,8 @@ export default function WaitingQuiz(props: WaitingQuizProps) {
 
                 <div className='flex items-center gap-5'>
                     <div className='flex items-center gap-3 bg-black text-white h-10 pl-5 pr-8 py-2 rounded-full whitespace-nowrap'>
-                        <span className='material-symbols-rounded'>avg_pace</span>
-                        <p>{props.data.duration_in_minutes} Minutes</p>
+                        <span className='material-symbols-rounded'>encrypted</span>
+                        <p>{props.data.join_code}</p>
                     </div>
 
                     <div className='flex items-center gap-3 bg-black text-white h-10 pl-5 pr-8 py-2 rounded-full whitespace-nowrap'>
