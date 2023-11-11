@@ -49,4 +49,4 @@ evaluator = EmbeddingSimilarityEvaluator(sentences1, sentences2, scores)
 # Fine-tune the model
 model.fit(train_objectives=[(train_dataloader, train_loss)], epochs=num_epochs, warmup_steps=100, evaluator=evaluator, evaluation_steps=1000)
 
-model.save('../model/full-fine-tuned-model')
+model.save('../model/sentence-similarity-fine-tuned-model')

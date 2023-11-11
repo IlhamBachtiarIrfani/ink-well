@@ -11,7 +11,7 @@ nli_model = AutoModelForSequenceClassification.from_pretrained(
 tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name)
 
 # Load your dataset
-your_dataset = load_dataset("jakartaresearch/indonews", split="train[:100]")
+your_dataset = load_dataset("jakartaresearch/indonews", split="train")
 id2labels = ["bola", "news", "bisnis", "tekno", "otomotif"]
 your_dataset = your_dataset.map(
     lambda x: {"class": x["label"]}, remove_columns=["label"])
