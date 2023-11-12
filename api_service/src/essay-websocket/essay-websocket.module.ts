@@ -12,6 +12,7 @@ import { ExamAccess } from 'src/exam/entities/exam-access.entity';
 import { Question } from 'src/question/entities/question.entity';
 import { UserResponse } from 'src/user-response/entities/user-response.entity';
 import { ScheduleModule } from '@nestjs/schedule';
+import { ScoringModule } from 'src/scoring/scoring.module';
 
 @Module({
     imports: [
@@ -25,6 +26,8 @@ import { ScheduleModule } from '@nestjs/schedule';
         TypeOrmModule.forFeature([Exam, ExamAccess, Question, UserResponse]),
 
         ScheduleModule.forRoot(),
+
+        ScoringModule,
     ],
     providers: [
         AdminGateway,

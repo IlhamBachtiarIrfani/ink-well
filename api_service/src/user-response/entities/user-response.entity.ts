@@ -6,6 +6,7 @@ import {
     JoinColumn,
     ManyToOne,
     OneToMany,
+    OneToOne,
     PrimaryColumn,
     UpdateDateColumn,
 } from 'typeorm';
@@ -13,6 +14,7 @@ import { Exclude } from 'class-transformer';
 import { User } from 'src/user/entities/user.entity';
 import { Question } from 'src/question/entities/question.entity';
 import { UserResponseHistory } from './user-response-history.entity';
+import { ResponseScore } from 'src/scoring/entities/response-score.entity';
 
 // ! EXAM ENTITY
 @Entity({ name: 'response' })
@@ -52,4 +54,10 @@ export class UserResponse {
             userResponseHistory.response,
     )
     response_history: UserResponseHistory[];
+
+    @OneToOne(
+        () => ResponseScore,
+        (responseScore: ResponseScore) => responseScore.response,
+    )
+    response_score: ResponseScore;
 }

@@ -7,9 +7,13 @@ import { UserToken } from 'src/user/entities/user-token.entity';
 import { Exam } from 'src/exam/entities/exam.entity';
 import { ExamAccess } from 'src/exam/entities/exam-access.entity';
 import { Question } from 'src/question/entities/question.entity';
-import { QuestionKeyword } from 'src/question/entities/question-keyword';
+import { QuestionKeyword } from 'src/question/entities/question-keyword.entitiy';
 import { UserResponse } from 'src/user-response/entities/user-response.entity';
 import { UserResponseHistory } from 'src/user-response/entities/user-response-history.entity';
+import { ResponseScore } from 'src/scoring/entities/response-score.entity';
+import { QuestionScore } from 'src/scoring/entities/question-score.entity';
+import { UserExamScore } from 'src/scoring/entities/user-exam-score.entity';
+import { ExamScore } from 'src/scoring/entities/exam_score.entity';
 
 @Module({
     imports: [
@@ -37,6 +41,11 @@ import { UserResponseHistory } from 'src/user-response/entities/user-response-hi
                     QuestionKeyword,
                     UserResponse,
                     UserResponseHistory,
+
+                    ResponseScore,
+                    QuestionScore,
+                    UserExamScore,
+                    ExamScore,
                 ],
                 synchronize: true,
             }),

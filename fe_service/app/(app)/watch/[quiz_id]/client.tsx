@@ -8,6 +8,7 @@ import ListUserQuiz from './list-user';
 import { UserData } from '@/entities/user.entity';
 import ProcessQuiz from './process';
 import { QuizClientState } from '@/app/helper';
+import { useRouter } from 'next/navigation';
 
 interface WatchQuizClientProps {
     token: string,
@@ -16,11 +17,12 @@ interface WatchQuizClientProps {
 }
 
 export default function WatchQuizClient(props: WatchQuizClientProps) {
+    const router = useRouter()
     const [webSocket, setWebSocket] = useState<Socket | null>(null)
 
     const [quizState, setQuizState] = useState(QuizClientState.LOADING)
     const [examAccessList, setExamAccessList] = useState<ExamAccessEntity[]>(props.quizData.exam_access)
-    
+
     const [remainingTime, setRemainingTime] = useState(0)
 
     useEffect(() => {
@@ -48,6 +50,7 @@ export default function WatchQuizClient(props: WatchQuizClientProps) {
                     break;
                 case QuizClientState.FINISHED:
                     setQuizState(QuizClientState.FINISHED)
+                    router.push('/result/' + props.quizData.id)
                     break;
                 default:
                     setQuizState(QuizClientState.ERROR)

@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { WsException } from '@nestjs/websockets';
 import { ExamAccess } from 'src/exam/entities/exam-access.entity';
 import { Exam, ExamState } from 'src/exam/entities/exam.entity';
+import { ScoringService } from 'src/scoring/scoring.service';
 import { UserRole, UserTokenData } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 
@@ -13,6 +14,7 @@ export class AdminService {
         private examRepository: Repository<Exam>,
         @InjectRepository(ExamAccess)
         private examAccessRepository: Repository<ExamAccess>,
+        private scoringService: ScoringService,
     ) {}
 
     async getCurrentAccess(examId: string) {
@@ -46,14 +48,23 @@ export class AdminService {
     }
 
     async finishQuiz(userTokenData: UserTokenData, examId: string) {
-        const examData = await this.checkUserAccess(userTokenData, examId);
+        try {
+            const examData = await this.checkUserAccess(userTokenData, examId);
 
-        if (examData.state != ExamState.STARTED) {
-            throw new WsException('EXAM_IS_NOT_STARTED');
+            if (examData.state != ExamState.STARTED) {
+                throw new WsException('EXAM_IS_NOT_STARTED');
+            }
+
+            examData.state = ExamState.FINISHED;
+            await this.examRepository.save(examData);
+
+            await this.scoringService.processScoring(examId);
+
+            return examData;
+        } catch (error) {
+            console.error(error);
+            throw new WsException(error);
         }
-
-        examData.state = ExamState.FINISHED;
-        return await this.examRepository.save(examData);
     }
 
     // ! ===== CHECK USER ADMIN ACCESS

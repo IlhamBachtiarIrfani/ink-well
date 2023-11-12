@@ -7,11 +7,17 @@ import { faker } from '@faker-js/faker'
 import BoxPlotChart from '@/components/chart/box-plot.chart';
 import Progress from './progress';
 
-const isInProgress = true;
+const isInProgress = false;
 
-export default function Page() {
+interface ResultQuizPageProps {
+    params: {
+        quiz_id: string
+    }
+}
 
-    if (isInProgress) return <Progress />
+export default function Page(props: ResultQuizPageProps) {
+
+    if (isInProgress) return <Progress exam_id={props.params.quiz_id} />
 
     return (
         <main className='container max-w-7xl px-5 mx-auto flex flex-col py-8 gap-8'>

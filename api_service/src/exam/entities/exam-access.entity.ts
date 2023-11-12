@@ -5,12 +5,14 @@ import {
     Entity,
     JoinColumn,
     ManyToOne,
+    OneToOne,
     PrimaryColumn,
     UpdateDateColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { Exam } from './exam.entity';
 import { User } from 'src/user/entities/user.entity';
+import { UserExamScore } from 'src/scoring/entities/user-exam-score.entity';
 
 // ! EXAM ACCESS ENUM
 export enum ExamAccessType {
@@ -60,4 +62,10 @@ export class ExamAccess {
     @ManyToOne(() => User, (user: User) => user.exam_access)
     @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
     user: User;
+
+    @OneToOne(
+        () => UserExamScore,
+        (userExamScore: UserExamScore) => userExamScore.examAccess,
+    )
+    score: UserExamScore;
 }

@@ -2,7 +2,8 @@ import numpy as np
 import pandas as pd
 
 MIN_ANSWER_KEY_WEIGHT = 0.4
-SCORE_SMOOTHING_ALPHA = 0.03
+MAX_ANSWER_KEY_WEIGHT = 0.95
+SCORE_SMOOTHING_ALPHA = 0.01
 
 class EntropyWeight:
     def calculate(self, criteria_data):
@@ -35,11 +36,20 @@ class EntropyWeight:
         # Calculate the initial weights
         weights = 1 - relative_entropy
 
-        # Ensure that the weight of the first criterion is at least 0.4
-        weights.iloc[0] = max(weights.iloc[0], MIN_ANSWER_KEY_WEIGHT)
-
         # Normalize the weights to ensure the sum is 1
         normalized_weights = weights / weights.sum()
+
+        # Ensure the first weight is within the specified limits
+        min_weight = MIN_ANSWER_KEY_WEIGHT
+        max_weight = MAX_ANSWER_KEY_WEIGHT
+        if normalized_weights[0] < min_weight:
+            normalized_weights[0] = min_weight
+        elif normalized_weights[0] > max_weight:
+            normalized_weights[0] = max_weight
+
+        # Adjust the other weights so that the sum is still 1
+        remaining_weight = 1 - normalized_weights[0]
+        normalized_weights[1:] = normalized_weights[1:] / normalized_weights[1:].sum() * remaining_weight
 
         # Apply Laplace smoothing to ensure a more balanced distribution
         smoothed_weights = self.apply_laplace_smoothing(normalized_weights)

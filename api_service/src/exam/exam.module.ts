@@ -6,7 +6,6 @@ import { MariaDbDatabaseModule } from 'src/config/database/mariadb-database.modu
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Exam } from './entities/exam.entity';
 import { ExamAccess } from './entities/exam-access.entity';
-import { MessageBrokerModule } from 'src/message_broker/message_broker.module';
 
 @Module({
     imports: [
@@ -18,8 +17,6 @@ import { MessageBrokerModule } from 'src/message_broker/message_broker.module';
 
         // ! ===== LOAD USED ENTITY DB =====
         TypeOrmModule.forFeature([Exam, ExamAccess]),
-
-        MessageBrokerModule,
     ],
     controllers: [ExamController],
     providers: [ExamService],

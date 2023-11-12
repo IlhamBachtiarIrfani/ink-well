@@ -10,9 +10,13 @@
         "iterrows",
         "jakartaresearch",
         "jsonschema",
+        "mariadbconnector",
+        "OBJECTAGG",
         "otomotif",
         "pymongo",
         "RABBITMQ",
+        "sessionmaker",
+        "sqlalchemy",
         "tekno",
         "tqdm",
         "wtimeout"

@@ -7,7 +7,11 @@ interface ProgressListProps {
     progress_detail: string
 }
 
-export default function Progress() {
+interface ProgressProps {
+    exam_id: string
+}
+
+export default function Progress(props: ProgressProps) {
     const [progressList, setProgressList] = useState<ProgressListProps[]>([])
     const [mainProgress, setMainProgress] = useState<ProgressListProps>({ progress_type: 'All', progress_detail: 'Preparing...', progress_percent: 0 })
 
@@ -16,7 +20,7 @@ export default function Progress() {
     const detailProgressContainer = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        const source = new EventSource('http://localhost:3000/scoring/progress/E00004');
+        const source = new EventSource('http://localhost:3000/scoring/progress/' + props.exam_id);
 
         source.onmessage = (event) => {
             const data = JSON.parse(event.data);

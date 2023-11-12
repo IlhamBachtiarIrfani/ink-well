@@ -10,8 +10,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { ExamAccess, ExamAccessType } from './entities/exam-access.entity';
 import { UserRole, UserTokenData } from 'src/user/entities/user.entity';
-import { MessageBrokerService } from 'src/message_broker/message_broker.service';
-import { classToPlain } from 'class-transformer';
 
 @Injectable()
 export class ExamService {
@@ -20,7 +18,6 @@ export class ExamService {
         private examRepository: Repository<Exam>,
         @InjectRepository(ExamAccess)
         private examAccessRepository: Repository<ExamAccess>,
-        private messageBrokerService: MessageBrokerService,
     ) {}
 
     // ! ===== CREATE NEW EXAM =====
@@ -228,29 +225,5 @@ export class ExamService {
 
         // return exam data
         return examData;
-    }
-
-    async correctionOutput(examId: string) {
-        const data = await this.examRepository
-            .createQueryBuilder('exam')
-            .select(['exam.id', 'exam.title'])
-            .leftJoin('exam.question', 'question')
-            .addSelect([
-                'question.id',
-                'question.content',
-                'question.answer_key',
-            ])
-            .leftJoin('question.keyword', 'keyword')
-            .addSelect(['keyword.keyword'])
-            .leftJoin('question.response', 'response')
-            .addSelect(['response.user_id', 'response.content'])
-            .where('exam.id = :id', { id: examId })
-            .getOne();
-
-        const processedData = classToPlain(data);
-
-        await this.messageBrokerService.publishMessage(processedData);
-
-        return processedData;
     }
 }

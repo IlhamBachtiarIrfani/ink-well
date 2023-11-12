@@ -5,6 +5,7 @@ from controller.zeroShotClassifier import ZeroShotClassifier
 from controller.sentenceSimilarityClassifier import SentenceSimilarityClassifier
 from controller.entropyWeight import EntropyWeight
 from controller.progressLogger import ProgressLogger
+from controller.dataManager import DataManager
 from typing import List
 import time
 from datetime import datetime
@@ -15,6 +16,8 @@ from dotenv import load_dotenv
 import os
 import traceback
 import sys
+import numpy as np
+import pandas as pd
 
 load_dotenv()
 
@@ -77,21 +80,56 @@ def _scoring_process(question: Question, addProgress: ProgressLogger.addProgress
 
     scores, weights = _score_weight(label_score_dict)
 
+    min_score = scores.min()
+    max_score = scores.max()
+    avg_score = scores.mean()
+
+    q1_score = np.percentile(scores, 25)
+    q2_score = np.percentile(scores, 50)
+    q3_score = np.percentile(scores, 75)
+
+    bins = np.arange(0, 1.1, 0.1)
+    data_bin = pd.cut(scores, bins)
+    bin_counts = pd.value_counts(data_bin, sort=False)
+
+    bin_counts_dict = bin_counts.to_dict()
+    bin_counts_dict = {str(k).replace(
+        ", ", " - ").replace("(", "").replace("]", ""): v for k, v in bin_counts_dict.items()}
+
     question_scoring_data = {
         "id": question.id,
         "content": question.content,
         "answer_key": question.answer_key,
         "keyword": question.keyword,
         "criteria_weights": weights,
+        "min_score": min_score,
+        "max_score": max_score,
+        "avg_score": avg_score,
+        "q1_score": q1_score,
+        "q2_score": q2_score,
+        "q3_score": q3_score,
+        "distribution_data": bin_counts_dict,
         "response": []
     }
+
+    dataManager = DataManager()
+    dataManager.update_question_score_data(question.id, "DONE", json.dumps(
+        weights), json.dumps(bin_counts_dict), min_score, max_score, avg_score, q1_score, q2_score, q3_score)
+
     for index, value in enumerate(question.response):
+        final_score = scores[index]
+        detail_score = {key: float(value[index])
+                        for key, value in label_score_dict.items()}
+
         question_scoring_data['response'].append({
             "user_id": value.user_id,
             "content": value.content,
-            "final_score": scores[index],
-            "detail_score": {key: float(value[index]) for key, value in label_score_dict.items()}
+            "final_score": final_score,
+            "detail_score": detail_score
         })
+
+        dataManager.update_response_score(
+            value.user_id, question.id, final_score, json.dumps(detail_score))
 
     addProgress('Score Weighting', 100,
                 f'Finishing the calculation of the dynamic weight for the responses')
@@ -127,6 +165,9 @@ def process_exam(data):
         exam_data = Exam(**data)
         progressLogger = ProgressLogger(exam_data.id)
 
+        dataManager = DataManager()
+        dataManager.update_exam_score_status(exam_data.id, "ON_PROGRESS")
+
         progressLogger.addProgress(
             'All', 0, 'Preparing response data.')
 
@@ -143,23 +184,63 @@ def process_exam(data):
 
         question_len = len(question_list)
 
+        for question in question_list:
+            dataManager.update_question_score_status(question.id, "ON_QUEUE")
+
         result_data = []
 
         for index, question in enumerate(question_list):
             progressLogger.addProgress(
                 'All', index / question_len * 100, f'Scoring question responses, on question {index+1} of {question_len}.')
 
+            dataManager.update_question_score_status(
+                question.id, "ON_PROGRESS")
+
             print(f"--- Scoring per Question - {index}/{question_len} ---")
 
             if (len(question.response) == 0):
+                dataManager.update_question_score_status(question.id, "DONE")
+                progressLogger.addProgress(
+                    'All', (index+1) / question_len * 100, f'Scoring for question {index+1} is done.')
                 continue
 
             result = _process_question(question, progressLogger.addProgress)
-
             result_data.append(result)
 
             progressLogger.addProgress(
                 'All', (index+1) / question_len * 100, f'Scoring for question {index+1} is done.')
+
+        dataManager.update_user_exam_data(exam_data.id)
+
+        userExamList = dataManager.select_user_exam_by_exam_id(exam_data.id)
+
+        finalScoreList = [item.score_percentage for item in userExamList]
+        passStatusList = [item.is_pass for item in userExamList]
+
+        finalScoreNpList = np.array(finalScoreList)
+
+        min_score = finalScoreNpList.min()
+        max_score = finalScoreNpList.max()
+        avg_score = finalScoreNpList.mean()
+
+        q1_score = np.percentile(finalScoreNpList, 25)
+        q2_score = np.percentile(finalScoreNpList, 50)
+        q3_score = np.percentile(finalScoreNpList, 75)
+
+        bins = np.arange(0, 1.1, 0.1)
+        data_bin = pd.cut(finalScoreNpList, bins)
+        bin_counts = pd.value_counts(data_bin, sort=False)
+
+        bin_counts_dict = bin_counts.to_dict()
+        bin_counts_dict = {str(k).replace(
+            ", ", " - ").replace("(", "").replace("]", ""): v for k, v in bin_counts_dict.items()}
+
+        totalPassData = len(passStatusList)
+        totalTruePassData = sum(passStatusList)
+        passPercentage = (totalTruePassData / totalPassData)
+
+        dataManager.update_exam_score_data(exam_data.id, "DONE", passPercentage, json.dumps(
+            bin_counts_dict), min_score, max_score, avg_score, q1_score, q2_score, q3_score)
 
         end_time = time.time()
 
@@ -188,6 +269,8 @@ def process_exam(data):
         filename = traceback_details[-1].filename
         line_num = traceback_details[-1].lineno
         print(f"Exception occurred in file {filename} at line {line_num}")
+
+        dataManager.update_exam_score_status(exam_data.id, "ERROR")
 
         error_time = time.time()
         mongo_handler.insert_document("ml-error-log", {

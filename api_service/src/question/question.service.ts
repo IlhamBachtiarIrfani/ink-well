@@ -10,7 +10,7 @@ import { DataSource, In, Not, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExamService } from 'src/exam/exam.service';
 import { UserTokenData } from 'src/user/entities/user.entity';
-import { QuestionKeyword } from './entities/question-keyword';
+import { QuestionKeyword } from './entities/question-keyword.entitiy';
 import { ExamState } from 'src/exam/entities/exam.entity';
 
 @Injectable()

@@ -8,7 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ExamService } from 'src/exam/exam.service';
 import { Exam } from 'src/exam/entities/exam.entity';
 import { ExamAccess } from 'src/exam/entities/exam-access.entity';
-import { QuestionKeyword } from './entities/question-keyword';
+import { QuestionKeyword } from './entities/question-keyword.entitiy';
 import { MessageBrokerModule } from 'src/message_broker/message_broker.module';
 
 @Module({

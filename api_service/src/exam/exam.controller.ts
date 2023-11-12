@@ -74,13 +74,6 @@ export class ExamController {
 
     // ! ===== [GET] /exam/:id =====
     // * get detail exam by id
-    @Get(':id/output')
-    output(@Param('id') id: string) {
-        return this.examService.correctionOutput(id);
-    }
-
-    // ! ===== [GET] /exam/:id =====
-    // * get detail exam by id
     @Post(':id/activate')
     activate(@Param('id') id: string, @Request() req) {
         const userTokenData: UserTokenData = req.user;

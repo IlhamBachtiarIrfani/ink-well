@@ -1,98 +1,101 @@
 {
-    "id": "E00005",
-    "title": "Ujian Sistem Keamanan Terbaru",
-    "questions": [
-        {
-            "id": "Q2",
-            "content": "Apa yang dimaksud dengan Enkripsi dan bagaimana pengaruhnya terhadap pengembangan sistem keamanan?",
-            "answer_key": "Enkripsi adalah proses konversi informasi atau data menjadi kode rahasia untuk mencegah akses unauthorised. Pengaruhnya terhadap pengembangan sistem keamanan adalah peningkatan integritas dan kerahasiaan data.",
-            "keyword": [
-                "Enkripsi",
-                "Pengembangan Sistem Keamanan",
-                "Integritas Data"
-            ],
-            "responses": [
-                {
-                    "user_id": "U11",
-                    "content": "Enkripsi adalah salah satu metode paling efektif untuk mencapai keamanan data. Dengan enkripsi, data yang dikirim melalui internet dienkripsi dan hanya bisa dibaca oleh penerima yang memiliki kunci dekripsi."
-                },
-                {
-                    "user_id": "U12",
-                    "content": "Pengembangan sistem keamanan harus mempertimbangkan enkripsi. Ini membantu dalam melindungi data dari akses unauthorised."
-                },
-                {
-                    "user_id": "U13",
-                    "content": "Enkripsi adalah proses mengubah informasi menjadi kode rahasia yang sulit dibaca tanpa kunci khusus. Ini sangat penting dalam sistem keamanan untuk melindungi data dari akses yang tidak sah."
-                },
-                {
-                    "user_id": "U14",
-                    "content": "Enkripsi adalah cara untuk melindungi data Anda dari mata-mata. Dengan enkripsi, Anda dapat merasa aman bahwa informasi Anda aman."
-                },
-                {
-                    "user_id": "U15",
-                    "content": "Enkripsi adalah teknik coding. Tidak ada hubungannya dengan sistem keamanan."
-                },
-                {
-                    "user_id": "U16",
-                    "content": "Enkripsi adalah seperti mengunci pesan Anda dalam kotak yang hanya bisa dibuka oleh orang yang memiliki kunci. Ini penting untuk menjaga data tetap aman dalam sistem keamanan."
-                },
-                {
-                    "user_id": "U17",
-                    "content": "Enkripsi adalah langkah penting dalam melindungi data sensitif. Ini membuat data sulit dibaca tanpa kunci, dan itu relevan untuk pengembangan sistem keamanan."
-                },
-                {
-                    "user_id": "U18",
-                    "content": "Enkripsi adalah dasar dari semua sistem keamanan modern. Tanpa enkripsi, data Anda dapat dengan mudah dicuri atau diintip oleh pihak yang tidak berwenang."
-                },
-                {
-                    "user_id": "U19",
-                    "content": "Penting untuk memahami bahwa enkripsi adalah alat penting dalam menjaga data tetap aman. Pengembangan sistem keamanan harus selalu mempertimbangkan aspek ini."
-                },
-                {
-                    "user_id": "U20",
-                    "content": "Enkripsi adalah seperti mengubah bahasa data Anda menjadi bahasa rahasia. Hal ini berdampak positif pada pengembangan sistem keamanan dengan menjaga kerahasiaan data."
-                },
-                {
-                    "user_id": "U21",
-                    "content": "Enkripsi adalah teknik yang membuat data tidak dapat dibaca tanpa kunci dekripsi. Ini sangat relevan dalam pengembangan sistem keamanan untuk menjaga kerahasiaan informasi."
-                },
-                {
-                    "user_id": "U22",
-                    "content": "Enkripsi adalah lapisan pertahanan yang melindungi data Anda. Dalam pengembangan sistem keamanan, enkripsi adalah kunci untuk melindungi data dari ancaman eksternal."
-                },
-                {
-                    "user_id": "U23",
-                    "content": "Enkripsi adalah seperti mengganti teks dengan kode rahasia. Ini sangat penting dalam menjaga keamanan data dalam sistem keamanan modern."
-                },
-                {
-                    "user_id": "U24",
-                    "content": "Enkripsi adalah seni mengubah data menjadi bentuk yang tidak dapat dibaca oleh orang yang tidak memiliki kunci. Dalam konteks pengembangan sistem keamanan, ini menjaga kerahasiaan data."
-                },
-                {
-                    "user_id": "U25",
-                    "content": "Enkripsi adalah seperti menguncikan surat Anda dalam amplop. Hanya orang dengan kunci yang tepat yang dapat membukanya. Ini berlaku juga dalam pengembangan sistem keamanan."
-                },
-                {
-                    "user_id": "U26",
-                    "content": "Enkripsi adalah langkah penting dalam menjaga data tetap aman. Dengan mengubah data menjadi kode rahasia, enkripsi melindungi data dari akses yang tidak sah."
-                },
-                {
-                    "user_id": "U27",
-                    "content": "Enkripsi adalah teknik dasar dalam menjaga kerahasiaan data. Pengembangan sistem keamanan harus memasukkan enkripsi sebagai komponen utama dalam perlindungan data."
-                },
-                {
-                    "user_id": "U28",
-                    "content": "Enkripsi adalah seperti menguncikan pintu lemari berkas Anda. Ini melindungi data Anda dari mata-mata. Pengembangan sistem keamanan harus memahami nilai ini."
-                },
-                {
-                    "user_id": "U29",
-                    "content": "Enkripsi adalah kunci untuk menjaga kerahasiaan data dalam sistem keamanan. Tanpanya, data dapat dengan mudah diakses oleh pihak yang tidak berwenang."
-                },
-                {
-                    "user_id": "U30",
-                    "content": "Enkripsi adalah teknik yang membuat data tidak bisa dibaca oleh mata-mata digital. Ini merupakan fondasi pengembangan sistem keamanan yang kuat."
-                }
-            ]
-        }
-    ]
+    "pattern": "msg",
+    "data": {
+        "id": "E00005",
+        "title": "Ujian Sistem Keamanan Terbaru",
+        "question": [
+            {
+                "id": "Q2",
+                "content": "Apa yang dimaksud dengan Enkripsi dan bagaimana pengaruhnya terhadap pengembangan sistem keamanan?",
+                "answer_key": "Enkripsi adalah proses konversi informasi atau data menjadi kode rahasia untuk mencegah akses unauthorised. Pengaruhnya terhadap pengembangan sistem keamanan adalah peningkatan integritas dan kerahasiaan data.",
+                "keyword": [
+                    "Enkripsi",
+                    "Pengembangan Sistem Keamanan",
+                    "Integritas Data"
+                ],
+                "response": [
+                    {
+                        "user_id": "U11",
+                        "content": "Enkripsi adalah salah satu metode paling efektif untuk mencapai keamanan data. Dengan enkripsi, data yang dikirim melalui internet dienkripsi dan hanya bisa dibaca oleh penerima yang memiliki kunci dekripsi."
+                    },
+                    {
+                        "user_id": "U12",
+                        "content": "Pengembangan sistem keamanan harus mempertimbangkan enkripsi. Ini membantu dalam melindungi data dari akses unauthorised."
+                    },
+                    {
+                        "user_id": "U13",
+                        "content": "Enkripsi adalah proses mengubah informasi menjadi kode rahasia yang sulit dibaca tanpa kunci khusus. Ini sangat penting dalam sistem keamanan untuk melindungi data dari akses yang tidak sah."
+                    },
+                    {
+                        "user_id": "U14",
+                        "content": "Enkripsi adalah cara untuk melindungi data Anda dari mata-mata. Dengan enkripsi, Anda dapat merasa aman bahwa informasi Anda aman."
+                    },
+                    {
+                        "user_id": "U15",
+                        "content": "Enkripsi adalah teknik coding. Tidak ada hubungannya dengan sistem keamanan."
+                    },
+                    {
+                        "user_id": "U16",
+                        "content": "Enkripsi adalah seperti mengunci pesan Anda dalam kotak yang hanya bisa dibuka oleh orang yang memiliki kunci. Ini penting untuk menjaga data tetap aman dalam sistem keamanan."
+                    },
+                    {
+                        "user_id": "U17",
+                        "content": "Enkripsi adalah langkah penting dalam melindungi data sensitif. Ini membuat data sulit dibaca tanpa kunci, dan itu relevan untuk pengembangan sistem keamanan."
+                    },
+                    {
+                        "user_id": "U18",
+                        "content": "Enkripsi adalah dasar dari semua sistem keamanan modern. Tanpa enkripsi, data Anda dapat dengan mudah dicuri atau diintip oleh pihak yang tidak berwenang."
+                    },
+                    {
+                        "user_id": "U19",
+                        "content": "Penting untuk memahami bahwa enkripsi adalah alat penting dalam menjaga data tetap aman. Pengembangan sistem keamanan harus selalu mempertimbangkan aspek ini."
+                    },
+                    {
+                        "user_id": "U20",
+                        "content": "Enkripsi adalah seperti mengubah bahasa data Anda menjadi bahasa rahasia. Hal ini berdampak positif pada pengembangan sistem keamanan dengan menjaga kerahasiaan data."
+                    },
+                    {
+                        "user_id": "U21",
+                        "content": "Enkripsi adalah teknik yang membuat data tidak dapat dibaca tanpa kunci dekripsi. Ini sangat relevan dalam pengembangan sistem keamanan untuk menjaga kerahasiaan informasi."
+                    },
+                    {
+                        "user_id": "U22",
+                        "content": "Enkripsi adalah lapisan pertahanan yang melindungi data Anda. Dalam pengembangan sistem keamanan, enkripsi adalah kunci untuk melindungi data dari ancaman eksternal."
+                    },
+                    {
+                        "user_id": "U23",
+                        "content": "Enkripsi adalah seperti mengganti teks dengan kode rahasia. Ini sangat penting dalam menjaga keamanan data dalam sistem keamanan modern."
+                    },
+                    {
+                        "user_id": "U24",
+                        "content": "Enkripsi adalah seni mengubah data menjadi bentuk yang tidak dapat dibaca oleh orang yang tidak memiliki kunci. Dalam konteks pengembangan sistem keamanan, ini menjaga kerahasiaan data."
+                    },
+                    {
+                        "user_id": "U25",
+                        "content": "Enkripsi adalah seperti menguncikan surat Anda dalam amplop. Hanya orang dengan kunci yang tepat yang dapat membukanya. Ini berlaku juga dalam pengembangan sistem keamanan."
+                    },
+                    {
+                        "user_id": "U26",
+                        "content": "Enkripsi adalah langkah penting dalam menjaga data tetap aman. Dengan mengubah data menjadi kode rahasia, enkripsi melindungi data dari akses yang tidak sah."
+                    },
+                    {
+                        "user_id": "U27",
+                        "content": "Enkripsi adalah teknik dasar dalam menjaga kerahasiaan data. Pengembangan sistem keamanan harus memasukkan enkripsi sebagai komponen utama dalam perlindungan data."
+                    },
+                    {
+                        "user_id": "U28",
+                        "content": "Enkripsi adalah seperti menguncikan pintu lemari berkas Anda. Ini melindungi data Anda dari mata-mata. Pengembangan sistem keamanan harus memahami nilai ini."
+                    },
+                    {
+                        "user_id": "U29",
+                        "content": "Enkripsi adalah kunci untuk menjaga kerahasiaan data dalam sistem keamanan. Tanpanya, data dapat dengan mudah diakses oleh pihak yang tidak berwenang."
+                    },
+                    {
+                        "user_id": "U30",
+                        "content": "Enkripsi adalah teknik yang membuat data tidak bisa dibaca oleh mata-mata digital. Ini merupakan fondasi pengembangan sistem keamanan yang kuat."
+                    }
+                ]
+            }
+        ]
+    }
 }

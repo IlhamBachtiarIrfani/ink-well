@@ -6,13 +6,15 @@ import {
     JoinColumn,
     ManyToOne,
     OneToMany,
+    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
 import { Exclude, Transform } from 'class-transformer';
 import { Exam } from 'src/exam/entities/exam.entity';
-import { QuestionKeyword } from './question-keyword';
+import { QuestionKeyword } from './question-keyword.entitiy';
 import { UserResponse } from 'src/user-response/entities/user-response.entity';
+import { QuestionScore } from 'src/scoring/entities/question-score.entity';
 
 // ! EXAM ENTITY
 @Entity({ name: 'question' })
@@ -60,4 +62,10 @@ export class Question {
         (userResponse: UserResponse) => userResponse.question,
     )
     response: UserResponse[];
+
+    @OneToOne(
+        () => QuestionScore,
+        (questionScore: QuestionScore) => questionScore.question,
+    )
+    score: QuestionScore;
 }

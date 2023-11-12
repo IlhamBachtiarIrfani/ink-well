@@ -4,12 +4,14 @@ import {
     DeleteDateColumn,
     Entity,
     OneToMany,
+    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { ExamAccess } from './exam-access.entity';
 import { Question } from 'src/question/entities/question.entity';
+import { ExamScore } from 'src/scoring/entities/exam_score.entity';
 
 // ! EXAM STATE ENUM
 export enum ExamState {
@@ -63,4 +65,7 @@ export class Exam {
 
     @OneToMany(() => Question, (question: Question) => question.exam)
     question: Question[];
+
+    @OneToOne(() => ExamScore, (examScore: ExamScore) => examScore.exam)
+    score: ExamScore;
 }
