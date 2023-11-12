@@ -4,6 +4,7 @@ from helper.db import MongoDBHandler
 from controller.zeroShotClassifier import ZeroShotClassifier
 from controller.sentenceSimilarityClassifier import SentenceSimilarityClassifier
 from controller.entropyWeight import EntropyWeight
+from controller.progressLogger import ProgressLogger
 from typing import List
 import time
 from datetime import datetime
@@ -32,14 +33,14 @@ mongo_handler = MongoDBHandler(
 )
 
 
-def _similarity_check(answer_key: str, response_list: List[str]):
-    model = SentenceSimilarityClassifier()
+def _similarity_check(answer_key: str, response_list: List[str], addProgress: ProgressLogger.addProgress):
+    model = SentenceSimilarityClassifier(addProgress)
     results = model.process([answer_key] + response_list)
     return results
 
 
-def _classification_check(keyword: List[str], response_list: List[str]):
-    model = ZeroShotClassifier()
+def _classification_check(keyword: List[str], response_list: List[str],  addProgress: ProgressLogger.addProgress):
+    model = ZeroShotClassifier(addProgress)
     results = model.process(response_list, keyword)
     return results
 
@@ -51,12 +52,17 @@ def _score_weight(score_dict):
     return result
 
 
-def _scoring_process(question: Question):
+def _scoring_process(question: Question, addProgress: ProgressLogger.addProgress):
     response_list = [item.content for item in question.response]
 
-    similarity_result = _similarity_check(question.answer_key, response_list)
+    similarity_result = _similarity_check(
+        question.answer_key, response_list, addProgress)
+
     classification_result = _classification_check(
-        question.keyword, response_list)
+        question.keyword, response_list, addProgress)
+
+    addProgress('Score Weighting', 0,
+                f'Beginning the calculation of the dynamic weight for the responses')
 
     label_score_dict = {}
     label_score_dict["Answer Key"] = similarity_result[0][1:]
@@ -87,15 +93,21 @@ def _scoring_process(question: Question):
             "detail_score": {key: float(value[index]) for key, value in label_score_dict.items()}
         })
 
+    addProgress('Score Weighting', 100,
+                f'Finishing the calculation of the dynamic weight for the responses')
+
     json_data = json.dumps(question_scoring_data, indent=4)
     return json_data
 
 
-def _process_question(question):
+def _process_question(question, addProgress: ProgressLogger.addProgress):
     start_time = time.time()
-    json_data = _scoring_process(question)
+
+    json_data = _scoring_process(question, addProgress)
+
     end_time = time.time()
     elapsed_time = end_time - start_time
+
     data = {
         "data": json.loads(json_data),
         "start_time": datetime.fromtimestamp(start_time),
@@ -103,14 +115,20 @@ def _process_question(question):
         "elapsed_time": elapsed_time
     }
     mongo_handler.insert_document("ml-process-log", data)
+
     print(f"Time taken: {elapsed_time} seconds")
     print()
+
     return data
 
 
 def process_exam(data):
     try:
         exam_data = Exam(**data)
+        progressLogger = ProgressLogger(exam_data.id)
+
+        progressLogger.addProgress(
+            'All', 0, 'Preparing response data.')
 
         start_time = time.time()
         mongo_handler.insert_document("ml-request-log", {
@@ -128,17 +146,29 @@ def process_exam(data):
         result_data = []
 
         for index, question in enumerate(question_list):
+            progressLogger.addProgress(
+                'All', index / question_len * 100, f'Scoring question responses, on question {index+1} of {question_len}.')
+
             print(f"--- Scoring per Question - {index}/{question_len} ---")
 
-            result = _process_question(question)
+            if (len(question.response) == 0):
+                continue
+
+            result = _process_question(question, progressLogger.addProgress)
 
             result_data.append(result)
+
+            progressLogger.addProgress(
+                'All', (index+1) / question_len * 100, f'Scoring for question {index+1} is done.')
 
         end_time = time.time()
 
         total_elapsed_time = end_time - start_time
         print(f"Batch time taken: {total_elapsed_time} seconds")
         print("===== Finish Processing Exam Batch =====")
+
+        progressLogger.addProgress(
+            'Completed', 100, 'Quiz scoring is completed')
 
         mongo_handler.insert_document("ml-batch-log", {
             "start_time": datetime.fromtimestamp(start_time),

@@ -5,14 +5,17 @@ from typing import List
 from dotenv import load_dotenv
 import os
 from helper.threshold import calc_threshold
+from controller.progressLogger import ProgressLogger
+import concurrent.futures
 
 load_dotenv()
 
-ZERO_SHOT_CLASSIFICATION_THREAD = int(os.getenv('ZERO_SHOT_CLASSIFICATION_THREAD'))
+ZERO_SHOT_CLASSIFICATION_THREAD = int(
+    os.getenv('ZERO_SHOT_CLASSIFICATION_THREAD'))
 
 
 class ZeroShotClassifier:
-    def __init__(self):
+    def __init__(self, addProgress: ProgressLogger.addProgress):
         # INIT ZERO SHOT CLASSIFICATION MODEL
         model_name = "./model/fine-tuned-model"
         tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -21,6 +24,7 @@ class ZeroShotClassifier:
             model=model_name,
             tokenizer=tokenizer
         )
+        self.addProgress = addProgress
 
     def process_sequence(self, sequence, candidate_labels):
         # PROCESS CLASSIFIER
@@ -34,22 +38,32 @@ class ZeroShotClassifier:
         ]
         return result
 
-    def process(
-            self,
-            sequences: List[str],
-            candidate_labels: List[str], num_threads=ZERO_SHOT_CLASSIFICATION_THREAD
-    ):
-        # DO MULTI THREAD AND ADD PROGRESS BAR
-        with ThreadPoolExecutor(max_workers=num_threads) as executor:
-            results = list(
-                tqdm(
-                    executor.map(
-                        self.process_sequence,
-                        sequences,
-                        [candidate_labels]*len(sequences)
-                    ),
-                    total=len(sequences),
-                    desc="Classification")
-            )
+    def update_progress_bar(self, value, done, total):
+        self.addProgress('Keyword Classification', value * 100,
+                         f'Finish processing the classification of the response, part {done} out of {total}.')
 
-        return results
+    def process(self,
+                sequences: List[str],
+                candidate_labels: List[str], num_threads=ZERO_SHOT_CLASSIFICATION_THREAD):
+        self.addProgress('Keyword Classification', 0,
+                         f'Beginning the process of checking the response using keyword classification.')
+        
+        with concurrent.futures.ThreadPoolExecutor(max_workers=num_threads) as executor:
+            pbar = tqdm(total=len(sequences), desc="Classification")
+            results = []
+            for result in executor.map(
+                self.process_sequence,
+                sequences,
+                [candidate_labels]*len(sequences)
+            ):
+                results.append(result)
+                pbar.update()
+                progress = pbar.n / pbar.total  # calculate progress as a fraction
+                # update the database with the current progress
+                self.update_progress_bar(progress, len(results), len(sequences))
+            pbar.close()
+
+        
+        self.addProgress('Keyword Classification', 100,
+                         f'Finishing the process of checking the response using keyword classification.')
+        return results  # return the results

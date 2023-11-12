@@ -6,6 +6,7 @@ from tqdm import tqdm
 from dotenv import load_dotenv
 import os
 from helper.threshold import calc_threshold
+from controller.progressLogger import ProgressLogger
 
 load_dotenv()
 
@@ -13,39 +14,41 @@ SENTENCE_SIMILARITY_THREAD = int(os.getenv('SENTENCE_SIMILARITY_THREAD'))
 
 
 class SentenceSimilarityClassifier:
-    def __init__(self):
+    def __init__(self, addProgress: ProgressLogger.addProgress):
         # INIT SENTENCE SIMILARITY MODEL
         self.model = SentenceTransformer(
             './model/full-similarity-fine-tuned-model')
+        self.addProgress = addProgress
 
     def encode_sentence(self, sentence):
         # DECODE SENTENCE
         return self.model.encode([sentence])[0]
 
-    def encode_with_progress_bar(
-        self,
-            sentences: List[str],
-            num_threads=SENTENCE_SIMILARITY_THREAD
-    ):
-        # DO MULTI THREAD AND ADD PROGRESS BAR
-        with concurrent.futures.ThreadPoolExecutor(max_workers=num_threads) as executor:
-            embeddings = list(
-                tqdm(
-                    executor.map(
-                        self.encode_sentence,
-                        sentences
-                    ),
-                    total=len(sentences),
-                    desc="Similarity"
-                )
-            )
+    def update_progress_bar(self, value, done, total):
+        self.addProgress('Answer Key Similarity', value * 100,
+                         f'Finish processing part number {done} out of a total of {total} parts for the response embedding.')
 
-        return embeddings
+    def encode_with_progress_bar(self, sentences, num_threads=SENTENCE_SIMILARITY_THREAD):
+        with concurrent.futures.ThreadPoolExecutor(max_workers=num_threads) as executor:
+            pbar = tqdm(total=len(sentences), desc="Similarity")
+            results = []
+            for result in executor.map(self.encode_sentence, sentences):
+                results.append(result)
+                pbar.update()
+                progress = pbar.n / pbar.total  # calculate progress as a fraction
+                self.update_progress_bar(progress, len(results), len(sentences))  # update the database with the current progress
+            pbar.close()
+        return results  # return the results
 
     def process(self, sentences: List[str]):
+        self.addProgress('Answer Key Similarity', 0,
+                         f'Beginning the process of checking the similarity between the response and the answer key.')
+
         # START SENTENCE EMBEDDING
         embeddings = self.encode_with_progress_bar(sentences)
 
+        self.addProgress('Answer Key Similarity', 100,
+                         f'Begin the process of calculating the cosine similarity.')
         # CHECK SENTENCE SIMILARITY USING COSINE
         similarity_matrix = cosine_similarity(embeddings)
 
@@ -55,5 +58,8 @@ class SentenceSimilarityClassifier:
                 value = similarity_matrix[i][j]
                 value = calc_threshold(value, bottom_value=0.4, top_value=0.75)
                 similarity_matrix[i][j] = value
+
+        self.addProgress('Answer Key Similarity', 100,
+                         f'Finishing the process of checking the similarity between the response and the answer key.')
 
         return similarity_matrix

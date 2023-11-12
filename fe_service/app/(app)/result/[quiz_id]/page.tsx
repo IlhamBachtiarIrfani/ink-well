@@ -5,8 +5,14 @@ import Overview from './overview';
 import ScoreTable from './score_table';
 import { faker } from '@faker-js/faker'
 import BoxPlotChart from '@/components/chart/box-plot.chart';
+import Progress from './progress';
+
+const isInProgress = true;
 
 export default function Page() {
+
+    if (isInProgress) return <Progress />
+
     return (
         <main className='container max-w-7xl px-5 mx-auto flex flex-col py-8 gap-8'>
             <Overview />

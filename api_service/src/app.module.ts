@@ -12,6 +12,7 @@ import { ExamModule } from './exam/exam.module';
 import { QuestionModule } from './question/question.module';
 import { UserResponseModule } from './user-response/user-response.module';
 import { EssayWebsocketModule } from './essay-websocket/essay-websocket.module';
+import { ScoringModule } from './scoring/scoring.module';
 
 @Module({
     imports: [
@@ -22,6 +23,7 @@ import { EssayWebsocketModule } from './essay-websocket/essay-websocket.module';
         QuestionModule,
         UserResponseModule,
         EssayWebsocketModule,
+        ScoringModule,
     ],
     controllers: [AppController],
     providers: [

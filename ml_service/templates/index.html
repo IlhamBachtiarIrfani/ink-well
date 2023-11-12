@@ -1,0 +1,68 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			http-equiv="X-UA-Compatible"
+			content="IE=edge" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0" />
+		<title>Flask SSE Example</title>
+	</head>
+	<style>
+		#sse-data-detailed {
+			display: flex;
+			flex-direction: column-reverse;
+		}
+
+		.progress-item-container {
+			display: flex;
+			gap: 1rem;
+		}
+
+		#progress-data {
+			display: flex;
+			gap: 1rem;
+			background-color: red;
+		}
+	</style>
+	<body>
+		<h1>Server-Sent Events Example</h1>
+		<div id="progress-data"></div>
+		<div id="sse-data-detailed"></div>
+
+		<script>
+			var source = new EventSource('/subscribe/E00004');
+
+			source.onmessage = function (event) {
+				var data = JSON.parse(event.data);
+
+				// Format the JSON data
+				var formattedData = `
+					<p><b>${data.data.progress_percent}%</b></p>
+					<p>${data.data.progress_type}</p>
+                	<p>${data.data.progress_detail}</p>
+				`;
+
+				// Create a new div element
+				var newDiv = document.createElement('div');
+				newDiv.classList.add('progress-item-container');
+
+				// Set the content of the new div
+				newDiv.innerHTML = formattedData;
+
+				// Append the new div as a child to sse-data
+				document
+					.getElementById('sse-data-detailed')
+					.appendChild(newDiv);
+
+				if (data.data.progress_type === 'All') {
+					document.getElementById('progress-data').innerHTML =
+						formattedData;
+				}
+			};
+		</script>
+	</body>
+</html>
