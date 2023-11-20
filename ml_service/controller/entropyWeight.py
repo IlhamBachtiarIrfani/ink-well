@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
 
-MIN_ANSWER_KEY_WEIGHT = 0.4
-MAX_ANSWER_KEY_WEIGHT = 0.95
-SCORE_SMOOTHING_ALPHA = 0.01
+MIN_ANSWER_KEY_WEIGHT = 0.5
+MAX_ANSWER_KEY_WEIGHT = 0.9
+SCORE_SMOOTHING_ALPHA = 0.04
 
 class EntropyWeight:
     def calculate(self, criteria_data):

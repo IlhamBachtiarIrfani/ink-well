@@ -88,13 +88,16 @@ def _scoring_process(question: Question, addProgress: ProgressLogger.addProgress
     q2_score = np.percentile(scores, 50)
     q3_score = np.percentile(scores, 75)
 
-    bins = np.arange(0, 1.1, 0.1)
-    data_bin = pd.cut(scores, bins)
+    bins = np.arange(0, 110, 10)
+    data_bin = pd.cut(scores*100, bins,include_lowest=True)
     bin_counts = pd.value_counts(data_bin, sort=False)
+    formatted_labels = [f"{int(start)} - {int(end)}" if pd.notna(start) else f"{int(end)} and below" for start, end in zip(bins[:-1], bins[1:])]
 
+    # Assign the formatted labels to the bin_counts
+    bin_counts.index = formatted_labels
+
+    # Convert bin_counts to a dictionary
     bin_counts_dict = bin_counts.to_dict()
-    bin_counts_dict = {str(k).replace(
-        ", ", " - ").replace("(", "").replace("]", ""): v for k, v in bin_counts_dict.items()}
 
     question_scoring_data = {
         "id": question.id,
@@ -227,13 +230,16 @@ def process_exam(data):
         q2_score = np.percentile(finalScoreNpList, 50)
         q3_score = np.percentile(finalScoreNpList, 75)
 
-        bins = np.arange(0, 1.1, 0.1)
-        data_bin = pd.cut(finalScoreNpList, bins)
+        bins = np.arange(0, 110, 10)
+        data_bin = pd.cut(finalScoreNpList * 100, bins, include_lowest=True)
         bin_counts = pd.value_counts(data_bin, sort=False)
+        formatted_labels = [f"{int(start)} - {int(end)}" if pd.notna(start) else f"{int(end)} and below" for start, end in zip(bins[:-1], bins[1:])]
 
+        # Assign the formatted labels to the bin_counts
+        bin_counts.index = formatted_labels
+
+        # Convert bin_counts to a dictionary
         bin_counts_dict = bin_counts.to_dict()
-        bin_counts_dict = {str(k).replace(
-            ", ", " - ").replace("(", "").replace("]", ""): v for k, v in bin_counts_dict.items()}
 
         totalPassData = len(passStatusList)
         totalTruePassData = sum(passStatusList)

@@ -34,7 +34,7 @@ export default function LoginForm() {
         setErrorData(null);
 
         try {
-            const response = await fetch('api/user/login', requestOptions);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}user/login/`, requestOptions);
 
             const data = await response.json();
 

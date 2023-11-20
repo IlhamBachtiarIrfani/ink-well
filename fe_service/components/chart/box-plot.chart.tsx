@@ -49,7 +49,7 @@ const minMaxPathPlugin: Plugin<'bar', PluginOptions> = {
                     const maxPosition = yScale.getPixelForValue(data[3])
 
                     // Calculate the x and y coordinates for the rectangle
-                    const width = Math.min(element.width, 40) / 2;
+                    const width = Math.min(element.width, 24) / 2;
 
                     // Set the stroke style for the rectangle
                     ctx.strokeStyle = options.rectangleColor || 'black';
@@ -112,7 +112,7 @@ const avgPathPlugin: Plugin<'bar', PluginOptions> = {
                     // Draw the top border of the rectangle
                     ctx.beginPath();
                     ctx.setLineDash([]);
-                    ctx.lineCap = 'square';
+                    ctx.lineCap = 'round';
                     ctx.moveTo(element.x - width, avgPosition);
                     ctx.lineTo(element.x + width, avgPosition);
                     ctx.stroke();
@@ -124,6 +124,7 @@ const avgPathPlugin: Plugin<'bar', PluginOptions> = {
 
 interface BoxPlotChartProps {
     labels: string[]
+    data: number[][]
 }
 
 export default function BoxPlotChart(props: BoxPlotChartProps) {
@@ -180,9 +181,7 @@ export default function BoxPlotChart(props: BoxPlotChartProps) {
                         min: 0,
                         max: 100,
                         ticks: {
-                            font: {
-                                family: "'__Nunito_3dc409', '__Nunito_Fallback_3dc409', 'Nunito', sans-serif",
-                            },
+                            display: false,
                         }
                     },
                 },
@@ -192,20 +191,8 @@ export default function BoxPlotChart(props: BoxPlotChartProps) {
                 datasets: [
                     {
                         label: 'Distribution Data',
-                        data: props.labels.map(() => {
-                            const q1 = faker.number.float({ min: 10, max: 60 })
-                            const q3 = faker.number.float({ min: q1 + 10, max: 90 })
-
-
-                            const min = faker.number.float({ min: 0, max: q1 - 5 })
-                            const max = faker.number.float({ min: q3 + 5, max: 100 })
-
-                            const q2 = faker.number.float({ min: q1 + 2, max: q3 - 2 })
-                            return [
-                                q1, q3, min, max, q2
-                            ]
-                        }),
-                        backgroundColor: 'rgba(75, 192, 192, 1)',
+                        data: props.data,
+                        backgroundColor: '#FF7C73',
                         borderWidth: 4,
                         borderColor: 'transparent',
                         borderRadius: 12,

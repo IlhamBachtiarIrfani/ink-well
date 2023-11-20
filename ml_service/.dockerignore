@@ -1,0 +1,25 @@
+# Ignore Python bytecode files
+__pycache__/
+
+# Ignore system-specific files
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+
+# Ignore common development and editor files
+*.bak
+*.swp
+.vscode/
+.idea/
+
+# Ignore local development files and directories
+venv/
+*.log
+
+# Ignore test and documentation files
+tests/
+docs/
+
+# Ignore phyton model
+./model/*

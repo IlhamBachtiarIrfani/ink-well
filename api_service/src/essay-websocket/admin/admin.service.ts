@@ -56,6 +56,7 @@ export class AdminService {
             }
 
             examData.state = ExamState.FINISHED;
+            examData.join_code = null;
             await this.examRepository.save(examData);
 
             await this.scoringService.processScoring(examId);

@@ -24,7 +24,7 @@ export default function JoinQuizClient(props: JoinQuizClientProps) {
     const [remainingTime, setRemainingTime] = useState(0)
 
     useEffect(() => {
-        const socket = io(`ws://localhost:3000/participant`, {
+        const socket = io(`${process.env.NEXT_PUBLIC_WEB_SOCKET_BASE_URL}participant`, {
             extraHeaders: {
                 authorization: 'Bearer ' + props.token,
                 quiz_id: props.quidData.id,

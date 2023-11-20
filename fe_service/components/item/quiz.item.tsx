@@ -19,7 +19,7 @@ export default function QuizItem(props: QuizItemProps) {
       case QuizState.STARTED:
         return <OnGoingState id={props.item.id} />
       case QuizState.FINISHED:
-        return <FinishState />
+        return <FinishState id={props.item.id} />
       case QuizState.DRAFT:
       default:
         return <DraftState id={props.item.id} />
@@ -125,13 +125,21 @@ function OnGoingState(props: OnGoingStateProps) {
   )
 }
 
-function FinishState() {
+interface FinishStateProps {
+  id: string
+}
+
+function FinishState(props: FinishStateProps) {
+  const router = useRouter()
   return (
     <div className='relative flex items-center'>
       <ButtonComponent
         type={'DARK_OUTLINED'}
         title='See Result'
         icon={<span className='material-symbols-rounded'>query_stats</span>}
+        onClick={() => {
+          router.push('result/' + props.id)
+        }}
       />
     </div>
   )

@@ -24,7 +24,7 @@ export class CreateExamDto {
 
     @ApiProperty()
     @IsNumber()
-    @Min(5)
+    @Min(1)
     @IsNotEmpty()
     @Type(() => Number)
     duration_in_minutes: number;

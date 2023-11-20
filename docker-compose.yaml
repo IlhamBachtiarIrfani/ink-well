@@ -10,8 +10,6 @@ services:
             - ./data/mongo-data:/data/db
         ports:
             - '${MONGODB_PORT}'
-        networks:
-            - skripsi-network
         restart: unless-stopped
     skripsi-mariadb:
         image: mariadb:11
@@ -23,20 +21,17 @@ services:
             - '${MARIADB_PORT}'
         volumes:
             - ./data/mariadb-data:/var/lib/mysql
-        networks:
-            - skripsi-network
         restart: unless-stopped
     skripsi-rabbitmq:
-        image: rabbitmq:3-alpine
+        image: rabbitmq:3-management-alpine
         environment:
             RABBITMQ_DEFAULT_USER: user
             RABBITMQ_DEFAULT_PASS: password
         ports:
             - '${RABIITMQ_PORT}'
+            - 15672:15672
         volumes:
             - ./data/rabbitmq-data:/var/lib/rabbitmq
-        networks:
-            - skripsi-network
         restart: unless-stopped
     skripsi-redis:
         image: redis:7-alpine
@@ -49,10 +44,9 @@ services:
             - ./data/redis-data:/var/lib/rabbitmq
             - ./data/redis-data:/root/redis
             - ./data/redis-dataredis.conf:/usr/local/etc/redis/redis.conf
-        networks:
-            - skripsi-network
         restart: unless-stopped
 
 networks:
-    skripsi-network:
-        driver: bridge
+  default:
+    name: skripsi-network
+    external: true

@@ -1,4 +1,5 @@
 "use client"
+import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 
 interface ProgressListProps {
@@ -12,6 +13,8 @@ interface ProgressProps {
 }
 
 export default function Progress(props: ProgressProps) {
+    const router = useRouter()
+
     const [progressList, setProgressList] = useState<ProgressListProps[]>([])
     const [mainProgress, setMainProgress] = useState<ProgressListProps>({ progress_type: 'All', progress_detail: 'Preparing...', progress_percent: 0 })
 
@@ -20,7 +23,7 @@ export default function Progress(props: ProgressProps) {
     const detailProgressContainer = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        const source = new EventSource('http://localhost:3000/scoring/progress/' + props.exam_id);
+        const source = new EventSource(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}scoring/progress/` + props.exam_id);
 
         source.onmessage = (event) => {
             const data = JSON.parse(event.data);
@@ -33,6 +36,10 @@ export default function Progress(props: ProgressProps) {
 
             if (main_data.progress_type == 'All') {
                 setMainProgress(main_data)
+
+                if (main_data.progress_percent >= 100) {
+                    router.refresh()
+                }
             }
         }
 

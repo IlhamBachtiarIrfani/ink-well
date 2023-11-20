@@ -11,7 +11,7 @@ import {
 import { Exclude } from 'class-transformer';
 import { Exam } from 'src/exam/entities/exam.entity';
 
-enum ExamScoreStatus {
+export enum ExamScoreStatus {
     ON_QUEUE = 'ON_QUEUE',
     ON_PROGRESS = 'ON_PROGRESS',
     DONE = 'DONE',

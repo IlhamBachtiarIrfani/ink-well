@@ -29,6 +29,7 @@ connection = pika.BlockingConnection(parameters)
 # ! ===== DEFAULT RABBIT MQ CHANNEL =====
 channel = connection.channel()
 channel.queue_declare(queue=RABBITMQ_QUEUE)
+channel.basic_qos(prefetch_count=1)
 
 def check_data_format(json_data):
     try:

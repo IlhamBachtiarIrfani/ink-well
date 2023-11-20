@@ -26,7 +26,7 @@ export default function WatchQuizClient(props: WatchQuizClientProps) {
     const [remainingTime, setRemainingTime] = useState(0)
 
     useEffect(() => {
-        const socket = io(`ws://localhost:3000/admin`, {
+        const socket = io(`${process.env.NEXT_PUBLIC_WEB_SOCKET_BASE_URL}admin`, {
             extraHeaders: {
                 authorization: 'Bearer ' + props.token,
                 quiz_id: props.quizData.id,

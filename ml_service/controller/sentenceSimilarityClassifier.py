@@ -7,18 +7,25 @@ from dotenv import load_dotenv
 import os
 from helper.threshold import calc_threshold
 from controller.progressLogger import ProgressLogger
+from bs4 import BeautifulSoup
 
 load_dotenv()
 
 SENTENCE_SIMILARITY_THREAD = int(os.getenv('SENTENCE_SIMILARITY_THREAD'))
+BOTTOM_THRESHOLD = .4
+TOP_THRESHOLD = .8
 
 
 class SentenceSimilarityClassifier:
     def __init__(self, addProgress: ProgressLogger.addProgress):
         # INIT SENTENCE SIMILARITY MODEL
         self.model = SentenceTransformer(
-            './model/full-similarity-fine-tuned-model')
+            './model/sentence-similarity-fine-tuned-model')
         self.addProgress = addProgress
+
+    def remove_html_tags(self, text):
+        soup = BeautifulSoup(text, "html.parser")
+        return soup.get_text()
 
     def encode_sentence(self, sentence):
         # DECODE SENTENCE
@@ -43,6 +50,8 @@ class SentenceSimilarityClassifier:
     def process(self, sentences: List[str]):
         self.addProgress('Answer Key Similarity', 0,
                          f'Beginning the process of checking the similarity between the response and the answer key.')
+        
+        sentences = [self.remove_html_tags(item) for item in sentences]
 
         # START SENTENCE EMBEDDING
         embeddings = self.encode_with_progress_bar(sentences)
@@ -56,7 +65,7 @@ class SentenceSimilarityClassifier:
         for i in range(len(similarity_matrix)):
             for j in range(len(similarity_matrix[i])):
                 value = similarity_matrix[i][j]
-                value = calc_threshold(value, bottom_value=0.4, top_value=0.75)
+                value = calc_threshold(value, bottom_value=BOTTOM_THRESHOLD, top_value=TOP_THRESHOLD)
                 similarity_matrix[i][j] = value
 
         self.addProgress('Answer Key Similarity', 100,

@@ -1,0 +1,78 @@
+/data/
+
+
+/ml_service/__pycache__
+/ml_service/**/__pycache__
+/ml_service/logs
+/ml_service/model
+
+# compiled output
+/api_service/dist
+/api_service/node_modules
+
+# Logs
+/api_service/logs
+/api_service/*.log
+/api_service/npm-debug.log*
+/api_service/pnpm-debug.log*
+/api_service/yarn-debug.log*
+/api_service/yarn-error.log*
+/api_service/lerna-debug.log*
+
+# OS
+/api_service/.DS_Store
+
+# Tests
+/api_service/coverage
+/api_service/.nyc_output
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# dependencies
+/fe_service/node_modules
+/fe_service/.pnp
+/fe_service/.pnp.js
+
+# testing
+/fe_service/coverage
+
+# next.js
+/fe_service/.next/
+/fe_service/out/
+
+# production
+/fe_service/build
+
+# misc
+/fe_service/.DS_Store
+/fe_service/*.pem
+
+# debug
+/fe_service/npm-debug.log*
+/fe_service/yarn-debug.log*
+/fe_service/yarn-error.log*
+
+# local env files
+/fe_service/.env*.local
+
+# vercel
+/fe_service/.vercel
+
+# typescript
+/fe_service/*.tsbuildinfo
+/fe_service/next-env.d.ts

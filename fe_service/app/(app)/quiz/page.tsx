@@ -9,24 +9,30 @@ import Custom from './custom';
 import BreadcrumbsComponent from '@/components/common/breadcrumbs';
 
 async function getData(userData: UserData) {
-    const requestOptions: RequestInit = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': 'Bearer ' + userData?.token
-        },
+    try {
 
-    };
+        const requestOptions: RequestInit = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Bearer ' + userData?.token
+            },
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}exam`, requestOptions);
-    const data = await response.json();
+        };
 
-    if (!response.ok) {
-        throw new Error(data.message)
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}exam`, requestOptions);
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message)
+        }
+
+        const examData: QuizEntity[] = data.data;
+        return examData;
+    } catch (error: any) {
+        console.error(error);
+        throw new Error("Error")
     }
-
-    const examData: QuizEntity[] = data.data;
-    return examData;
 }
 
 export default async function QuizPage() {
@@ -52,7 +58,7 @@ export default async function QuizPage() {
             />
             <Custom />
 
-                {data.length == 0 && <p>You don&apos;t have quiz yet! </p>}
+            {data.length == 0 && <p>You don&apos;t have quiz yet! </p>}
 
             {
                 data.map((item) => {

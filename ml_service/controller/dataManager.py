@@ -2,12 +2,17 @@ from sqlalchemy import Column, String, Double, Boolean, create_engine
 from sqlalchemy.sql import text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from dotenv import load_dotenv
+import os
 
-username = 'root'
-password = 'rahasia'
-host = 'localhost'
-port = 14002
-database_name = 'essay_scoring'
+load_dotenv()
+
+
+username = os.getenv('DB_USER')
+password = os.getenv('DB_PASSWORD')
+host = os.getenv('DB_HOST')
+port = int(os.getenv('DB_PORT'))
+database_name = os.getenv('DB_NAME')
 
 
 Base = declarative_base()
@@ -146,7 +151,8 @@ class DataManager:
                     q.id, 
                     JSON_OBJECT(
                         'score',(q.`point` * rs.final_score),
-                        'max_point', q.`point`
+                        'percentage',(rs.final_score),
+                        'detail', rs.detail_score
                     )
                 ) AS detail_score,
                 SUM(q.`point`*rs.final_score) / SUM(q.`point`) AS score_percentage,
@@ -158,7 +164,7 @@ class DataManager:
                 ON q.id = r.question_id
             LEFT JOIN response_score rs
                 ON r.user_id = rs.user_id AND r.question_id = rs.question_id
-            WHERE e.id = :exam_id
+            WHERE e.id = 'f797629f-ee2e-49d7-847a-71f055f10b51'
             GROUP BY e.id, r.user_id
             ON DUPLICATE KEY UPDATE 
                 final_score = VALUES(final_score),

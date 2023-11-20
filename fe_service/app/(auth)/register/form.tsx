@@ -40,7 +40,7 @@ export default function RegisterForm() {
         setErrorData(null);
 
         try {
-            const response = await fetch('api/user/register', requestOptions);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}user/register/`, requestOptions);
 
             const data = await response.json();
 

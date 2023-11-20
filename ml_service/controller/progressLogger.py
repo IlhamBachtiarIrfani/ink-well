@@ -1,9 +1,16 @@
 import json
 import redis
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+redisHost = os.getenv('REDIS_HOST')
+redisPort = int(os.getenv('REDIS_PORT'))
 
 r = redis.Redis(
-    host='localhost',
-    port=6379,
+    host=redisHost,
+    port=redisPort,
 )
 
 class ProgressLogger:

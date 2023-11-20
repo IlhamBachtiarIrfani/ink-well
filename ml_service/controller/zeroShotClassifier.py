@@ -7,17 +7,20 @@ import os
 from helper.threshold import calc_threshold
 from controller.progressLogger import ProgressLogger
 import concurrent.futures
+from bs4 import BeautifulSoup
 
 load_dotenv()
 
 ZERO_SHOT_CLASSIFICATION_THREAD = int(
     os.getenv('ZERO_SHOT_CLASSIFICATION_THREAD'))
+BOTTOM_THRESHOLD = .5
+TOP_THRESHOLD = .9
 
 
 class ZeroShotClassifier:
     def __init__(self, addProgress: ProgressLogger.addProgress):
         # INIT ZERO SHOT CLASSIFICATION MODEL
-        model_name = "./model/fine-tuned-model"
+        model_name = "./model/old-zero-shot-classification-model-base"
         tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.classifier = pipeline(
             "zero-shot-classification",
@@ -26,14 +29,22 @@ class ZeroShotClassifier:
         )
         self.addProgress = addProgress
 
+    def remove_html_tags(self, text):
+        soup = BeautifulSoup(text, "html.parser")
+        return soup.get_text()
+
     def process_sequence(self, sequence, candidate_labels):
+        if len(sequence) < 30:
+            # If so, return a score of 0 without processing
+            return {'scores': [0] * len(candidate_labels), 'labels': candidate_labels}
+
         # PROCESS CLASSIFIER
         result = self.classifier(sequence, candidate_labels, multi_label=True)
 
         # SET THE SCORES TO CURRENT THRESHOLD
         result['scores'] = [
             calc_threshold(
-                score, bottom_value=0.4, top_value=0.9
+                score, bottom_value=BOTTOM_THRESHOLD, top_value=TOP_THRESHOLD
             ) for score in result['scores']
         ]
         return result
@@ -47,7 +58,9 @@ class ZeroShotClassifier:
                 candidate_labels: List[str], num_threads=ZERO_SHOT_CLASSIFICATION_THREAD):
         self.addProgress('Keyword Classification', 0,
                          f'Beginning the process of checking the response using keyword classification.')
-        
+
+        sequences = [self.remove_html_tags(item) for item in sequences]
+
         with concurrent.futures.ThreadPoolExecutor(max_workers=num_threads) as executor:
             pbar = tqdm(total=len(sequences), desc="Classification")
             results = []
@@ -60,10 +73,10 @@ class ZeroShotClassifier:
                 pbar.update()
                 progress = pbar.n / pbar.total  # calculate progress as a fraction
                 # update the database with the current progress
-                self.update_progress_bar(progress, len(results), len(sequences))
+                self.update_progress_bar(
+                    progress, len(results), len(sequences))
             pbar.close()
 
-        
         self.addProgress('Keyword Classification', 100,
                          f'Finishing the process of checking the response using keyword classification.')
         return results  # return the results
