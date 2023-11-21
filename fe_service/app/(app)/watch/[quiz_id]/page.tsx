@@ -5,34 +5,37 @@ import { QuizEntity } from '@/entities/quiz.entity';
 import { UserData } from '@/entities/user.entity';
 import { notFound } from 'next/navigation';
 import React from 'react'
-import WaitingQuiz from './waiting';
-import ListUserQuiz from './list-user';
 import WatchQuizClient from './client';
 
 async function getData(userData: UserData, id: string) {
-    const requestOptions: RequestInit = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': 'Bearer ' + userData.token
-        },
-    };
+    try {
+        const requestOptions: RequestInit = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Bearer ' + userData.token
+            },
+        };
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}exam/${id}/activate`, requestOptions);
-    const data = await response.json();
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}exam/${id}/activate`, requestOptions);
+        const data = await response.json();
 
-    if (response.status == 400) {
-        return notFound()
-    } else if (!response.ok) {
-        throw new Error(data.message);
+        if (response.status == 400) {
+            return notFound()
+        } else if (!response.ok) {
+            throw new Error(data.message);
+        }
+
+        if (!data.data) {
+            return notFound()
+        }
+
+        const quizData: QuizEntity = data.data;
+        return quizData;
+    } catch (error: any) {
+        console.error(error);
+        throw new Error("Error")
     }
-
-    if (!data.data) {
-        return notFound()
-    }
-
-    const quizData: QuizEntity = data.data;
-    return quizData;
 }
 
 interface WatchQuizPageProps {
