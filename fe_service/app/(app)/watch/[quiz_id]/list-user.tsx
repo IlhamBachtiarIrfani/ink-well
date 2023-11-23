@@ -11,6 +11,7 @@ export default function ListUserQuiz(props: ListUserQuizProps) {
         <div className='grid-profile gap-5'>
             {
                 props.data.map((item) => {
+                    if (item.type != "PARTICIPANT") return;
                     return <UserItemView key={item.user_id} item={item} />
                 })
             }

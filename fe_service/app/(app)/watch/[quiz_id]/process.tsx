@@ -16,7 +16,7 @@ interface ProcessQuizProps {
     userCount: number,
     userData: UserData,
     startQuiz: () => void,
-    remainingTime: number
+    finishTime: Date
 }
 
 export default function ProcessQuiz(props: ProcessQuizProps) {
@@ -92,7 +92,7 @@ export default function ProcessQuiz(props: ProcessQuizProps) {
                 <h1 className='font-black text-3xl text-center'>{props.data.title}</h1>
 
                 <div className='flex flex-col items-center'>
-                    <CountdownComponent remainingTime={props.remainingTime} isBig />
+                    <CountdownComponent finishTime={props.finishTime} isBig />
 
                     <Link href={quizLink} target='_blank' className='text-center mt-3 text-red-400 underline'>
                         {quizLink}

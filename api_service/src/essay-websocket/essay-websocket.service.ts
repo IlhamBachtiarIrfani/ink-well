@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { differenceInSeconds } from 'date-fns';
+import { addMinutes } from 'date-fns';
 import {
     ExamAccess,
     ExamAccessType,
@@ -21,13 +21,13 @@ export class EssayWebsocketService {
         const data = await this.examRepository.findOneOrFail({
             where: { id: quiz_id },
         });
-        const diffTime = differenceInSeconds(new Date(), data.started_at);
 
-        const remaining_time = Math.max(
-            data.duration_in_minutes * 60 - diffTime,
-            0,
+        const finish_time = addMinutes(
+            data.started_at,
+            data.duration_in_minutes,
         );
-        return { data, remaining_time };
+
+        return { data, finish_time };
     }
 
     async checkQuizId(

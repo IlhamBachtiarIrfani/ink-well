@@ -164,7 +164,7 @@ class DataManager:
                 ON q.id = r.question_id
             LEFT JOIN response_score rs
                 ON r.user_id = rs.user_id AND r.question_id = rs.question_id
-            WHERE e.id = 'f797629f-ee2e-49d7-847a-71f055f10b51'
+            WHERE e.id = :exam_id
             GROUP BY e.id, r.user_id
             ON DUPLICATE KEY UPDATE 
                 final_score = VALUES(final_score),

@@ -38,7 +38,6 @@ export default function ScoreDistribution(props: ScoreDistributionProps) {
 
     return (
         <div className='flex-1 relative p-10 bg-white border-b-4 border-black rounded-2xl flex flex-col gap-5 z-10 overflow-hidden '>
-            {/* <h1 className='text-xl mb-2 font-black'>Score Distribution</h1> */}
             <h1 className='text-5xl font-black'>Score Distribution</h1>
             <p className='text-gray-500 max-w-3xl'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptas libero odit dolor in eaque eius, expedita et at ut fuga minus asperiores dolore autem. Aliquid at illo doloribus minus.</p>
             <div className='flex-1 w-full aspect-[21/9] max-h-96'>

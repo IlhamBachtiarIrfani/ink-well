@@ -1,3 +1,5 @@
+print(" [*] Preparing... ")
+
 from dotenv import load_dotenv
 import os
 import pika
@@ -7,9 +9,8 @@ from controller.scoringController import process_exam
 import jsonschema
 from jsonschema import validate
 from helper.utils import SCORING_SCHEMA
+import threading
 
-
-print(" [*] Preparing... ")
 
 load_dotenv()
 
@@ -41,30 +42,34 @@ def check_data_format(json_data):
         print(e)
         return False
 
-# ! ===== QUEUE CALLBACK FUNCTION =====
-def callback(ch, method, properties, body):
+# ! ===== THREAD CALLBACK FUNCTION =====
+def thread_callback(ch, method, properties, body):
+    t = threading.Thread(target=process_message, args=(ch, method, properties, body))
+    t.start()
+
+def process_message(ch, method, properties, body):
     print(" [x] Scoring data received ")
-    # PROCESS THE AUTO SCORING
     json_obj = json.loads(body)
 
     is_valid = check_data_format(json_obj)
 
-    if (is_valid):
+    if is_valid:
         data = json_obj['data']
         process_exam(data)
-
 
 # ! ===== MAIN FUNCTION =====
 def main():
     channel.basic_consume(
         queue=RABBITMQ_QUEUE,
         auto_ack=True,
-        on_message_callback=callback
+        on_message_callback=thread_callback
     )
 
     print(' [*] Waiting for scoring data. To exit press CTRL+C')
-    channel.start_consuming()
-
+    try:
+        channel.start_consuming()
+    except KeyboardInterrupt:
+        channel.stop_consuming()
 
 if __name__ == "__main__":
     main()

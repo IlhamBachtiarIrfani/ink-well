@@ -33,6 +33,7 @@ function RankUser(props: RankUserProps) {
 
 interface ResultRankProps {
     data: any
+    title: string
 }
 
 export default function ResultRank(props: ResultRankProps) {
@@ -56,7 +57,7 @@ export default function ResultRank(props: ResultRankProps) {
                 priority
             />
 
-            <h1 className='text-4xl font-black mb-20'>Exam Name Is Very Long</h1>
+            <h1 className='text-4xl font-black mb-20'>{props.title}</h1>
 
             <div className='flex gap-10 -mb-16'>
                 <RankUser className='mt-10' data={props.data[1]} />

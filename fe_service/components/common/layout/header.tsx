@@ -9,6 +9,7 @@ import { UserData } from '@/entities/user.entity'
 import { deleteLoginCookies } from '@/app/action'
 import Link from 'next/link'
 import { useState } from 'react'
+import { useLayout } from './base.layout'
 
 
 interface HeaderComponentProps {
@@ -19,12 +20,14 @@ interface HeaderComponentProps {
 
 export default function HeaderComponent(props: HeaderComponentProps) {
     const router = useRouter()
+    const layout = useLayout()
 
     const [avatarDropdownShow, setAvatarDropdownShow] = useState(false)
 
     function onRequestLogout(event: React.MouseEvent) {
         event.preventDefault()
         deleteLoginCookies()
+        layout.setHeaderActions(null);
     }
 
     function onLogoClick(event: React.MouseEvent) {

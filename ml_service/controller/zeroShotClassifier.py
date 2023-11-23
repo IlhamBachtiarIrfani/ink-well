@@ -13,20 +13,22 @@ load_dotenv()
 
 ZERO_SHOT_CLASSIFICATION_THREAD = int(
     os.getenv('ZERO_SHOT_CLASSIFICATION_THREAD'))
-BOTTOM_THRESHOLD = .5
+BOTTOM_THRESHOLD = .3
 TOP_THRESHOLD = .9
+
+model_name = "./model/old-zero-shot-classification-model-base"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+classifier = pipeline(
+    "zero-shot-classification",
+    model=model_name,
+    tokenizer=tokenizer
+)
 
 
 class ZeroShotClassifier:
     def __init__(self, addProgress: ProgressLogger.addProgress):
         # INIT ZERO SHOT CLASSIFICATION MODEL
-        model_name = "./model/old-zero-shot-classification-model-base"
-        tokenizer = AutoTokenizer.from_pretrained(model_name)
-        self.classifier = pipeline(
-            "zero-shot-classification",
-            model=model_name,
-            tokenizer=tokenizer
-        )
+        
         self.addProgress = addProgress
 
     def remove_html_tags(self, text):
@@ -39,7 +41,7 @@ class ZeroShotClassifier:
             return {'scores': [0] * len(candidate_labels), 'labels': candidate_labels}
 
         # PROCESS CLASSIFIER
-        result = self.classifier(sequence, candidate_labels, multi_label=True)
+        result = classifier(sequence, candidate_labels, multi_label=True)
 
         # SET THE SCORES TO CURRENT THRESHOLD
         result['scores'] = [

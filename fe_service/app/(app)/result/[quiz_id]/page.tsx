@@ -62,7 +62,7 @@ export default async function Page(props: ResultQuizPageProps) {
     } else {
         return (
             <main className='container max-w-7xl px-5 mx-auto flex flex-col py-8 gap-8'>
-                <ResultRank data={data.exam_access} />
+                <ResultRank data={data.exam_access} title={data.title} />
 
                 <div className='flex gap-8'>
                     <PercentageCard title='Average Score' value={data.score.avgScore} />

@@ -3,6 +3,8 @@
 import React from 'react';
 import { getLoginCookies } from '@/app/action';
 import { UserData } from '@/entities/user.entity';
+import UserItem from './user.item';
+import Image from 'next/image';
 
 
 async function getData(userData: UserData, id: string, userId: string) {
@@ -38,25 +40,27 @@ export default async function Page(props: ResultQuizPageProps) {
 
     return (
         <main className='container max-w-7xl px-5 mx-auto flex flex-col py-8 gap-8'>
+            <div className='sticky left-0 right-0 top-28 z-50 flex gap-8 items-center bg-white p-10 py-8 rounded-2xl border-b-4 border-black'>
+                <div className='w-24 h-24 -m-4 select-none pointer-events-none group-hover:-rotate-12 group-hover:scale-110 transition-transform'>
+                    <Image
+                        src={'/avatar/' + data.user.photo_url}
+                        alt={`Avatar`}
+                        width={172}
+                        height={172}
+                    />
+                </div>
+                <div className='flex-1'>
+                    <p className='text-2xl font-black'>{data.user.name}</p>
+                    <p>{data.user.email}</p>
+                </div>
+                <p className='text-5xl font-black'>
+                    {data.score.final_score.toFixed(1)}
+                </p>
+            </div>
             {
-                data.exam.question.map((item: any) => {
+                data.exam.question.map((item: any, index: number) => {
                     return (
-                        <div
-                            key={item.id}
-                            className='relative p-10 bg-white border-b-4 border-black rounded-2xl flex flex-col gap-5 z-10 overflow-hidden'
-                        >
-                            <div
-                                className='rich-text-container'
-                                dangerouslySetInnerHTML={{ __html: item.content }}
-                            />
-
-                            <p>{(item.response.response_score.final_score * 100).toFixed(1)}%</p>
-
-                            <div
-                                className='rich-text-container'
-                                dangerouslySetInnerHTML={{ __html: item.response.content }}
-                            />
-                        </div>
+                        <UserItem key={item.id} item={item} index={index} />
                     )
                 })
             }

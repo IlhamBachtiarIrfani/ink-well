@@ -12,15 +12,16 @@ from bs4 import BeautifulSoup
 load_dotenv()
 
 SENTENCE_SIMILARITY_THREAD = int(os.getenv('SENTENCE_SIMILARITY_THREAD'))
-BOTTOM_THRESHOLD = .4
+BOTTOM_THRESHOLD = .5
 TOP_THRESHOLD = .8
+
+model = SentenceTransformer(
+    './model/sentence-similarity-fine-tuned-model')
 
 
 class SentenceSimilarityClassifier:
     def __init__(self, addProgress: ProgressLogger.addProgress):
         # INIT SENTENCE SIMILARITY MODEL
-        self.model = SentenceTransformer(
-            './model/sentence-similarity-fine-tuned-model')
         self.addProgress = addProgress
 
     def remove_html_tags(self, text):
@@ -29,7 +30,7 @@ class SentenceSimilarityClassifier:
 
     def encode_sentence(self, sentence):
         # DECODE SENTENCE
-        return self.model.encode([sentence])[0]
+        return model.encode([sentence])[0]
 
     def update_progress_bar(self, value, done, total):
         self.addProgress('Answer Key Similarity', value * 100,

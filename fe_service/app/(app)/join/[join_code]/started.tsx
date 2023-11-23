@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 
 interface QuizStartedStateView {
   questionData: QuestionEntity[],
-  remainingTime: number,
+  finishTime: Date,
   onResponseChange: (question_id: string, response: string) => void
   onStopTyping: (response: string, question_id: string) => void
   onStartTyping: (question_id: string) => void
@@ -42,7 +42,7 @@ export default function QuizStartedStateView(props: QuizStartedStateView) {
         questionData={props.questionData}
         currentQuestion={currentQuestion}
         setCurrentQuestion={setCurrentQuestion}
-        remainingTime={props.remainingTime}
+        finishTime={props.finishTime}
       />
       <QuestionItem
         currentQuestion={currentQuestion}
@@ -62,7 +62,7 @@ interface QuestionListProps {
   questionData: QuestionEntity[]
   currentQuestion: QuestionEntity | null
   setCurrentQuestion: (question: QuestionEntity) => void
-  remainingTime: number
+  finishTime: Date
 }
 
 function QuestionList(props: QuestionListProps) {
@@ -71,7 +71,7 @@ function QuestionList(props: QuestionListProps) {
     <div className='bg-white flex-none w-80 rounded-2xl border-b-4 border-black flex flex-col overflow-hidden pb-10'>
 
       <div className='mx-10 my-8'>
-        <CountdownComponent remainingTime={props.remainingTime} isBig={false} />
+        <CountdownComponent finishTime={props.finishTime} isBig={false} />
       </div>
 
       {

@@ -31,7 +31,7 @@ export class ScoringController implements OnModuleInit {
     private eventSubject: Subject<any> = new Subject();
 
     async onModuleInit() {
-        const redis = new Redis({ host: 'skripsi-redis', port: 6379 });
+        const redis = new Redis({ host: 'localhost', port: 6379 });
         await redis.subscribe('ml-progress');
 
         redis.on('message', (channel, message) => {

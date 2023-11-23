@@ -38,7 +38,7 @@ export default function Progress(props: ProgressProps) {
                 setMainProgress(main_data)
 
                 if (main_data.progress_percent >= 100) {
-                    router.refresh()
+                    router.replace('/result/' + props.exam_id)
                 }
             }
         }

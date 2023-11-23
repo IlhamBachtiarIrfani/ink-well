@@ -29,7 +29,7 @@ export class ParticipantService {
                 { user_id: user_id },
             )
             .where('question.exam_id = :exam_id', { exam_id: quiz_id })
-            .orderBy('question.created_at')
+            .orderBy('question.created_at', 'ASC')
             .getMany();
     }
 

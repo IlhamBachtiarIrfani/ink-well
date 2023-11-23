@@ -44,7 +44,7 @@ export default function UserItem(props: UserItemProps) {
                     dangerouslySetInnerHTML={{ __html: props.item.content }}
                 />
             </div>
-            <div className='relative p-10 bg-white border-b-4 border-black rounded-2xl flex flex-col gap-5 z-10 overflow-hidden'>
+            <div className='relative p-10 bg-white border-b-4 border-black rounded-2xl flex flex-col gap-2 z-10 overflow-hidden'>
                 <Radar data={{
                     labels: Object.keys(props.item.response_score.detail_score),
                     datasets: [
@@ -82,6 +82,30 @@ export default function UserItem(props: UserItemProps) {
                         }
                     }
                 }} />
+
+                <table className="table-auto text-sm text-left border border-gray-300 ">
+                    <thead>
+                        <tr className='bg-gray-200'>
+                            <th className='border border-gray-300 px-3 py-1'>Aspect</th>
+                            <th className='border border-gray-300 px-3 py-1'>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            Object.keys(props.item.response_score.detail_score).map((item, index) => {
+                                return <tr key={item + index}>
+                                    <td className='border border-gray-300 px-3 py-1'>
+                                        {item}
+                                    </td>
+                                    <td className='border border-gray-300 px-3 py-1'>
+                                        {(props.item.response_score.detail_score[item] * 100).toFixed(1)}
+                                        %
+                                    </td>
+                                </tr>
+                            })
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     )

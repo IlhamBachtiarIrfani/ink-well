@@ -21,7 +21,7 @@ export default function JoinQuizClient(props: JoinQuizClientProps) {
     const [quizState, setQuizState] = useState(QuizClientState.LOADING)
     const [questionList, setQuestionList] = useState<QuestionEntity[]>([])
 
-    const [remainingTime, setRemainingTime] = useState(0)
+    const [finishTime, setFinishTime] = useState(new Date())
 
     useEffect(() => {
         const socket = io(`${process.env.NEXT_PUBLIC_WEB_SOCKET_BASE_URL}participant`, {
@@ -44,7 +44,7 @@ export default function JoinQuizClient(props: JoinQuizClientProps) {
                     break;
                 case QuizClientState.STARTED:
                     setQuizState(QuizClientState.STARTED)
-                    setRemainingTime(data.remaining_time)
+                    setFinishTime(data.finish_time)
                     break;
                 case QuizClientState.FINISHED:
                     setQuizState(QuizClientState.FINISHED)
@@ -93,7 +93,7 @@ export default function JoinQuizClient(props: JoinQuizClientProps) {
             return <QuizWaitingStateView />
         case QuizClientState.STARTED:
             return <QuizStartedStateView
-                remainingTime={remainingTime}
+                finishTime={finishTime}
                 questionData={questionList}
                 onResponseChange={onResponseChange}
                 onStartTyping={onStartTyping}

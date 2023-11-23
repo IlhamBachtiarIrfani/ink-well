@@ -10,7 +10,6 @@ import BreadcrumbsComponent from '@/components/common/breadcrumbs';
 
 async function getData(userData: UserData) {
     try {
-
         const requestOptions: RequestInit = {
             method: 'GET',
             headers: {

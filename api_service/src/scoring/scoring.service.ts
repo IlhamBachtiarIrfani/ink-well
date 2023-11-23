@@ -68,7 +68,8 @@ export class ScoringService {
             .leftJoinAndSelect('exam_access.user', 'user')
             .leftJoinAndSelect('exam_access.score', 'user_score')
             .where('exam.id =  :id', { id: id })
-            .orderBy('user_score.score_percentage', 'DESC')
+            .orderBy('question.created_at', 'ASC')
+            .addOrderBy('user_score.score_percentage', 'DESC')
             .getOne();
 
         if (!examData) {
@@ -97,6 +98,7 @@ export class ScoringService {
                 id: questionId,
                 exam_id: examId,
             })
+            .orderBy('response_score.final_score', 'DESC')
             .getOne();
 
         if (!examData) {
@@ -130,6 +132,7 @@ export class ScoringService {
             )
             .leftJoin('response.response_score', 'question_score')
             .select(['exam_access.type'])
+            .addSelect(['user.name', 'user.email', 'user.photo_url'])
             .addSelect(['question.content', 'question.point'])
             .addSelect(['exam.title', 'exam.desc', 'exam.pass_score'])
             .addSelect([

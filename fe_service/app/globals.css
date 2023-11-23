@@ -40,6 +40,11 @@ img {
 	@apply prose leading-normal max-w-none text-justify prose-p:leading-relaxed marker:text-black prose-headings:mb-2 prose-headings:mt-5 prose-headings:font-black prose-li:m-0 prose-p:m-0 prose-ul:my-2 prose-ol:my-2;
 }
 
+.rich-text-container strong,
+.rich-text-container b {
+	@apply font-bold
+}
+
 .rich-text-container-large {
 	@apply prose prose-lg leading-normal max-w-none text-justify prose-p:leading-relaxed marker:text-black prose-headings:mb-2 prose-headings:mt-5 prose-headings:font-black prose-li:m-0 prose-p:m-0 prose-ul:my-2 prose-ol:my-2;
 }

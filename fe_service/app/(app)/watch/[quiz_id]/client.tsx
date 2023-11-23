@@ -1,4 +1,5 @@
 "use client"
+
 import { QuizEntity } from '@/entities/quiz.entity';
 import React, { useEffect, useState } from 'react'
 import io from 'socket.io-client';
@@ -23,7 +24,7 @@ export default function WatchQuizClient(props: WatchQuizClientProps) {
     const [quizState, setQuizState] = useState(QuizClientState.LOADING)
     const [examAccessList, setExamAccessList] = useState<ExamAccessEntity[]>(props.quizData.exam_access)
 
-    const [remainingTime, setRemainingTime] = useState(0)
+    const [finishTime, setFinishTime] = useState(new Date())
 
     useEffect(() => {
         const socket = io(`${process.env.NEXT_PUBLIC_WEB_SOCKET_BASE_URL}admin`, {
@@ -46,7 +47,7 @@ export default function WatchQuizClient(props: WatchQuizClientProps) {
                     break;
                 case QuizClientState.STARTED:
                     setQuizState(QuizClientState.STARTED)
-                    setRemainingTime(data.remaining_time)
+                    setFinishTime(data.finish_time)
                     break;
                 case QuizClientState.FINISHED:
                     setQuizState(QuizClientState.FINISHED)
@@ -85,7 +86,7 @@ export default function WatchQuizClient(props: WatchQuizClientProps) {
             return <>
                 <WaitingQuiz
                     data={props.quizData}
-                    userCount={examAccessList.length ?? 0}
+                    userCount={examAccessList.filter((item) => item.type == 'PARTICIPANT').length ?? 0}
                     userData={props.userData}
                     startQuiz={startQuiz}
                 />
@@ -96,10 +97,10 @@ export default function WatchQuizClient(props: WatchQuizClientProps) {
             return <>
                 <ProcessQuiz
                     data={props.quizData}
-                    userCount={examAccessList.length ?? 0}
+                    userCount={examAccessList.filter((item) => item.type == 'PARTICIPANT').length ?? 0}
                     userData={props.userData}
                     startQuiz={startQuiz}
-                    remainingTime={remainingTime}
+                    finishTime={finishTime}
                 />
 
                 <ListUserQuiz data={examAccessList} />

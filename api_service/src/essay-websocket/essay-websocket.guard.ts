@@ -15,32 +15,32 @@ export class EssayWebsocketGuard implements CanActivate {
     ) {}
 
     async canActivate(context: ExecutionContext) {
-        // * get required roles by decorator
-        let requiredRoles = this.reflector.getAllAndOverride<AccessRole[]>(
-            ROLES_KEY,
-            [context.getHandler(), context.getClass()],
-        );
-
-        // if there is no required roles at default value to public
-        if (!requiredRoles) {
-            requiredRoles = [AccessRole.PUBLIC];
-        }
-
-        // if required roles is public don't check the token
-        if (requiredRoles.includes(AccessRole.PUBLIC)) {
-            return true;
-        }
-
-        const socket = context.switchToWs().getClient();
-        const token = extractTokenFromHeader(socket);
-        const quiz_id = extractQuizIdFromHeader(socket);
-
-        // check if there is no token
-        if (!token) {
-            throw new WsException('TOKEN_REQUIRED');
-        }
-
         try {
+            // * get required roles by decorator
+            let requiredRoles = this.reflector.getAllAndOverride<AccessRole[]>(
+                ROLES_KEY,
+                [context.getHandler(), context.getClass()],
+            );
+
+            // if there is no required roles at default value to public
+            if (!requiredRoles) {
+                requiredRoles = [AccessRole.PUBLIC];
+            }
+
+            // if required roles is public don't check the token
+            if (requiredRoles.includes(AccessRole.PUBLIC)) {
+                return true;
+            }
+
+            const socket = context.switchToWs().getClient();
+            const token = extractTokenFromHeader(socket);
+            const quiz_id = extractQuizIdFromHeader(socket);
+
+            // check if there is no token
+            if (!token) {
+                throw new WsException('TOKEN_REQUIRED');
+            }
+
             // verify token data and get user payload
             const payload: UserTokenData = await this.myJwtService.verifyAsync(
                 token,

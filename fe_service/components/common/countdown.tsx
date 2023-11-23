@@ -1,21 +1,39 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import moment from 'moment'
 
 interface CountdownComponentProps {
-    remainingTime: number,
+    finishTime: Date,
     isBig: boolean
 }
 
 export default function CountdownComponent(props: CountdownComponentProps) {
-    const [time, setTime] = useState(props.remainingTime);
+    const [time, setTime] = useState(0);
 
     useEffect(() => {
         if (time > 0) {
-            const timerId = setTimeout(() => setTime(time - 1), 1000);
+            const timerId = setTimeout(() => {
+                const startDate = moment(new Date());
+                const timeEnd = moment(props.finishTime);
+                const diff = timeEnd.diff(startDate);
+                const diffDuration = moment.duration(diff);
+
+                setTime(Math.floor(diffDuration.asSeconds()))
+            }, 1000);
             return () => clearTimeout(timerId);
         }
     }, [time]);
+
+    useEffect(() => {
+        const startDate = moment(new Date());
+        const timeEnd = moment(props.finishTime);
+        const diff = timeEnd.diff(startDate);
+        const diffDuration = moment.duration(diff);
+
+        setTime(Math.floor(diffDuration.asSeconds()))
+    }, [props.finishTime])
+
 
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;

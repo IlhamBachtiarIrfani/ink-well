@@ -103,7 +103,7 @@ export class AdminGateway implements OnGatewayConnection {
     }
 
     @SubscribeMessage('startExam')
-    async joinExam(client: Socket) {
+    async startExam(client: Socket) {
         console.log('STARTING EXAM');
         try {
             // Get user token data

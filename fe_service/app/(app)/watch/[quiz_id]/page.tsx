@@ -34,7 +34,7 @@ async function getData(userData: UserData, id: string) {
         return quizData;
     } catch (error: any) {
         console.error(error);
-        throw new Error("Error")
+        throw new Error(error)
     }
 }
 

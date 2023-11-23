@@ -13,7 +13,6 @@ import {
     BarController,
 } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
-import { faker } from '@faker-js/faker';
 import ButtonComponent from '@/components/input/button';
 import { useRouter } from 'next/navigation';
 
@@ -81,10 +80,18 @@ export default function QuestionItem(props: QuestionItemProps) {
                     options={{
                         responsive: true,
                         maintainAspectRatio: false,
+                        interaction: {
+                            mode:'index'
+                        },
                         plugins: {
                             legend: {
                                 display: false
                             },
+                            tooltip: {
+                                callbacks: {
+                                   
+                                }
+                            }
                         },
                         scales: {
                             x: {
