@@ -133,7 +133,7 @@ export default function QuizEditForm(props: QuizEditFormProps) {
             <form onSubmit={onSubmit} className='relative overflow-hidden bg-white p-10 rounded-2xl border-b-4 border-black flex flex-col gap-5'>
                 <div className='absolute rotate-45 top-4 -right-16 w-52 h-10 bg-red-400' />
                 <input
-                    className='font-black text-3xl focus:outline-none'
+                    className='font-black text-3xl focus:outline-none mr-10'
                     placeholder='New Quiz #1'
                     value={inputTitle}
                     onChange={onTitleChange}
@@ -146,7 +146,7 @@ export default function QuizEditForm(props: QuizEditFormProps) {
                     onChange={onDescChange}
                 />
 
-                <div className='flex gap-5 mt-3'>
+                <div className='flex gap-5 mt-3 flex-col sm:flex-row'>
                     <NumberInputComponent
                         icon={<span className='material-symbols-rounded'>
                             avg_pace

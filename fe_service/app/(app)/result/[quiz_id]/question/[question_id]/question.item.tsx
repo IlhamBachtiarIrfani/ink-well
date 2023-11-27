@@ -104,7 +104,7 @@ export default function QuestionItem(props: QuestionItemProps) {
                 </div>
             </div>
 
-            <div className='flex gap-8'>
+            <div className='flex gap-8 flex-col lg:flex-row'>
                 <div className='flex-1 relative p-10 bg-white border-b-4 border-black rounded-2xl flex flex-col gap-5 z-10 overflow-hidden'>
                     <div className='flex gap-5 items-center'>
                         <div className='w-10 h-10 bg-cyan-300 rounded-full flex items-center justify-center'>
@@ -127,7 +127,7 @@ export default function QuestionItem(props: QuestionItemProps) {
 
                 </div>
 
-                <div className='relative p-10 bg-white border-b-4 border-black rounded-2xl flex flex-col gap-5 z-10 overflow-hidden'>
+                <div className='relative p-10 max-w-none lg:max-w-sm bg-white border-b-4 border-black rounded-2xl flex flex-col gap-5 z-10 overflow-hidden'>
                     <Doughnut
                         data={{
                             labels: Object.keys(props.data.score.criteria_weights),

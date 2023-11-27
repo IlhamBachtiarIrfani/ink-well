@@ -27,12 +27,12 @@ export default function QuizItem(props: QuizItemProps) {
   }
 
   return (
-    <div key={props.item.id} className='bg-white p-10 rounded-2xl border-b-4 border-b-black flex overflow-hidden'>
+    <div key={props.item.id} className='bg-white p-10 rounded-2xl border-b-4 border-b-black flex flex-col sm:flex-row overflow-hidden gap-5 sm:gap-14'>
       <div className='grow flex flex-col gap-5'>
         <h1 className='text-3xl font-black'>
           {props.item.title}
         </h1>
-        <div className='flex gap-10 font-bold text-red-400'>
+        <div className='flex gap-10 font-bold text-red-400 flex-wrap gap-y-3'>
           <div className='flex items-center gap-3'>
             <span className='material-symbols-rounded'>
               cast
@@ -70,7 +70,7 @@ function DraftState(props: DraftStateProps) {
   const router = useRouter()
 
   return (
-    <div className='relative flex items-center before:absolute before:-inset-20 before:-left-10 before:bg-cyan-300 before:rotate-12 before:-z-10 z-10'>
+    <div className='relative flex items-center before:hidden sm:before:block before:absolute before:-inset-20 before:-left-10 before:bg-cyan-300 before:rotate-12 before:-z-10 z-10'>
       <ButtonComponent
         type={'DARK'}
         title='Edit Draft'

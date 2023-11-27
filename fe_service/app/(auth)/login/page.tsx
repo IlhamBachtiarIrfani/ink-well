@@ -15,7 +15,7 @@ export default async function LoginPage() {
     }
     return (
         <main className='bg-white h-screen w-screen overflow-hidden flex'>
-            <section className='relative flex-grow flex items-center justify-center p-40'>
+            <section className='hidden lg:flex relative flex-grow items-center justify-center p-5 lg:p-20 2xl:p-40'>
                 {/* LOGO IMG */}
                 <Image
                     className="absolute top-6 left-10"
@@ -40,7 +40,7 @@ export default async function LoginPage() {
             </section>
 
             {/* FROM SECTION  */}
-            <section className='relative flex-none w-[32rem] bg-black text-white p-20 flex flex-col justify-center'>
+            <section className='relative flex-none w-full lg:w-[32rem] bg-black text-white p-10 md:p-20 flex flex-col justify-center'>
 
                 <div className='absolute rotate-45 top-4 -right-16 w-52 h-16 bg-red-400' />
 

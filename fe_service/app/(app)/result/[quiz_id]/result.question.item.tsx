@@ -59,7 +59,7 @@ export default function QuestionItem(props: QuestionItemProps) {
 
     return (
         <div className='flex-1 relative p-10 bg-white border-b-4 border-black rounded-2xl flex flex-col gap-5 z-10 overflow-hidden'>
-            <div className='flex gap-5 items-center'>
+            <div className='flex gap-5 items-center flex-wrap'>
                 <div className='w-10 h-10 bg-cyan-300 rounded-full flex items-center justify-center'>
                     <span className='material-symbols-rounded'>
                         drag_indicator
@@ -140,7 +140,7 @@ export default function QuestionItem(props: QuestionItemProps) {
                 />
             </div>
 
-            <div className='flex gap-8'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8'>
                 <PercentageCard title='Average Score' value={props.data.score.avgScore} />
                 <PercentageCard title='Min Score' value={props.data.score.minScore} />
                 <PercentageCard title='Max Score' value={props.data.score.maxScore} />

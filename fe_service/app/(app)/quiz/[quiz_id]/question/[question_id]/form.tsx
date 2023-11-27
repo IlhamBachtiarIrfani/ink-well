@@ -115,7 +115,7 @@ export default function QuestionEditForm(props: QuestionEditFormProps) {
             />
             <div className='bg-white px-10 py-6 rounded-2xl border-b-4 border-black'>
                 <div className='flex gap-5 items-center'>
-                    <div className='w-10 h-10 bg-cyan-300 rounded-full flex items-center justify-center'>
+                    <div className='flex-none w-10 h-10 bg-cyan-300 rounded-full flex items-center justify-center'>
                         <span className='material-symbols-rounded'>
                             drag_indicator
                         </span>
@@ -161,7 +161,7 @@ export default function QuestionEditForm(props: QuestionEditFormProps) {
 
             {isLoading && <p>Loading...</p>}
 
-            <div className='flex gap-3 justify-end'>
+            <div className='flex gap-3 justify-end flex-col-reverse sm:flex-row'>
                 <ButtonComponent
                     title='Cancel'
                     type='DARK_OUTLINED'

@@ -74,30 +74,32 @@ export default function QuestionAdminItem(props: QuestionAdminItemProps) {
 
   return (
     <div className='bg-white p-10 rounded-2xl border-b-4 border-black flex flex-col gap-5'>
-      <div className='flex gap-5 items-center'>
-        <div className='w-10 h-10 bg-cyan-300 rounded-full flex items-center justify-center'>
+      <div className='flex gap-5 items-center flex-wrap'>
+        <div className='flex-none w-10 h-10 bg-cyan-300 rounded-full flex items-center justify-center'>
           <span className='material-symbols-rounded'>
             drag_indicator
           </span>
         </div>
-        <h2 className='grow font-black text-xl text-red-400'>QUESTION {props.index}</h2>
+        <h2 className='grow font-black text-xl text-red-400 whitespace-nowrap'>QUESTION {props.index}</h2>
 
-        <ButtonComponent
-          type={'SMALL_DARK_OUTLINED'}
-          title='Delete'
-          icon={<span className='material-symbols-rounded  text-lg'>
-            delete
-          </span>}
-          onClick={onDeleteClick}
-        />
-        <ButtonComponent
-          type={'SMALL_DARK'}
-          title='Edit'
-          icon={<span className='material-symbols-rounded text-lg'>
-            edit
-          </span>}
-          onClick={onEditClick}
-        />
+        <div className='flex gap-5'>
+          <ButtonComponent
+            type={'SMALL_DARK_OUTLINED'}
+            title='Delete'
+            icon={<span className='material-symbols-rounded  text-lg'>
+              delete
+            </span>}
+            onClick={onDeleteClick}
+          />
+          <ButtonComponent
+            type={'SMALL_DARK'}
+            title='Edit'
+            icon={<span className='material-symbols-rounded text-lg'>
+              edit
+            </span>}
+            onClick={onEditClick}
+          />
+        </div>
       </div>
 
       <ErrorDisplay errorData={errorData} setErrorData={setErrorData} />

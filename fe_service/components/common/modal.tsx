@@ -60,7 +60,7 @@ const ModalComponentProvider = ({ children }: ModalComponentProviderProps) => {
     return (
         <ModalContext.Provider value={{ showModal, hideModal }}>
             {children}
-            <dialog className='backdrop:bg-black/50 backdrop:backdrop-blur-sm p-10 rounded-2xl w-full max-w-fit' ref={dialogRef} onClick={onBackdropClick} onCancel={(e) => {
+            <dialog className='backdrop:bg-black/50 backdrop:backdrop-blur-sm p-10 rounded-2xl w-full max-w-fit mx-5' ref={dialogRef} onClick={onBackdropClick} onCancel={(e) => {
                 e.preventDefault();
                 hideModal();
             }}>

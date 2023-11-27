@@ -38,9 +38,9 @@ interface ResultRankProps {
 
 export default function ResultRank(props: ResultRankProps) {
     return (
-        <div className='flex-1 relative p-10 pt-16 pb-0 bg-white border-b-4 border-black rounded-2xl flex flex-col items-center z-10 overflow-hidden'>
+        <div className='flex-1 relative p-5 pt-10 pb-0 sm:p-10 sm:pt-16 bg-white border-b-4 border-black rounded-2xl flex flex-col items-center z-10 overflow-hidden'>
             <Image
-                className="absolute top-0 bottom-0 w-auto h-full -z-10 left-0 -translate-x-3/4"
+                className="hidden md:block absolute top-0 bottom-0 w-auto h-full -z-10 left-0 -translate-x-3/4"
                 src="/illustration.svg"
                 alt="Ink Well Logo"
                 width={604}
@@ -49,7 +49,7 @@ export default function ResultRank(props: ResultRankProps) {
             />
 
             <Image
-                className="absolute top-0 bottom-0 w-auto h-full -z-10 right-0 translate-x-3/4"
+                className="hidden md:block absolute top-0 bottom-0 w-auto h-full -z-10 right-0 translate-x-3/4"
                 src="/illustration.svg"
                 alt="Ink Well Logo"
                 width={604}
@@ -57,7 +57,7 @@ export default function ResultRank(props: ResultRankProps) {
                 priority
             />
 
-            <h1 className='text-4xl font-black mb-20'>{props.title}</h1>
+            <h1 className='text-4xl font-black mb-20 text-center'>{props.title}</h1>
 
             <div className='flex gap-10 -mb-16'>
                 <RankUser className='mt-10' data={props.data[1]} />

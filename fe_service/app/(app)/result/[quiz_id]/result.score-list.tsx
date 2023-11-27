@@ -34,13 +34,12 @@ export default function ScoreList(props: ScoreListProps) {
                                     <td className='px-4 py-2 rounded-s-xl'>
                                         {item.user.name}
                                     </td>
-                                    <td className='px-4 py-2'>
+                                    <td className='px-4 py-2 whitespace-nowrap'>
                                         <span className='font-black'>
                                             {item.score.final_score.toFixed(1)}
                                         </span>
                                         <span className='pl-2'>
-                                            ({(item.score.score_percentage * 100).toFixed(1)})
-                                            %
+                                            ({(item.score.score_percentage * 100).toFixed(1)}%)
                                         </span>
                                     </td>
                                     <td className='px-4 py-2'>

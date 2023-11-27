@@ -62,13 +62,21 @@ export default function HeaderComponent(props: HeaderComponentProps) {
                     {
                         props.userData ? (
                             <div className='relative'>
-                                <AvatarComponent
-                                    name={props.userData.name}
-                                    photo_url={"/avatar/" + props.userData.photo_url}
-                                    onClick={() => setAvatarDropdownShow(value => !value)}
-                                />
+                                <div onClick={() => setAvatarDropdownShow(value => !value)} className='group flex gap-5 items-center cursor-pointer select-none bg-gray-100 rounded-full p-1 hover:scale-105 transition-transform'>
+                                    <div className='w-10 h-10 rounded-full'>
+                                        <div className='w-16 h-16 -m-3 select-none pointer-events-none group-hover:-rotate-12 group-hover:scale-110 transition-transform'>
+                                            <Image
+                                                src={"/avatar/" + props.userData.photo_url}
+                                                alt={`Avatar ${props.userData.name}`}
+                                                width={172}
+                                                height={172}
+                                            />
+                                        </div>
+                                    </div>
+                                    <p className='hidden md:block font-black text-lg capitalize whitespace-nowrap pr-7'>{props.userData.name}</p>
+                                </div>
                                 {
-                                    avatarDropdownShow && <div className='absolute mt-2 left-0 right-0 bg-white border border-b-4 p-5 rounded-2xl flex flex-col gap-3'>
+                                    avatarDropdownShow && <div className='absolute mt-2 w-32 md:w-auto md:left-0 right-0 bg-white border border-b-4 p-5 rounded-2xl flex flex-col gap-3'>
                                         <Link href='/profile'>Profile</Link>
                                         <button onClick={onRequestLogout} className='focus:outline-none text-left text-red-400'>Logout</button>
                                     </div>

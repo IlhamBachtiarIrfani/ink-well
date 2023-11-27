@@ -94,10 +94,10 @@ export default function WaitingQuiz(props: WaitingQuizProps) {
             {isLoading && <p>Loading...</p>}
             <ErrorDisplay errorData={errorData} setErrorData={setErrorData} />
 
-            <div className='relative py-24 px-20 bg-white border-b-4 border-black rounded-2xl flex flex-col items-center gap-10 z-10 overflow-hidden'>
+            <div className='relative py-16 px-14 sm:py-24 sm:px-20 bg-white border-b-4 border-black rounded-2xl flex flex-col items-center gap-10 z-10 overflow-hidden'>
 
                 <Image
-                    className="absolute top-0 bottom-0 w-auto h-full -z-10 left-0 -translate-x-3/4"
+                    className="hidden sm:block absolute top-0 bottom-0 w-auto h-full -z-10 left-0 -translate-x-3/4"
                     src="/illustration.svg"
                     alt="Ink Well Logo"
                     width={604}
@@ -106,7 +106,7 @@ export default function WaitingQuiz(props: WaitingQuizProps) {
                 />
 
                 <Image
-                    className="absolute top-0 bottom-0 w-auto h-full -z-10 right-0 translate-x-3/4"
+                    className="hidden sm:block absolute top-0 bottom-0 w-auto h-full -z-10 right-0 translate-x-3/4"
                     src="/illustration.svg"
                     alt="Ink Well Logo"
                     width={604}
@@ -117,8 +117,8 @@ export default function WaitingQuiz(props: WaitingQuizProps) {
                 <h1 className='font-black text-3xl text-center'>{props.data.title}</h1>
 
                 <div className='flex flex-col items-center'>
-                    <div className='bg-cyan-300 rounded-2xl px-8 py-5 font-black text-7xl tracking-wider flex gap-5 items-center'>
-                        <span className='material-symbols-rounded text-7xl icon-bold'>encrypted</span>
+                    <div className='bg-cyan-300 rounded-2xl px-8 py-5 font-black text-5xl sm:text-6xl md:text-7xl tracking-wider flex gap-5 items-center'>
+                        <span className='material-symbols-rounded text-5xl sm:text-6xl md:text-7xl icon-bold'>encrypted</span>
                         <p>{props.data.join_code}</p>
                     </div>
 
@@ -127,7 +127,7 @@ export default function WaitingQuiz(props: WaitingQuizProps) {
                     </Link>
                 </div>
 
-                <div className='flex items-center gap-5'>
+                <div className='flex items-center gap-5 flex-wrap justify-center'>
                     <div className='flex items-center gap-3 bg-black text-white h-10 pl-5 pr-8 py-2 rounded-full whitespace-nowrap'>
                         <span className='material-symbols-rounded'>avg_pace</span>
                         <p>{props.data.duration_in_minutes} Minutes</p>

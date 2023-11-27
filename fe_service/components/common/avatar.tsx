@@ -29,7 +29,7 @@ export default function AvatarComponent(props: AvatarComponentProps) {
                     />
                 </div>
             </div>
-            <p className='font-black text-lg capitalize'>{props.name}</p>
+            <p className='font-black text-lg capitalize whitespace-nowrap'>{props.name}</p>
         </div>
     )
 }

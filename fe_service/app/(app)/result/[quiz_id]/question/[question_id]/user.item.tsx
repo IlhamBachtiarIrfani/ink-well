@@ -29,7 +29,7 @@ interface UserItemProps {
 export default function UserItem(props: UserItemProps) {
 
     return (
-        <div className='flex gap-8'>
+        <div className='flex gap-8 flex-col lg:flex-row'>
             <div className='flex-1 relative p-10 bg-white border-b-4 border-black rounded-2xl flex flex-col gap-5 z-10 overflow-hidden'>
                 <div className='flex justify-between items-center'>
                     <AvatarComponent photo_url={'/avatar/' + props.item.user.photo_url} name={props.item.user.name} />
@@ -44,7 +44,7 @@ export default function UserItem(props: UserItemProps) {
                     dangerouslySetInnerHTML={{ __html: props.item.content }}
                 />
             </div>
-            <div className='relative p-10 bg-white border-b-4 border-black rounded-2xl flex flex-col gap-2 z-10 overflow-hidden'>
+            <div className='relative p-10 bg-white border-b-4 border-black rounded-2xl flex flex-col gap-2 z-10 max-w-none lg:max-w-sm overflow-hidden'>
                 <Radar data={{
                     labels: Object.keys(props.item.response_score.detail_score),
                     datasets: [

@@ -3,9 +3,9 @@ import React from 'react'
 
 export type ButtonType = 'DARK' | 'LIGHT' | 'RED' | 'DARK_OUTLINED' | 'SMALL_DARK' | 'SMALL_DARK_OUTLINED'
 
-const baseStyle = "font-bold h-10 pl-10 pr-9 rounded-full flex items-center gap-3 hover:scale-105 transition-all"
+const baseStyle = "font-bold h-10 pl-10 pr-9 rounded-full whitespace-nowrap flex items-center gap-3 hover:scale-105 transition-all"
 
-const smallStyle = "font-bold h-8 pl-5 pr-4 rounded-full text-sm flex items-center gap-3 hover:scale-105 transition-all"
+const smallStyle = "font-bold h-8 pl-5 pr-4 rounded-full whitespace-nowrap text-sm flex items-center gap-3 hover:scale-105 transition-all"
 
 const getStyle = (type: ButtonType) => {
     switch (type) {

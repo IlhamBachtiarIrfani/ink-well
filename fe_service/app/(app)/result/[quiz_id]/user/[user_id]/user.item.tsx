@@ -30,7 +30,7 @@ interface UserItemProps {
 export default function UserItem(props: UserItemProps) {
 
     return (
-        <div className='flex gap-8'>
+        <div className='flex gap-8 flex-col lg:flex-row'>
             <div className='flex-1 relative p-10 bg-white border-b-4 border-black rounded-2xl flex flex-col gap-5 z-10 overflow-hidden'>
                 <div className='flex justify-between items-center'>
                     <div className='flex gap-5 items-center'>
@@ -57,7 +57,7 @@ export default function UserItem(props: UserItemProps) {
                     dangerouslySetInnerHTML={{ __html: props.item.response?.content }}
                 />
             </div>
-            <div className='relative p-10 bg-white border-b-4 border-black rounded-2xl flex flex-col gap-2 z-10 overflow-hidden'>
+            <div className='relative p-10 max-w-none lg:max-w-sm bg-white border-b-4 border-black rounded-2xl flex flex-col gap-2 z-10 overflow-hidden'>
                 {
                     props.item.response?.response_score ?
                         (

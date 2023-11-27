@@ -95,7 +95,7 @@ export default function CreateQuizForm(props: CreateQuizFormProps) {
 
 
                 <input
-                    className='font-black text-3xl focus:outline-none'
+                    className='font-black text-3xl focus:outline-none mr-10'
                     placeholder='New Quiz #1'
                     value={inputTitle}
                     onChange={onInputTitleChange}
@@ -108,7 +108,7 @@ export default function CreateQuizForm(props: CreateQuizFormProps) {
                     onChange={onInputDescChange}
                 />
 
-                <div className='flex gap-5'>
+                <div className='flex gap-5 flex-col sm:flex-row'>
                     <div className='flex-1 flex flex-col gap-1'>
                         <p>Quiz Duration</p>
                         <div className='flex-1 border border-black rounded-full flex items-center gap-3 px-5'>
@@ -152,7 +152,7 @@ export default function CreateQuizForm(props: CreateQuizFormProps) {
 
                 {isLoading && <p>Loading...</p>}
 
-                <div className='flex items-center justify-end gap-4 mt-4'>
+                <div className='flex items-start sm:items-center  justify-end gap-4 mt-4 flex-col-reverse sm:flex-row'>
                     <ButtonComponent
                         title='Cancel'
                         type='DARK_OUTLINED'

@@ -18,8 +18,8 @@ interface PercentageCardProps {
 function PercentageCard(props: PercentageCardProps) {
     return (
         <div className='flex-1 relative px-10 py-8 bg-white border-b-4 border-black rounded-2xl flex flex-col gap-2 z-10 overflow-hidden'>
-            <p className='text-gray-400'>{props.title}</p>
-            <h1 className='text-5xl font-black'>
+            <p className='text-gray-400 whitespace-nowrap'>{props.title}</p>
+            <h1 className='text-5xl font-black  whitespace-nowrap'>
                 {(props.value * 100).toFixed(1)}
                 <span className='text-xl ml-1 text-red-400'>%</span>
             </h1>
@@ -64,7 +64,7 @@ export default async function Page(props: ResultQuizPageProps) {
             <main className='container max-w-7xl px-5 mx-auto flex flex-col py-8 gap-8'>
                 <ResultRank data={data.exam_access} title={data.title} />
 
-                <div className='flex gap-8'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8'>
                     <PercentageCard title='Average Score' value={data.score.avgScore} />
                     <PercentageCard title='Min Score' value={data.score.minScore} />
                     <PercentageCard title='Max Score' value={data.score.maxScore} />
@@ -72,7 +72,7 @@ export default async function Page(props: ResultQuizPageProps) {
                 </div>
 
 
-                <div className='grid grid-cols-2 gap-8'>
+                <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
                     <Overview data={data} />
                     <ScoreDistribution data={data.score} />
 

@@ -69,10 +69,10 @@ export default function ProcessQuiz(props: ProcessQuizProps) {
             {isLoading && <p>Loading...</p>}
             <ErrorDisplay errorData={errorData} setErrorData={setErrorData} />
 
-            <div className='relative py-24 px-20 bg-white border-b-4 border-black rounded-2xl flex flex-col items-center gap-10 z-10 overflow-hidden'>
+            <div className='relative py-16 px-14 sm:py-24 sm:px-20 bg-white border-b-4 border-black rounded-2xl flex flex-col items-center gap-10 z-10 overflow-hidden'>
 
-                <Image
-                    className="absolute top-0 bottom-0 w-auto h-full -z-10 left-0 -translate-x-3/4"
+            <Image
+                    className="hidden sm:block absolute top-0 bottom-0 w-auto h-full -z-10 left-0 -translate-x-3/4"
                     src="/illustration.svg"
                     alt="Ink Well Logo"
                     width={604}
@@ -81,7 +81,7 @@ export default function ProcessQuiz(props: ProcessQuizProps) {
                 />
 
                 <Image
-                    className="absolute top-0 bottom-0 w-auto h-full -z-10 right-0 translate-x-3/4"
+                    className="hidden sm:block absolute top-0 bottom-0 w-auto h-full -z-10 right-0 translate-x-3/4"
                     src="/illustration.svg"
                     alt="Ink Well Logo"
                     width={604}
