@@ -54,7 +54,8 @@ export default function CreateQuizForm(props: CreateQuizFormProps) {
             if (!response.ok) {
                 setErrorData(data.message);
             } else {
-                router.push('/quiz')
+                await router.push('/quiz');
+                router.refresh();
             }
 
         } catch (error: any) {

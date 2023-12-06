@@ -70,8 +70,8 @@ export default function QuestionEditForm(props: QuestionEditFormProps) {
             if (!response.ok) {
                 setErrorData(data.message);
             } else {
-
-                router.push('/quiz/' + props.questionData.exam_id)
+                await router.push('/quiz/' + props.questionData.exam_id)
+                router.refresh()
             }
 
         } catch (error: any) {

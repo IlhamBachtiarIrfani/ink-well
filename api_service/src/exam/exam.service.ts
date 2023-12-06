@@ -226,4 +226,20 @@ export class ExamService {
         // return exam data
         return examData;
     }
+
+    // ! ===== FIND ALL EXAM THAT HAVE ACCESS WITH USER =====
+    async history(userTokenData: UserTokenData) {
+        // make query and return
+        return this.examAccessRepository
+            .createQueryBuilder('exam_access')
+            .leftJoinAndSelect('exam_access.exam', 'exam')
+            .leftJoinAndSelect('exam_access.score', 'exam_score')
+            .where(
+                'exam_access.user_id = :user_id AND exam_access.type = "PARTICIPANT" AND exam.state = "FINISHED"',
+                {
+                    user_id: userTokenData.user_id,
+                },
+            )
+            .getMany();
+    }
 }

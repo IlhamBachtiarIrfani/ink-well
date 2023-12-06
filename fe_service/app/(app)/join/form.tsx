@@ -23,7 +23,7 @@ export default function JoinForm() {
             <input
                 type='text'
                 placeholder='XXXXXX'
-                className='bg-transparent focus:outline-none w-32 tracking-wider'
+                className='bg-transparent focus:outline-none w-32 tracking-wider text-xl'
                 value={joinCode}
                 onChange={onInputChange}
                 maxLength={6}

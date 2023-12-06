@@ -13,6 +13,7 @@ import { Question } from 'src/question/entities/question.entity';
 import { UserResponse } from 'src/user-response/entities/user-response.entity';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ScoringModule } from 'src/scoring/scoring.module';
+import { ExamUserAction } from 'src/exam/entities/exam-user-action';
 
 @Module({
     imports: [
@@ -23,7 +24,13 @@ import { ScoringModule } from 'src/scoring/scoring.module';
         MariaDbDatabaseModule,
 
         // ! ===== LOAD USED ENTITY DB =====
-        TypeOrmModule.forFeature([Exam, ExamAccess, Question, UserResponse]),
+        TypeOrmModule.forFeature([
+            Exam,
+            ExamAccess,
+            Question,
+            UserResponse,
+            ExamUserAction,
+        ]),
 
         ScheduleModule.forRoot(),
 

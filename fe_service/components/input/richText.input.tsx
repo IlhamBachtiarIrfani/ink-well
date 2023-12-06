@@ -1,7 +1,7 @@
 "use client"
 
-import React, { useState } from 'react';
-import { Editor, EditorState, convertFromHTML, ContentState, ContentBlock, RichUtils } from 'draft-js';
+import React, { useRef, useState } from 'react';
+import { Editor, EditorState, convertFromHTML, ContentState, ContentBlock, RichUtils, Modifier, SelectionState } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 import { stateToHTML } from 'draft-js-export-html';
 
@@ -43,6 +43,8 @@ export default function RichTextInputComponent(props: RichTextInputComponentProp
 
     const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
 
+    const editorRef = useRef<Editor | null>(null)
+
     function onInputChange(state: EditorState) {
         getHtmlOutput()
 
@@ -79,6 +81,12 @@ export default function RichTextInputComponent(props: RichTextInputComponentProp
         return wordArray ? wordArray.length : 0;
     }
 
+    function getCharCount() {
+        const plainText = editorState.getCurrentContent().getPlainText('');
+        const cleanString = plainText.replace(/\s/g, '');
+        return cleanString.length;
+    }
+
     function handleKeyCommand(command: string, editorState: EditorState) {
         const newState = RichUtils.handleKeyCommand(editorState, command);
 
@@ -91,7 +99,52 @@ export default function RichTextInputComponent(props: RichTextInputComponentProp
     }
 
     function handleInlineStyle(style: string) {
-        const newEditorState = RichUtils.toggleInlineStyle(editorState, style);
+        // Get the current selection
+        let selection = editorState.getSelection();
+
+        // Check if the selection is collapsed
+        const isCollapsed = selection.isCollapsed();
+
+        let newContentState;
+        if (isCollapsed) {
+            // If the selection is collapsed, insert an empty text and apply the style
+            const contentState = Modifier.insertText(
+                editorState.getCurrentContent(),
+                selection,
+                ' ',
+                editorState.getCurrentInlineStyle()
+            );
+
+            // Create a new selection state that targets the inserted text
+            const targetSelection = new SelectionState({
+                anchorKey: selection.getAnchorKey(),
+                anchorOffset: selection.getAnchorOffset(),
+                focusKey: selection.getAnchorKey(),
+                focusOffset: selection.getAnchorOffset() + 1,
+            });
+
+            // Apply the inline style to the new content state
+            newContentState = Modifier.applyInlineStyle(
+                contentState,
+                targetSelection,
+                style
+            );
+        } else {
+            // If there's a text selection, toggle the style
+            const hasStyle = editorState.getCurrentInlineStyle().has(style);
+            newContentState = hasStyle
+                ? Modifier.removeInlineStyle(editorState.getCurrentContent(), selection, style)
+                : Modifier.applyInlineStyle(editorState.getCurrentContent(), selection, style);
+        }
+
+        // Create a new editor state with the new content state
+        const newEditorState = EditorState.push(
+            editorState,
+            newContentState,
+            'insert-characters'
+        );
+
+        // Force selection to the new editor state
         setEditorState(EditorState.forceSelection(newEditorState, newEditorState.getSelection()));
     };
 
@@ -101,7 +154,9 @@ export default function RichTextInputComponent(props: RichTextInputComponentProp
     };
 
     function handleBlockType(blockType: string) {
-        setEditorState(RichUtils.toggleBlockType(editorState, blockType));
+        const newEditorState = RichUtils.toggleBlockType(editorState, blockType);
+        const focusedEditor = EditorState.forceSelection(newEditorState, newEditorState.getSelection());
+        setEditorState(focusedEditor);
     };
 
     function hasBlockType(blockType: string) {
@@ -111,8 +166,12 @@ export default function RichTextInputComponent(props: RichTextInputComponentProp
         return block.getType() === blockType;
     };
 
+    function focusEditor() {
+        editorRef?.current?.focus()
+    }
+
     return (
-        <div className='relative bg-white '>
+        <div className='relative bg-white' onClick={focusEditor}>
             <div className='sticky top-20 bg-white py-4 flex gap-4 items-center flex-wrap z-10'>
                 <div className='flex gap-1'>
                     <FormatButton
@@ -193,16 +252,20 @@ export default function RichTextInputComponent(props: RichTextInputComponentProp
                     />
                 </div>
 
-                <p className='font-black grow text-right whitespace-nowrap'>{getWordCount()} Words</p>
             </div>
 
             <div className='rich-text-container min-h-[10rem]'>
                 <Editor
+                    ref={editorRef}
                     handleKeyCommand={handleKeyCommand}
                     editorState={editorState}
                     onChange={onInputChange}
                     placeholder='Type your text here...'
                 />
+            </div>
+
+            <div className='mt-5'>
+                <p className='font-black grow text-right whitespace-nowrap'>{getCharCount()} Chars / {getWordCount()} Words</p>
             </div>
         </div>
     )
@@ -222,8 +285,8 @@ function FormatButton(props: FormatButtonProps) {
 
     function onButtonClick(e: React.MouseEvent) {
         e.preventDefault();
-
         props.onClick();
+        e.stopPropagation()
     }
 
     return (

@@ -5,6 +5,7 @@ import {
     Entity,
     JoinColumn,
     ManyToOne,
+    OneToMany,
     OneToOne,
     PrimaryColumn,
     UpdateDateColumn,
@@ -13,6 +14,7 @@ import { Exclude } from 'class-transformer';
 import { Exam } from './exam.entity';
 import { User } from 'src/user/entities/user.entity';
 import { UserExamScore } from 'src/scoring/entities/user-exam-score.entity';
+import { ExamUserAction } from './exam-user-action';
 
 // ! EXAM ACCESS ENUM
 export enum ExamAccessType {
@@ -68,4 +70,10 @@ export class ExamAccess {
         (userExamScore: UserExamScore) => userExamScore.examAccess,
     )
     score: UserExamScore;
+
+    @OneToMany(
+        () => ExamUserAction,
+        (examUserAction: ExamUserAction) => examUserAction.examAccess,
+    )
+    action: ExamUserAction;
 }

@@ -12,7 +12,7 @@ const getStyle = (type: ButtonType) => {
         case 'DARK':
             return "bg-black text-white " + baseStyle
         case 'LIGHT':
-            return "bg-white text-black " + baseStyle
+            return "bg-white border border-black text-black " + baseStyle
         case 'RED':
             return "bg-red-400 text-white " + baseStyle
         case 'DARK_OUTLINED':

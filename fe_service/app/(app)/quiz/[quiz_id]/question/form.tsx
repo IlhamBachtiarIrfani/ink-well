@@ -69,8 +69,8 @@ export default function QuestionCreateForm(props: QuestionCreateFormProps) {
             if (!response.ok) {
                 setErrorData(data.message);
             } else {
-
-                router.push('/quiz/' + props.quizData.id)
+                await router.push('/quiz/' + props.quizData.id)
+                router.refresh()
             }
 
         } catch (error: any) {

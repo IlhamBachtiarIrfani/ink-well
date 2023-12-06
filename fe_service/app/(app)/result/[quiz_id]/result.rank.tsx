@@ -7,6 +7,23 @@ interface RankUserProps {
     data: any
 }
 
+function ShortenedName({ fullName }: { fullName: string }) {
+    // Maximum length for the displayed name
+    const maxLength = 12;
+
+    if (fullName.length <= maxLength) {
+        // If the name is short enough, display the full name
+        return <span>{fullName}</span>;
+    } else {
+        // If the name is too long, display the first name and initial
+        const names = fullName.split(' ');
+        const firstName = names[0];
+        const initial = names[1].charAt(0);
+
+        return <span>{`${firstName} ${initial}.`}</span>;
+    }
+}
+
 function RankUser(props: RankUserProps) {
     return (
         <div className={'w-32 flex flex-col items-center ' + props.className}>
@@ -18,7 +35,10 @@ function RankUser(props: RankUserProps) {
                     height={172}
                 />
             </div>
-            <p className='text-xl font-black h-6 overflow-clip mb-0.5 text-clip text-center'>{props.data.user.name}</p>
+            <p className='text-xl font-black h-6 mb-0.5 text-center overflow-clip'>
+                {/* {props.data.user.name} */}
+                <ShortenedName fullName={props.data.user.name} />
+            </p>
             <div className='flex items-center gap-1 text-red-400'>
                 <span className='material-symbols-rounded text-xl'>
                     rewarded_ads
@@ -38,7 +58,7 @@ interface ResultRankProps {
 
 export default function ResultRank(props: ResultRankProps) {
     return (
-        <div className='flex-1 relative p-5 pt-10 pb-0 sm:p-10 sm:pt-16 bg-white border-b-4 border-black rounded-2xl flex flex-col items-center z-10 overflow-hidden'>
+        <div className='flex-1 relative p-5 pt-10 pb-0 sm:p-10 sm:pt-16 sm:pb-0 bg-white border-b-4 border-black rounded-2xl flex flex-col items-center z-10 overflow-hidden'>
             <Image
                 className="hidden md:block absolute top-0 bottom-0 w-auto h-full -z-10 left-0 -translate-x-3/4"
                 src="/illustration.svg"

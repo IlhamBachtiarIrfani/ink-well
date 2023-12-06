@@ -7,11 +7,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { MessageBrokerService } from 'src/message_broker/message_broker.service';
 import { classToPlain } from 'class-transformer';
-import { Exam } from 'src/exam/entities/exam.entity';
+import { Exam, ExamState } from 'src/exam/entities/exam.entity';
 import { ExamScore, ExamScoreStatus } from './entities/exam_score.entity';
 import { UserTokenData } from 'src/user/entities/user.entity';
 import { Question } from 'src/question/entities/question.entity';
 import { ExamAccess } from 'src/exam/entities/exam-access.entity';
+import { ExamScoreLog } from './entities/exam_score_log.entity';
 
 @Injectable()
 export class ScoringService {
@@ -24,6 +25,8 @@ export class ScoringService {
         private questionRepository: Repository<Question>,
         @InjectRepository(ExamScore)
         private examScoreRepository: Repository<ExamScore>,
+        @InjectRepository(ExamScoreLog)
+        private examScoreLogRepository: Repository<ExamScoreLog>,
         private messageBrokerService: MessageBrokerService,
     ) {}
 
@@ -76,6 +79,10 @@ export class ScoringService {
             throw new NotFoundException('EXAM_NOT_FOUND');
         }
 
+        if (examData.state != ExamState.FINISHED) {
+            throw new NotFoundException('EXAM_NOT_FINISHED');
+        }
+
         if (!examData.score || examData.score.status != ExamScoreStatus.DONE) {
             throw new BadRequestException('EXAM_NOT_SCORED_YET');
         }
@@ -112,11 +119,7 @@ export class ScoringService {
         return examData;
     }
 
-    async userScore(
-        userTokenData: UserTokenData,
-        examId: string,
-        userId: string,
-    ) {
+    async userScore(examId: string, userId: string) {
         const examData = await this.examAccessRepository
             .createQueryBuilder('exam_access')
             .leftJoinAndSelect('exam_access.user', 'user')
@@ -152,6 +155,7 @@ export class ScoringService {
                     user_id: userId,
                 },
             )
+            .orderBy('question.created_at', 'ASC')
             .getOne();
 
         if (!examData) {
@@ -159,5 +163,29 @@ export class ScoringService {
         }
 
         return examData;
+    }
+
+    async insertScoreLog(
+        id: string,
+        progress_type: string,
+        progress_percent: number,
+        progress_detail: string,
+    ) {
+        const data = new ExamScoreLog();
+        data.exam_id = id;
+        data.progress_type = progress_type;
+        data.progress_percent = progress_percent;
+        data.progress_detail = progress_detail;
+
+        return this.examScoreLogRepository.save(data);
+    }
+
+    async getScoreLog(exam_id: string) {
+        return this.examScoreLogRepository.find({
+            where: { exam_id: exam_id },
+            order: {
+                created_at: 'DESC',
+            },
+        });
     }
 }

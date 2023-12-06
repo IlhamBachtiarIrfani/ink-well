@@ -91,7 +91,7 @@ interface ActiveStateProps {
 function ActiveState(props: ActiveStateProps) {
   const router = useRouter()
   return (
-    <div className='relative flex items-center before:absolute before:-inset-20 before:-left-10 before:bg-red-400 before:rotate-12 before:-z-10 z-10'>
+    <div className='relative flex items-center before:hidden sm:before:block before:absolute before:-inset-20 before:-left-10 before:bg-red-400 before:rotate-12 before:-z-10 z-10'>
       <ButtonComponent
         type={'DARK'}
         title='Open Exam'
@@ -112,7 +112,7 @@ function OnGoingState(props: OnGoingStateProps) {
   const router = useRouter()
 
   return (
-    <div className='relative flex items-center before:absolute before:-inset-20 before:-left-10 before:bg-black before:rotate-12 before:-z-10 z-10'>
+    <div className='relative flex items-center before:hidden sm:before:block before:absolute before:-inset-20 before:-left-10 before:bg-black before:rotate-12 before:-z-10 z-10'>
       <ButtonComponent
         type={'LIGHT'}
         title='Supervise'

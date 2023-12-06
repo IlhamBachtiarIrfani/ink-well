@@ -9,6 +9,7 @@ import QuestionItem from './result.question.item';
 import ScoreList from './result.score-list';
 import ResultRank from './result.rank';
 import { UserData } from '@/entities/user.entity';
+import { notFound } from 'next/navigation';
 
 interface PercentageCardProps {
     title: string,
@@ -34,11 +35,16 @@ async function getData(userData: UserData, id: string) {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Authorization': 'Bearer ' + userData?.token
         },
-        cache: 'no-cache'
+        // cache: 'no-store',
+        next: { revalidate: 0 }
     };
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}scoring/${id}`, requestOptions);
     const data = await response.json();
+
+    if (response.status == 404) {
+        return notFound();
+    }
 
     if (!response.ok && response.status != 400) {
         throw new Error(data.message)

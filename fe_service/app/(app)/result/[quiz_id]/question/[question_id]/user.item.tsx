@@ -83,21 +83,21 @@ export default function UserItem(props: UserItemProps) {
                     }
                 }} />
 
-                <table className="table-auto text-sm text-left border border-gray-300 ">
+                <table className="table-auto text-sm text-left mt-5">
                     <thead>
-                        <tr className='bg-gray-200'>
-                            <th className='border border-gray-300 px-3 py-1'>Aspect</th>
-                            <th className='border border-gray-300 px-3 py-1'>Score</th>
+                        <tr className='bg-black text-white'>
+                            <th className='rounded-s-lg px-3 py-2'>Aspect</th>
+                            <th className='rounded-e-lg px-3 py-2'>Score</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
                             Object.keys(props.item.response_score.detail_score).map((item, index) => {
-                                return <tr key={item + index}>
-                                    <td className='border border-gray-300 px-3 py-1'>
+                                return <tr key={item + index} className='even:bg-gray-100'>
+                                    <td className='rounded-s-lg px-3 py-2'>
                                         {item}
                                     </td>
-                                    <td className='border border-gray-300 px-3 py-1'>
+                                    <td className='rounded-e-lg px-3 py-2'>
                                         {(props.item.response_score.detail_score[item] * 100).toFixed(1)}
                                         %
                                     </td>

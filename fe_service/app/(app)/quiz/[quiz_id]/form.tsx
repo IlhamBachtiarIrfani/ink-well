@@ -98,7 +98,7 @@ export default function QuizEditForm(props: QuizEditFormProps) {
             if (!response.ok) {
                 setErrorData(data.message);
             } else {
-                router.refresh()
+                await router.refresh()
             }
 
         } catch (error: any) {

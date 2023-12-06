@@ -21,10 +21,10 @@ export class CreateQuestionDto {
     answer_key: string;
 
     @ApiProperty()
-    @MinLength(3, { each: true })
-    @IsNotEmpty()
     @ArrayMinSize(1)
     @ArrayMaxSize(8)
+    @MinLength(3, { each: true })
+    @IsNotEmpty()
     keyword: string[];
 
     @ApiProperty()

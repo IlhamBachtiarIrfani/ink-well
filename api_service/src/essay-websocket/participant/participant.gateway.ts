@@ -30,6 +30,14 @@ class SendResponseProps {
     response: string;
 }
 
+class SendActionProps {
+    @IsString()
+    @IsNotEmpty()
+    action: string;
+
+    detail: any;
+}
+
 @WebSocketGateway({
     namespace: 'participant',
     cors: {
@@ -133,6 +141,34 @@ export class ParticipantGateway implements OnGatewayConnection {
                 responseData.question_id,
                 userToken.user_id,
                 responseData.response,
+            );
+        } catch (error) {
+            throw new WsException(error);
+        }
+    }
+
+    @SubscribeMessage('sendAction')
+    async sendAction(client: Socket, data: any) {
+        try {
+            // Get user token data
+            const userToken: UserTokenData = client['user'];
+            const quiz_id = client['quiz_id'];
+
+            const responseData = new SendActionProps();
+            responseData.action = data.action;
+            responseData.detail = data.detail;
+
+            await validateOrReject(responseData);
+
+            console.log(
+                `User Action ${userToken.user_id} ${responseData.action}`,
+            );
+
+            return this.participantService.sendAction(
+                userToken.user_id,
+                quiz_id,
+                responseData.action,
+                responseData.detail,
             );
         } catch (error) {
             throw new WsException(error);

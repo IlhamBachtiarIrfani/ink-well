@@ -125,4 +125,13 @@ export class MyConfigService {
     get rabbitMqQueue(): string {
         return this.nestConfigService.get<string>('RABBITMQ_QUEUE');
     }
+
+    // ! ===== GET REDIS HOST =====
+    get redisHost(): string {
+        return this.nestConfigService.get<string>('REDIS_HOST');
+    }
+    // ! ===== GET REDIS PORT =====
+    get redisPort(): number {
+        return this.nestConfigService.get<number>('REDIS_PORT');
+    }
 }

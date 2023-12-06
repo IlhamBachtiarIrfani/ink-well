@@ -71,7 +71,7 @@ export default function ProcessQuiz(props: ProcessQuizProps) {
 
             <div className='relative py-16 px-14 sm:py-24 sm:px-20 bg-white border-b-4 border-black rounded-2xl flex flex-col items-center gap-10 z-10 overflow-hidden'>
 
-            <Image
+                <Image
                     className="hidden sm:block absolute top-0 bottom-0 w-auto h-full -z-10 left-0 -translate-x-3/4"
                     src="/illustration.svg"
                     alt="Ink Well Logo"
@@ -99,7 +99,7 @@ export default function ProcessQuiz(props: ProcessQuizProps) {
                     </Link>
                 </div>
 
-                <div className='flex items-center gap-5'>
+                <div className='flex items-center gap-5 flex-wrap justify-center'>
                     <div className='flex items-center gap-3 bg-black text-white h-10 pl-5 pr-8 py-2 rounded-full whitespace-nowrap'>
                         <span className='material-symbols-rounded'>encrypted</span>
                         <p>{props.data.join_code}</p>

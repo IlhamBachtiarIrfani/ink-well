@@ -51,7 +51,7 @@ export default function WatchQuizClient(props: WatchQuizClientProps) {
                     break;
                 case QuizClientState.FINISHED:
                     setQuizState(QuizClientState.FINISHED)
-                    router.push('/result/' + props.quizData.id)
+                    router.replace('/result/' + props.quizData.id, { scroll: false })
                     break;
                 default:
                     setQuizState(QuizClientState.ERROR)

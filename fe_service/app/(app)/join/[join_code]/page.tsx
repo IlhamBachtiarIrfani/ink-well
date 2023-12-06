@@ -5,6 +5,7 @@ import { UserData } from '@/entities/user.entity';
 import { notFound } from 'next/navigation';
 import React from 'react'
 import JoinQuizClient from './client';
+import ErrorPage from '@/components/common/error-page';
 
 async function getData(userData: UserData, joinCode: string) {
     const requestOptions: RequestInit = {
@@ -23,12 +24,8 @@ async function getData(userData: UserData, joinCode: string) {
         return notFound()
     }
 
-    if (!response.ok) {
-        throw new Error(data.message)
-    }
-
     const examData: QuizEntity = data.data;
-    return examData;
+    return { examData: examData, message: data.message };
 }
 interface JoinDetailPageProps {
     params: {
@@ -39,8 +36,13 @@ interface JoinDetailPageProps {
 
 export default async function JoinDetailPage(props: JoinDetailPageProps) {
     const userData = await getLoginCookies()
-    const data = await getData(userData!, props.params.join_code)
+    const { examData, message } = await getData(userData!, props.params.join_code)
+
+    if (message != 'OK') {
+        return <ErrorPage message={message} />
+    }
+
     return (
-        <JoinQuizClient token={userData!.token} quidData={data} />
+        <JoinQuizClient token={userData!.token} quidData={examData} />
     )
 }

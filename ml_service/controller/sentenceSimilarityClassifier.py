@@ -13,7 +13,7 @@ load_dotenv()
 
 SENTENCE_SIMILARITY_THREAD = int(os.getenv('SENTENCE_SIMILARITY_THREAD'))
 BOTTOM_THRESHOLD = .5
-TOP_THRESHOLD = .8
+TOP_THRESHOLD = .9
 
 model = SentenceTransformer(
     './model/sentence-similarity-fine-tuned-model')

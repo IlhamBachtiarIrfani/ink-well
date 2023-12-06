@@ -12,6 +12,7 @@ import { Exclude } from 'class-transformer';
 import { ExamAccess } from './exam-access.entity';
 import { Question } from 'src/question/entities/question.entity';
 import { ExamScore } from 'src/scoring/entities/exam_score.entity';
+import { ExamScoreLog } from 'src/scoring/entities/exam_score_log.entity';
 
 // ! EXAM STATE ENUM
 export enum ExamState {
@@ -68,4 +69,10 @@ export class Exam {
 
     @OneToOne(() => ExamScore, (examScore: ExamScore) => examScore.exam)
     score: ExamScore;
+
+    @OneToMany(
+        () => ExamScoreLog,
+        (examScoreLog: ExamScoreLog) => examScoreLog.exam,
+    )
+    score_log: ExamScoreLog;
 }

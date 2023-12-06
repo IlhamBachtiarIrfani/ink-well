@@ -44,6 +44,15 @@ export class ExamController {
         return this.examService.findAll(userTokenData);
     }
 
+    // ! ===== [GET] /exam =====
+    // * get all exam that have access with user
+    @Get('history')
+    @Roles(AccessRole.PARTICIPANT)
+    userHistory(@Request() req) {
+        const userTokenData: UserTokenData = req.user;
+        return this.examService.history(userTokenData);
+    }
+
     // ! ===== [GET] /exam/:id =====
     // * get detail exam by id
     @Get(':id')

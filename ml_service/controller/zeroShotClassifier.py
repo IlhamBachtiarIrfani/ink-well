@@ -14,7 +14,7 @@ load_dotenv()
 ZERO_SHOT_CLASSIFICATION_THREAD = int(
     os.getenv('ZERO_SHOT_CLASSIFICATION_THREAD'))
 BOTTOM_THRESHOLD = .3
-TOP_THRESHOLD = .9
+TOP_THRESHOLD = .85
 
 model_name = "./model/old-zero-shot-classification-model-base"
 tokenizer = AutoTokenizer.from_pretrained(model_name)

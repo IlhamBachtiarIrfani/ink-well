@@ -3,19 +3,12 @@
 import ButtonComponent from '@/components/input/button'
 import { useRouter } from 'next/navigation'
 
-export default function Error({
-    error,
-    reset,
-}: {
-    error: Error & { digest?: string }
-    reset: () => void
-}) {
+export default function ErrorPage({ message }: { message: string }) {
     const router = useRouter()
 
     return (
-        <main className='h-screen flex flex-col justify-center items-center gap-4'>
-            <h1 className='text-black font-black text-3xl'>Internal Server Error</h1>
-            <p>{error.message}</p>
+        <main className='flex-1 container max-w-3xl px-5 mx-auto flex flex-col py-8 gap-8 items-center justify-center'>
+            <h1 className='text-black font-black text-3xl capitalize'>{message}</h1>
             <div className='flex gap-3'>
                 <ButtonComponent
                     title='Try Again'

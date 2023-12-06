@@ -10,6 +10,9 @@ const config: Config = {
     extend: {
       colors: {
         'surface': '#F4F6F6',
+      },
+      boxShadow: {
+        'custom': '-6px 12px 0 0 rgba(0, 0, 0, 0.3)',
       }
     },
   },

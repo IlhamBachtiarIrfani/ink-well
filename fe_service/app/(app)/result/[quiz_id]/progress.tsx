@@ -23,24 +23,12 @@ export default function Progress(props: ProgressProps) {
     const detailProgressContainer = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
+        getData();
+
         const source = new EventSource(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}scoring/progress/` + props.exam_id);
 
         source.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-
-            const main_data: ProgressListProps = data.data
-
-            setProgressList((old) => [main_data, ...old])
-
-            setRecentProgress(main_data)
-
-            if (main_data.progress_type == 'All') {
-                setMainProgress(main_data)
-
-                if (main_data.progress_percent >= 100) {
-                    router.replace('/result/' + props.exam_id)
-                }
-            }
+            getData();
         }
 
         source.onerror = (event) => {
@@ -51,6 +39,41 @@ export default function Progress(props: ProgressProps) {
             source.close()
         }
     }, [])
+
+    useEffect(() => {
+        const recentData = progressList[0];
+
+        if (!recentData) return;
+
+        setRecentProgress(recentData);
+
+        if (recentData.progress_type == 'All' || recentData.progress_type == 'Completed') {
+            setMainProgress(recentData)
+
+            if (recentData.progress_percent >= 100) {
+                // router.replace('/result/' + props.exam_id, { scroll: false })
+                router.refresh()
+                console.log("REFRESH")
+            }
+        }
+
+    }, [progressList])
+
+
+    async function getData() {
+        const requestOptions: RequestInit = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            cache: 'no-cache'
+        };
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}scoring/progress_all/${props.exam_id}`, requestOptions);
+        const responseData = await response.json();
+
+        setProgressList(responseData.data);
+    }
 
     const scrollToTop = () => {
         if (detailProgressContainer.current) {
@@ -64,13 +87,13 @@ export default function Progress(props: ProgressProps) {
 
     return (
         <main className='container max-w-2xl px-5 mx-auto flex flex-col py-8 gap-8'>
-            <h1>Progress</h1>
             <div className='bg-white p-10 rounded-xl flex flex-col gap-2 justify-center items-center border-b-4 border-black'>
                 <p className='text-3xl font-black'>{mainProgress.progress_percent.toFixed(0)}%</p>
                 <p className='text-center text-gray-500'>{mainProgress.progress_detail}</p>
 
                 <div className='w-full h-6 relative bg-gray-100 border border-b-4 border-black rounded-full overflow-hidden'>
-                    <div className='absolute inset-0 bg-red-400 transition-all duration-200' style={{ right: (100 - recentProgress.progress_percent) + '%' }} />
+                    <div className='absolute inset-0 bg-red-200 transition-all duration-500' style={{ left: (mainProgress.progress_percent + '%'), right: (100 - (recentProgress.progress_percent)) + '%' }} />
+                    <div className='absolute inset-0 bg-red-400 transition-all duration-500' style={{ right: (100 - (mainProgress.progress_percent)) + '%' }} />
                 </div>
             </div>
             <div
@@ -80,9 +103,6 @@ export default function Progress(props: ProgressProps) {
                     progressList.map((item, index) => {
                         return (
                             <div key={index} className='flex gap-3'>
-                                <p className='font-black whitespace-nowrap w-12 flex-none text-right'>
-                                    {item.progress_percent.toFixed(0)}%
-                                </p>
                                 <p className='text-gray-400 line-clamp-2'>
                                     <span className='pr-2 font-bold'>{item.progress_type}.</span>
                                     {item.progress_detail}

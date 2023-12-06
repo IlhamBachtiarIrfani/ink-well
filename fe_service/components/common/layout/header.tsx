@@ -23,6 +23,7 @@ export default function HeaderComponent(props: HeaderComponentProps) {
     const layout = useLayout()
 
     const [avatarDropdownShow, setAvatarDropdownShow] = useState(false)
+    const [actionMenuMobileShow, setActionMenuMobileShow] = useState(false)
 
     function onRequestLogout(event: React.MouseEvent) {
         event.preventDefault()
@@ -57,12 +58,25 @@ export default function HeaderComponent(props: HeaderComponentProps) {
                 </div>
 
                 <div className='flex items-center gap-5'>
-                    {props.actions}
+                    <div className='hidden sm:flex items-center gap-5'>
+                        {props.actions}
+                    </div>
+                    {actionMenuMobileShow &&
+                        <div className='absolute z-50 top-20 mt-3 border-b-4 p-10 left-0 right-0 bg-white flex flex-col gap-3 sm:hidden'>
+                            {props.actions}
+                        </div>
+                    }
+
+                    {props.actions && <button onClick={() => setActionMenuMobileShow((old) => !old)} className='sm:hidden'>
+                        <span className="material-symbols-rounded">
+                            menu
+                        </span>
+                    </button>}
 
                     {
                         props.userData ? (
                             <div className='relative'>
-                                <div onClick={() => setAvatarDropdownShow(value => !value)} className='group flex gap-5 items-center cursor-pointer select-none bg-gray-100 rounded-full p-1 hover:scale-105 transition-transform'>
+                                <div onClick={() => setAvatarDropdownShow(value => !value)} className='group flex gap-5 items-center cursor-pointer select-none bg-gray-100 rounded-full p-1 hover:scale-105 transition-transform z-50'>
                                     <div className='w-10 h-10 rounded-full'>
                                         <div className='w-16 h-16 -m-3 select-none pointer-events-none group-hover:-rotate-12 group-hover:scale-110 transition-transform'>
                                             <Image
@@ -77,7 +91,7 @@ export default function HeaderComponent(props: HeaderComponentProps) {
                                 </div>
                                 {
                                     avatarDropdownShow && <div className='absolute mt-2 w-32 md:w-auto md:left-0 right-0 bg-white border border-b-4 p-5 rounded-2xl flex flex-col gap-3'>
-                                        <Link href='/profile'>Profile</Link>
+                                        {/* <Link href='/profile'>Profile</Link> */}
                                         <button onClick={onRequestLogout} className='focus:outline-none text-left text-red-400'>Logout</button>
                                     </div>
                                 }

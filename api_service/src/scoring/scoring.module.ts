@@ -9,6 +9,8 @@ import { ExamScore } from './entities/exam_score.entity';
 import { Question } from 'src/question/entities/question.entity';
 import { MyJwtModule } from 'src/config/my-jwt/my-jwt.module';
 import { ExamAccess } from 'src/exam/entities/exam-access.entity';
+import { MyConfigModule } from 'src/config/my-config/my-config.module';
+import { ExamScoreLog } from './entities/exam_score_log.entity';
 
 @Module({
     imports: [
@@ -18,8 +20,16 @@ import { ExamAccess } from 'src/exam/entities/exam-access.entity';
         // ! ===== LOAD DATABASE MODULE ======
         MariaDbDatabaseModule,
 
+        MyConfigModule,
+
         // ! ===== LOAD USED ENTITY DB =====
-        TypeOrmModule.forFeature([Exam, ExamAccess, ExamScore, Question]),
+        TypeOrmModule.forFeature([
+            Exam,
+            ExamAccess,
+            ExamScore,
+            Question,
+            ExamScoreLog,
+        ]),
 
         MessageBrokerModule,
     ],

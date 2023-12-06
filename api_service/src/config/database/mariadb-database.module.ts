@@ -14,6 +14,8 @@ import { ResponseScore } from 'src/scoring/entities/response-score.entity';
 import { QuestionScore } from 'src/scoring/entities/question-score.entity';
 import { UserExamScore } from 'src/scoring/entities/user-exam-score.entity';
 import { ExamScore } from 'src/scoring/entities/exam_score.entity';
+import { ExamScoreLog } from 'src/scoring/entities/exam_score_log.entity';
+import { ExamUserAction } from 'src/exam/entities/exam-user-action';
 
 @Module({
     imports: [
@@ -44,8 +46,11 @@ import { ExamScore } from 'src/scoring/entities/exam_score.entity';
 
                     ResponseScore,
                     QuestionScore,
-                    UserExamScore,
                     ExamScore,
+                    ExamScoreLog,
+                    UserExamScore,
+
+                    ExamUserAction,
                 ],
                 synchronize: true,
             }),

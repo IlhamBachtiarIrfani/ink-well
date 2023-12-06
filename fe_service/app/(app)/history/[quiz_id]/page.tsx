@@ -7,7 +7,7 @@ import UserItem from './user.item';
 import Image from 'next/image';
 
 
-async function getData(userData: UserData, id: string, userId: string) {
+async function getData(userData: UserData, id: string) {
     const requestOptions: RequestInit = {
         method: 'GET',
         headers: {
@@ -17,7 +17,7 @@ async function getData(userData: UserData, id: string, userId: string) {
 
     };
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}scoring/${id}/user/${userId}`, requestOptions);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}scoring/${id}/user`, requestOptions);
     const data = await response.json();
 
     if (!response.ok) {
@@ -30,13 +30,12 @@ async function getData(userData: UserData, id: string, userId: string) {
 interface ResultQuizPageProps {
     params: {
         quiz_id: string,
-        user_id: string
     }
 }
 
-export default async function Page(props: ResultQuizPageProps) {
+export default async function UserHistoryPage(props: ResultQuizPageProps) {
     const userData = await getLoginCookies()
-    const data = await getData(userData!, props.params.quiz_id, props.params.user_id)
+    const data = await getData(userData!, props.params.quiz_id)
 
     return (
         <main className='container max-w-7xl px-5 mx-auto flex flex-col py-8 gap-8'>

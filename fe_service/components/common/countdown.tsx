@@ -22,6 +22,8 @@ export default function CountdownComponent(props: CountdownComponentProps) {
                 setTime(Math.floor(diffDuration.asSeconds()))
             }, 1000);
             return () => clearTimeout(timerId);
+        } else {
+            setTime(0)
         }
     }, [time]);
 
@@ -39,7 +41,7 @@ export default function CountdownComponent(props: CountdownComponentProps) {
     const seconds = time % 60;
 
     return (
-        <div className={!props.isBig ? 'flex items-center justify-center gap-3 bg-gray-100 py-4 px-5 rounded-2xl' : 'bg-cyan-300 rounded-2xl px-8 py-5 font-black text-7xl tracking-wider flex gap-5 items-center'}>
+        <div className={!props.isBig ? 'flex items-center justify-center gap-3  py-3 px-3 lg:py-4 lg:px-5 bg-gray-100 rounded-2xl' : 'bg-cyan-300 rounded-2xl px-8 py-5 font-black text-7xl tracking-wider flex gap-5 items-center'}>
             <span className={'material-symbols-rounded icon-bold ' + (!props.isBig ? 'text-5xl' : 'text-5xl sm:text-6xl md:text-7xl')}>
                 avg_pace
             </span>

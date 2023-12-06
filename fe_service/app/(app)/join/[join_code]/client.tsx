@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import io from 'socket.io-client';
 import { Socket } from 'socket.io-client';
 import QuizWaitingStateView from './waiting';
@@ -9,6 +9,7 @@ import { QuestionEntity } from '@/entities/question.entity';
 import { QuizEntity } from '@/entities/quiz.entity';
 import QuizFinishedStateView from './finished';
 import { QuizClientState } from '@/app/helper';
+import { useRouter } from 'next/navigation';
 
 interface JoinQuizClientProps {
     token: string,
@@ -16,12 +17,45 @@ interface JoinQuizClientProps {
 }
 
 export default function JoinQuizClient(props: JoinQuizClientProps) {
+    const router = useRouter()
     const [webSocket, setWebSocket] = useState<Socket | null>(null)
 
     const [quizState, setQuizState] = useState(QuizClientState.LOADING)
     const [questionList, setQuestionList] = useState<QuestionEntity[]>([])
 
     const [finishTime, setFinishTime] = useState(new Date())
+
+    const sendAction = useCallback((action: string, detail: any) => {
+        if (webSocket) {
+            webSocket.emit('sendAction', {
+                "action": action,
+                "detail": detail
+            });
+        }
+    }, [webSocket]);
+
+    const handleFocus = useCallback(() => {
+        console.log('Window focused!');
+        sendAction('FOCUSED', null);
+    }, [sendAction]);
+
+    const handleBlur = useCallback(() => {
+        console.log('Window blurred!');
+        sendAction('BLURRED', null);
+    }, [sendAction]);
+
+    const handleCopy = useCallback((event: ClipboardEvent) => {
+        console.log('copy!');
+        const copiedText = window?.getSelection()?.toString();
+        sendAction('ON_COPY', { text: copiedText });
+    }, [sendAction]);
+
+    const handlePaste = useCallback((event: ClipboardEvent) => {
+        console.log('paste!');
+        const pastedText = event?.clipboardData?.getData('text');
+        sendAction('ON_PASTE', { text: pastedText });
+    }, [sendAction]);
+
 
     useEffect(() => {
         const socket = io(`${process.env.NEXT_PUBLIC_WEB_SOCKET_BASE_URL}participant`, {
@@ -47,6 +81,7 @@ export default function JoinQuizClient(props: JoinQuizClientProps) {
                     setFinishTime(data.finish_time)
                     break;
                 case QuizClientState.FINISHED:
+                    router.replace("/history")
                     setQuizState(QuizClientState.FINISHED)
                     break;
                 default:
@@ -66,8 +101,40 @@ export default function JoinQuizClient(props: JoinQuizClientProps) {
 
         return () => {
             socket.close();
-        }
+        };
     }, [])
+
+    useEffect(() => {
+        // Remove previous event listeners before adding new ones
+        window.removeEventListener('focus', handleFocus);
+        window.removeEventListener('blur', handleBlur);
+
+        // Add new event listeners
+        window.addEventListener('focus', handleFocus);
+        window.addEventListener('blur', handleBlur);
+
+        // Clean up event listeners when component unmounts
+        return () => {
+            window.removeEventListener('focus', handleFocus);
+            window.removeEventListener('blur', handleBlur);
+        };
+    }, [handleFocus, handleBlur]);
+
+    useEffect(() => {
+        // Remove previous event listeners before adding new ones
+        window.removeEventListener('copy', handleCopy);
+        window.removeEventListener('paste', handlePaste);
+
+        // Add new event listeners
+        window.addEventListener('copy', handleCopy);
+        window.addEventListener('paste', handlePaste);
+
+        // Clean up event listeners when component unmounts
+        return () => {
+            window.removeEventListener('copy', handleCopy);
+            window.removeEventListener('paste', handlePaste);
+        };
+    }, [handleCopy, handlePaste]);
 
     function onResponseChange(question_id: string, response: string) {
         if (!webSocket) return;
@@ -78,12 +145,20 @@ export default function JoinQuizClient(props: JoinQuizClientProps) {
         })
     }
 
+    function onChangeQuestion(question_id: string) {
+        sendAction('CHANGE_QUESTION', { question_id: question_id })
+    }
+
     function onStopTyping(response: string, question_id: string) {
         if (!webSocket) return;
+
+        sendAction('STOP_TYPING', { question_id: question_id, response: response })
     }
 
     function onStartTyping(question_id: string) {
         if (!webSocket) return;
+
+        sendAction('START_TYPING', { question_id: question_id })
     }
 
     switch (quizState) {
@@ -98,6 +173,7 @@ export default function JoinQuizClient(props: JoinQuizClientProps) {
                 onResponseChange={onResponseChange}
                 onStartTyping={onStartTyping}
                 onStopTyping={onStopTyping}
+                onChangeQuestion={onChangeQuestion}
             />
         case QuizClientState.FINISHED:
             return <QuizFinishedStateView />
