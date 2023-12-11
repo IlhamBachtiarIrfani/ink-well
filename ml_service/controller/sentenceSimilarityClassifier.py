@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 load_dotenv()
 
 SENTENCE_SIMILARITY_THREAD = int(os.getenv('SENTENCE_SIMILARITY_THREAD'))
-BOTTOM_THRESHOLD = .5
+BOTTOM_THRESHOLD = .3
 TOP_THRESHOLD = .9
 
 model = SentenceTransformer(
