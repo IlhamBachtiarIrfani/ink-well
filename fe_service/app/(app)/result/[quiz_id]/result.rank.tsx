@@ -80,9 +80,9 @@ export default function ResultRank(props: ResultRankProps) {
             <h1 className='text-4xl font-black mb-20 text-center'>{props.title}</h1>
 
             <div className='flex gap-10 -mb-16'>
-                <RankUser className='mt-10' data={props.data[1]} />
-                <RankUser className='' data={props.data[0]} />
-                <RankUser className='mt-16' data={props.data[2]} />
+                {props.data[1] && <RankUser className='mt-10' data={props.data[1]} />}
+                {props.data[0] && <RankUser className='' data={props.data[0]} />}
+                {props.data[2] && <RankUser className='mt-16' data={props.data[2]} />}
             </div>
 
 
