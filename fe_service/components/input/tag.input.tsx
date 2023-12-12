@@ -45,6 +45,8 @@ export default function TagInputComponent(props: TagInputComponentProps) {
         if (event.key == 'Enter') {
             event.preventDefault()
 
+            if (inputValue == "") return;
+
             setTagValue((oldValue) => [...oldValue, inputValue])
             setInputValue("")
         }
