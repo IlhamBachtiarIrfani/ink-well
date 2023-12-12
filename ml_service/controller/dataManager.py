@@ -147,16 +147,16 @@ class DataManager:
                 r.user_id,
                 e.id,
                 SUM((q.`point`*rs.final_score)) AS final_score, 
-                JSON_OBJECTAGG(
-                    q.id, 
-                    JSON_OBJECT(
-                        'score',(q.`point` * rs.final_score),
-                        'percentage',(rs.final_score),
-                        'detail', rs.detail_score
-                    )
-                ) AS detail_score,
-                SUM(q.`point`*rs.final_score) / SUM(q.`point`) AS score_percentage,
-                IF(e.pass_score <= SUM(q.`point`*rs.final_score) / SUM(q.`point`), true, false) AS is_pass
+            JSON_OBJECTAGG(
+                q.id, 
+                JSON_OBJECT(
+                    'score',(q.`point` * rs.final_score),
+                    'percentage',(rs.final_score),
+                    'detail', rs.detail_score
+                )
+            ) AS detail_score,
+            SUM(q.`point`*rs.final_score) / SUM(q.`point`) AS score_percentage,
+            IF(e.pass_score <= SUM(q.`point`*rs.final_score) / SUM(q.`point`), true, false) AS is_pass
             FROM exam e
             LEFT JOIN question q
                 ON e.id = q.exam_id 
@@ -164,7 +164,7 @@ class DataManager:
                 ON q.id = r.question_id
             LEFT JOIN response_score rs
                 ON r.user_id = rs.user_id AND r.question_id = rs.question_id
-            WHERE e.id = :exam_id
+            WHERE e.id = :exam_id AND r.user_id IS NOT NULL
             GROUP BY e.id, r.user_id
             ON DUPLICATE KEY UPDATE 
                 final_score = VALUES(final_score),
