@@ -7,6 +7,7 @@ import {
     ArrayMaxSize,
     Min,
     Max,
+    ArrayUnique,
 } from 'class-validator';
 
 export class UpdateQuestionDto {
@@ -25,6 +26,7 @@ export class UpdateQuestionDto {
     @IsNotEmpty()
     @ArrayMinSize(1)
     @ArrayMaxSize(8)
+    @ArrayUnique((value: string) => value.toLowerCase())
     keyword: string[];
 
     @ApiProperty()
