@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation';
 
 interface JoinQuizClientProps {
     token: string,
-    quidData: QuizEntity,
+    quizData: QuizEntity,
 }
 
 export default function JoinQuizClient(props: JoinQuizClientProps) {
@@ -58,18 +58,11 @@ export default function JoinQuizClient(props: JoinQuizClientProps) {
 
 
     useEffect(() => {
-        const socket = io(`${process.env.NEXT_PUBLIC_WEB_SOCKET_BASE_URL}participant`, {
-            extraHeaders: {
-                authorization: 'Bearer ' + props.token,
-                quiz_id: props.quidData.id,
-            }
-        });
+        const socket = io(`${process.env.NEXT_PUBLIC_WEB_SOCKET_BASE_URL}participant?token=${props.token}&quiz_id=${props.quizData.id}`);
 
         setWebSocket(socket)
 
         socket.on('events', function (socketData) {
-            console.log(socketData);
-
             const { type, data } = socketData
 
             switch (type) {
@@ -91,7 +84,6 @@ export default function JoinQuizClient(props: JoinQuizClientProps) {
         })
 
         socket.on('question', function (data) {
-            console.log(data);
             setQuestionList(data)
         })
 
@@ -138,27 +130,46 @@ export default function JoinQuizClient(props: JoinQuizClientProps) {
 
     function onResponseChange(question_id: string, response: string) {
         if (!webSocket) return;
+        const index = getQuestionIndexById(question_id);
 
         webSocket.emit('sendResponse', {
             "question_id": question_id,
+            "index": index,
             "response": response
         })
     }
 
+    function getQuestionIndexById(question_id: string) {
+        return questionList.findIndex((item) => item.id === question_id) + 1;
+    }
+
     function onChangeQuestion(question_id: string) {
-        sendAction('CHANGE_QUESTION', { question_id: question_id })
+        const index = getQuestionIndexById(question_id);
+        sendAction('CHANGE_QUESTION', {
+            "question_id": question_id,
+            "index": index
+        })
     }
 
     function onStopTyping(response: string, question_id: string) {
         if (!webSocket) return;
+        const index = getQuestionIndexById(question_id);
 
-        sendAction('STOP_TYPING', { question_id: question_id, response: response })
+        sendAction('STOP_TYPING', {
+            "question_id": question_id,
+            "index": index,
+            "response": response
+        })
     }
 
     function onStartTyping(question_id: string) {
         if (!webSocket) return;
+        const index = getQuestionIndexById(question_id);
 
-        sendAction('START_TYPING', { question_id: question_id })
+        sendAction('START_TYPING', {
+            "question_id": question_id,
+            "index": index,
+        })
     }
 
     switch (quizState) {

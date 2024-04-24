@@ -19,6 +19,7 @@ import { ExamAccessType } from 'src/exam/entities/exam-access.entity';
 import { ExamState } from 'src/exam/entities/exam.entity';
 import { ParticipantService } from './participant.service';
 import { IsNotEmpty, IsString, validateOrReject } from 'class-validator';
+import { ExamUserActionEnum } from 'src/exam/entities/exam-user-action';
 
 class SendResponseProps {
     @IsString()
@@ -58,11 +59,11 @@ export class ParticipantGateway implements OnGatewayConnection {
     @WebSocketServer() public server: Server;
 
     async handleConnection(client: Socket) {
-        const { authHeader, authQuizId } = validateSocket(client);
+        const { token, quiz_id } = validateSocket(client);
         let payload: UserTokenData;
 
         try {
-            payload = await this.myJwtService.verifyAsync(authHeader);
+            payload = await this.myJwtService.verifyAsync(token);
         } catch (error) {
             client.emit('exception', 'INVALID_TOKEN');
             return client.disconnect();
@@ -70,7 +71,7 @@ export class ParticipantGateway implements OnGatewayConnection {
 
         try {
             const examData = await this.essayWebsocketService.checkQuizId(
-                authQuizId,
+                quiz_id,
                 payload.user_id,
                 ExamAccessType.PARTICIPANT,
                 client.id,
@@ -81,11 +82,11 @@ export class ParticipantGateway implements OnGatewayConnection {
             } else if (examData.exam.state === ExamState.STARTED) {
                 const questionData =
                     await this.participantService.getAllQuestion(
-                        authQuizId,
+                        quiz_id,
                         payload.user_id,
                     );
                 const data = await this.essayWebsocketService.getExamData(
-                    authQuizId,
+                    quiz_id,
                 );
                 client.emit('question', questionData);
                 client.emit('events', { type: 'STARTED', data: data });
@@ -96,15 +97,27 @@ export class ParticipantGateway implements OnGatewayConnection {
             return client.disconnect();
         }
 
-        client.join(roomPrefix + authQuizId);
-        this.adminGateway.onParticipantJoin(authQuizId, client, payload);
+        client.join(roomPrefix + quiz_id);
+        this.adminGateway.onParticipantJoin(quiz_id, client, payload);
+        await this.participantService.sendAction(
+            payload.user_id,
+            quiz_id,
+            ExamUserActionEnum.JOINED,
+            null,
+        );
 
         client.on('disconnecting', async () => {
             await this.essayWebsocketService.leaveQuizId(
-                authQuizId,
+                quiz_id,
                 payload.user_id,
             );
-            this.adminGateway.onParticipantLeave(authQuizId, client, payload);
+            await this.participantService.sendAction(
+                payload.user_id,
+                quiz_id,
+                ExamUserActionEnum.LEAVED,
+                null,
+            );
+            this.adminGateway.onParticipantLeave(quiz_id, client, payload);
         });
     }
 

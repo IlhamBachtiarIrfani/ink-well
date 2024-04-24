@@ -15,8 +15,12 @@ SENTENCE_SIMILARITY_THREAD = int(os.getenv('SENTENCE_SIMILARITY_THREAD'))
 BOTTOM_THRESHOLD = .3
 TOP_THRESHOLD = .9
 
+import torch
+# Check for GPU availability
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
 model = SentenceTransformer(
-    './model/sentence-similarity-fine-tuned-model')
+    './model/sentence-similarity-fine-tuned-model', device=device)
 
 
 class SentenceSimilarityClassifier:

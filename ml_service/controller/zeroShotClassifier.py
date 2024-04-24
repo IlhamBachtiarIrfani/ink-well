@@ -9,6 +9,8 @@ from controller.progressLogger import ProgressLogger
 import concurrent.futures
 from bs4 import BeautifulSoup
 
+import torch
+
 load_dotenv()
 
 ZERO_SHOT_CLASSIFICATION_THREAD = int(
@@ -18,10 +20,13 @@ TOP_THRESHOLD = .85
 
 model_name = "./model/old-zero-shot-classification-model-base"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
 classifier = pipeline(
     "zero-shot-classification",
     model=model_name,
-    tokenizer=tokenizer
+    tokenizer=tokenizer,
+    device=device
 )
 
 

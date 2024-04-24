@@ -27,12 +27,7 @@ export default function WatchQuizClient(props: WatchQuizClientProps) {
     const [finishTime, setFinishTime] = useState(new Date())
 
     useEffect(() => {
-        const socket = io(`${process.env.NEXT_PUBLIC_WEB_SOCKET_BASE_URL}admin`, {
-            extraHeaders: {
-                authorization: 'Bearer ' + props.token,
-                quiz_id: props.quizData.id,
-            }
-        });
+        const socket = io(`${process.env.NEXT_PUBLIC_WEB_SOCKET_BASE_URL}admin?token=${props.token}&quiz_id=${props.quizData.id}`);
 
         setWebSocket(socket)
 

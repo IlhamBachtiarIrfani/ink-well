@@ -5,6 +5,7 @@ import { getLoginCookies } from '@/app/action';
 import { UserData } from '@/entities/user.entity';
 import UserItem from './user.item';
 import Image from 'next/image';
+import ActionItem from './action.item';
 
 
 async function getData(userData: UserData, id: string, userId: string) {
@@ -68,6 +69,27 @@ export default async function Page(props: ResultQuizPageProps) {
                     )
                 })
             }
+            <div className='flex flex-col gap-8 bg-white p-10 rounded-2xl border-b-4 border-black'>
+                <h1 className='font-black text-3xl'>User Activity History</h1>
+                <table className="w-full table-auto text-sm text-left">
+                    <thead>
+                        <tr className='bg-black text-white'>
+                            <th className='rounded-s-lg px-3 py-2'>Action</th>
+                            <th className='px-3 py-2'>Detail</th>
+                            <th className='rounded-e-lg px-3 py-2'>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            data.action.map((item: any) => {
+                                return (
+                                    <ActionItem key={item.id} action={item.action} detail={item.detail} createdAt={item.created_at} />
+                                )
+                            })
+                        }
+                    </tbody>
+                </table>
+            </div>
         </main>
     );
 }
