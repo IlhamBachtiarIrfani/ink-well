@@ -52,7 +52,7 @@ import { ExamUserAction } from 'src/exam/entities/exam-user-action';
 
                     ExamUserAction,
                 ],
-                synchronize: true,
+                synchronize: false,
             }),
             inject: [MyConfigService],
         }),
