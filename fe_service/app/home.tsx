@@ -91,14 +91,14 @@ export default function HomeComponent(props: HomeComponentProps) {
                     <Image src="/boy.png" alt='boy' width={512} height={512} className='w-56 h-80 bg-gray-400 rounded-2xl shadow-custom shadow-cyan-300 rotate-3 overflow-hidden object-cover' />
                 </div>
                 <div className='w-full lg:w-6/12'>
-                    <p className='font-black text-red-400'>LOREM IPSUM DOLOR SIT AMET</p>
+                    <p className='font-black text-red-400'>DISCOVER THE FUTURE OF EDUCATION EFFICIENCY</p>
                     <h2 className='text-5xl font-black mt-2'>Improve your education level productivity</h2>
-                    <p className='mt-5 text-gray-600'>Lorem ipsum dolor sit amet consectetur. Faucibus donec suspendisse facilisis in ut ligula amet. Leo id id maecenas condimentum. Magna vel elit purus ac. Duis elementum nibh enim nulla ornare sit. Congue id lectus vel maecenas id. </p>
+                    <p className='mt-5 text-gray-600'>Boost Your Education Productivity with Our AI Essay Scoring App!</p>
                     <ul className='marker:text-red-400 list-outside list-disc ml-6 text-gray-600 mt-3 flex flex-col gap-2'>
-                        <li>Lorem ipsum dolor sit amet consectetur.</li>
-                        <li>Lorem ipsum dolor sit amet consectetur.</li>
-                        <li>Lorem ipsum dolor sit amet consectetur.</li>
-                        <li>Lorem ipsum dolor sit amet consectetur.</li>
+                        <li>Rapid Grading: Assess essays in seconds, freeing up your time.</li>
+                        <li>Fair Evaluation: Ensure consistent grading with unbiased AI scoring.</li>
+                        <li>Detailed Feedback: Provide personalized insights for student improvement.</li>
+                        <li>Time-Saving Analytics: Track progress effortlessly with our intuitive dashboard.</li>
                     </ul>
                 </div>
             </section>

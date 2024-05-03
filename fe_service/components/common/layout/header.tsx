@@ -99,8 +99,8 @@ export default function HeaderComponent(props: HeaderComponentProps) {
                             </div>
                         ) : (
                             <ButtonComponent
-                                type='DARK_OUTLINED'
-                                title='Try For Free'
+                                type='DARK'
+                                title='Login'
                                 onClick={onLoginClick}
                                 icon={
                                     <span className="material-symbols-rounded">
