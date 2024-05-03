@@ -43,6 +43,6 @@ export default async function JoinDetailPage(props: JoinDetailPageProps) {
     }
 
     return (
-        <JoinQuizClient token={userData!.token} quidData={examData} />
+        <JoinQuizClient token={userData!.token} quizData={examData} />
     )
 }

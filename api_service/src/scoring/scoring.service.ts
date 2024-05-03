@@ -134,6 +134,7 @@ export class ScoringService {
                 { user_id: userId },
             )
             .leftJoin('response.response_score', 'question_score')
+            .leftJoin('exam_access.action', 'action')
             .select(['exam_access.type'])
             .addSelect(['user.name', 'user.email', 'user.photo_url'])
             .addSelect(['question.content', 'question.point'])
@@ -148,6 +149,12 @@ export class ScoringService {
                 'question_score.final_score',
                 'question_score.detail_score',
             ])
+            .addSelect([
+                'action.id',
+                'action.action',
+                'action.detail',
+                'action.created_at',
+            ])
             .where(
                 'exam_access.exam_id = :exam_id AND exam_access.user_id = :user_id',
                 {
@@ -156,6 +163,7 @@ export class ScoringService {
                 },
             )
             .orderBy('question.created_at', 'ASC')
+            .addOrderBy('action.created_at', 'DESC')
             .getOne();
 
         if (!examData) {

@@ -41,11 +41,11 @@ export class AdminGateway implements OnGatewayConnection {
     @WebSocketServer() public server: Server;
 
     async handleConnection(client: Socket) {
-        const { authHeader, authQuizId } = validateSocket(client);
+        const { token, quiz_id } = validateSocket(client);
         let payload: UserTokenData;
 
         try {
-            payload = await this.myJwtService.verifyAsync(authHeader);
+            payload = await this.myJwtService.verifyAsync(token);
         } catch (error) {
             client.emit('exception', 'INVALID_TOKEN');
             return client.disconnect();
@@ -53,7 +53,7 @@ export class AdminGateway implements OnGatewayConnection {
 
         try {
             const examData = await this.essayWebsocketService.checkQuizId(
-                authQuizId,
+                quiz_id,
                 payload.user_id,
                 ExamAccessType.ADMIN,
                 client.id,
@@ -63,7 +63,7 @@ export class AdminGateway implements OnGatewayConnection {
                 client.emit('events', { type: 'WAITING', data: null });
             } else if (examData.exam.state === ExamState.STARTED) {
                 const data = await this.essayWebsocketService.getExamData(
-                    authQuizId,
+                    quiz_id,
                 );
                 client.emit('events', { type: 'STARTED', data: data });
             }
@@ -72,12 +72,12 @@ export class AdminGateway implements OnGatewayConnection {
             return client.disconnect();
         }
 
-        client.join(roomPrefix + authQuizId);
+        client.join(roomPrefix + quiz_id);
         console.log('Admin Joined : ' + client.id);
-        this.updateParticipantEvent(authQuizId);
+        this.updateParticipantEvent(quiz_id);
 
         client.on('disconnecting', () => {
-            this.essayWebsocketService.leaveQuizId(authQuizId, payload.user_id);
+            this.essayWebsocketService.leaveQuizId(quiz_id, payload.user_id);
         });
     }
 

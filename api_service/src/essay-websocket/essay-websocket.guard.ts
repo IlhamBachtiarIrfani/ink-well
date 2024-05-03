@@ -5,7 +5,7 @@ import { MyJwtService } from 'src/config/my-jwt/my-jwt.service';
 import { UserTokenData } from 'src/user/entities/user.entity';
 import { ROLES_KEY } from 'src/user/roles.decorator';
 import { AccessRole } from 'src/user/roles.enum';
-import { extractQuizIdFromHeader, extractTokenFromHeader } from './utils';
+import { validateSocket } from './utils';
 
 @Injectable()
 export class EssayWebsocketGuard implements CanActivate {
@@ -33,8 +33,7 @@ export class EssayWebsocketGuard implements CanActivate {
             }
 
             const socket = context.switchToWs().getClient();
-            const token = extractTokenFromHeader(socket);
-            const quiz_id = extractQuizIdFromHeader(socket);
+            const { token, quiz_id } = validateSocket(socket);
 
             // check if there is no token
             if (!token) {

@@ -69,7 +69,7 @@ export class ExamService {
                 'question',
             )
             .orderBy('exam.state', 'DESC')
-            .addOrderBy('exam.created_at', 'DESC')
+            .addOrderBy('exam.updated_at', 'DESC')
             .where('exam.id IN (:exam_array)', { exam_array: examIdList })
             .getMany();
     }

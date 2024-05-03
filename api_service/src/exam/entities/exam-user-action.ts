@@ -41,7 +41,6 @@ export class ExamUserAction {
     @Column({ type: 'json', nullable: true })
     detail: JSON;
 
-    @Exclude()
     @CreateDateColumn()
     created_at: Date;
 

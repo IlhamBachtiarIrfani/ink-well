@@ -48,5 +48,5 @@ services:
 
 networks:
   default:
-    name: skripsi-network
+    name: nginx-proxy-manager_default
     external: true
